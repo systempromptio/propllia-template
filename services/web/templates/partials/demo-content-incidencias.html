@@ -1,0 +1,73 @@
+                <div id="table-root"></div>
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                const { DataTable, FormPanel, HistoryPanel, Toast, api, confirmAction } = AdminApp;
+                Toast.init();
+                const historyPanel = new HistoryPanel();
+
+                const formFields = [
+                    { key: 'activo', label: 'Activo', required: true, placeholder: 'Nombre del activo' },
+                    { key: 'titulo', label: 'Título', required: true, placeholder: 'Breve descripción del problema' },
+                    { key: 'descripcion', label: 'Descripción', type: 'textarea', placeholder: 'Descripción detallada...' },
+                    { key: 'prioridad', label: 'Prioridad', type: 'select', options: ['Alta', 'Media', 'Baja'], default: 'Media' },
+                    { key: 'estado', label: 'Estado', type: 'select', options: ['Abierta', 'En progreso', 'Resuelta', 'Cerrada'], default: 'Abierta' },
+                    { key: 'coste', label: 'Coste (€)', type: 'number', placeholder: '0.00' },
+                ];
+
+                const formPanel = new FormPanel({
+                    title: 'Incidencia',
+                    fields: formFields,
+                    onSubmit: async (data, isEdit, original) => {
+                        try {
+                            if (isEdit) {
+                                await api.put(`/incidencias/${original.id}`, data);
+                                Toast.show('Incidencia actualizada');
+                            } else {
+                                await api.post('/incidencias', data);
+                                Toast.show('Incidencia creada');
+                            }
+                            table.load();
+                        } catch (e) {
+                            Toast.show(e.message, 'error');
+                        }
+                    }
+                });
+
+                const table = new DataTable('#table-root', {
+                    entity: 'incidencia',
+                    apiPath: '/incidencias',
+                    exportPath: '/export/incidencias',
+                    columns: [
+                        { key: 'activo', label: 'Activo' },
+                        { key: 'titulo', label: 'Título' },
+                        { key: 'prioridad', label: 'Prioridad', type: 'status' },
+                        { key: 'estado', label: 'Estado', type: 'status' },
+                        { key: 'coste', label: 'Coste', type: 'currency' },
+                        { key: 'created_at', label: 'Creado', type: 'date' },
+                    ],
+                    filters: [
+                        { key: 'estado', label: 'Estado', options: ['Abierta', 'En progreso', 'Resuelta', 'Cerrada'] },
+                        { key: 'prioridad', label: 'Prioridad', options: ['Alta', 'Media', 'Baja'] },
+                        { key: 'activo', label: 'Activo', asyncOptions: '/activos/names' }
+                    ],
+                    onRowClick: (row) => {
+                        formPanel.open(row);
+                    },
+                    onAction: async (action, row) => {
+                        if (action === 'create') formPanel.open();
+                        if (action === 'edit') formPanel.open(row);
+                        if (action === 'history') historyPanel.open('incidencias', row.id);
+                        if (action === 'delete') {
+                            const ok = await confirmAction('Eliminar incidencia', `¿Eliminar "${row.titulo}"? Esta acción no se puede deshacer.`);
+                            if (ok) {
+                                try {
+                                    await api.del(`/incidencias/${row.id}`);
+                                    Toast.show('Incidencia eliminada');
+                                    table.load();
+                                } catch (e) { Toast.show(e.message, 'error'); }
+                            }
+                        }
+                    }
+                });
+            });
+        </script>

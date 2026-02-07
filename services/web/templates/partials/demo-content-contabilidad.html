@@ -1,0 +1,96 @@
+                <div id="table-root"></div>
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                const { DataTable, FormPanel, HistoryPanel, Toast, api, confirmAction } = AdminApp;
+                Toast.init();
+                const historyPanel = new HistoryPanel();
+                const detailPanel = new DetailPanel();
+
+                const formFields = [
+                    { key: 'referencia', label: 'Referencia', required: true, placeholder: 'FAC-2026-001' },
+                    { key: 'concepto', label: 'Concepto', required: true, placeholder: 'Descripción de la factura' },
+                    { key: 'contrato', label: 'Contrato', required: true, placeholder: 'Referencia del contrato' },
+                    { key: 'activo', label: 'Activo', required: true, placeholder: 'Nombre del activo' },
+                    { key: 'pagador', label: 'Pagador', required: true, placeholder: 'Nombre del pagador' },
+                    { key: 'receptor', label: 'Receptor', required: true, placeholder: 'Nombre del receptor' },
+                    { key: 'estado', label: 'Estado', type: 'select', options: ['Auto', 'Sin pagar', 'Parcial', 'Pagado'], default: 'Auto' },
+                    { key: 'tipo', label: 'Tipo', type: 'select', options: ['ingreso', 'gasto'], default: 'ingreso' },
+                    { key: 'tipo_gasto', label: 'Categoría de gasto', type: 'select', options: ['', 'IBI', 'Comunidad', 'Seguro', 'Mantenimiento', 'Suministros', 'Hipoteca', 'Impuestos', 'Otro'] },
+                    { key: 'total', label: 'Total (€)', type: 'number', required: true, placeholder: '0.00' },
+                    { key: 'pagado', label: 'Pagado (€)', type: 'number', placeholder: '0.00' },
+                    { key: 'vat', label: 'IVA (€)', type: 'number', placeholder: '0.00' },
+                    { key: 'fecha', label: 'Fecha factura', required: true, placeholder: 'AAAA-MM-DD' },
+                    { key: 'fecha_de_pago', label: 'Fecha de pago', type: 'date' },
+                    { key: 'metodo_pago', label: 'Método de pago', type: 'select', options: ['', 'transferencia', 'bizum', 'efectivo', 'domiciliacion'] },
+                    { key: 'notas', label: 'Notas', type: 'textarea', placeholder: 'Notas adicionales...' },
+                    { key: 'descuento', label: 'Descuento (€)', type: 'number', placeholder: '0.00' },
+                    { key: 'descuento_pct', label: 'Descuento %', type: 'number', placeholder: '0.00' },
+                    { key: 'cuenta_pagador', label: 'Cuenta pagador', placeholder: 'IBAN' },
+                ];
+
+                const formPanel = new FormPanel({
+                    title: 'Factura',
+                    fields: formFields,
+                    onSubmit: async (data, isEdit, original) => {
+                        try {
+                            if (data.estado === 'Auto') delete data.estado;
+                            if (isEdit) {
+                                await api.put(`/contabilidad/${original.id}`, data);
+                                Toast.show('Factura actualizada');
+                            } else {
+                                await api.post('/contabilidad', data);
+                                Toast.show('Factura creada');
+                            }
+                            table.load();
+                        } catch (e) {
+                            Toast.show(e.message, 'error');
+                        }
+                    }
+                });
+
+                const table = new DataTable('#table-root', {
+                    entity: 'contabilidad',
+                    apiPath: '/contabilidad',
+                    exportPath: '/export/contabilidad',
+                    showPeriodFilter: true,
+                    columns: [
+                        { key: 'referencia', label: 'Ref' },
+                        { key: 'concepto', label: 'Concepto' },
+                        { key: 'activo', label: 'Activo' },
+                        { key: 'pagador', label: 'Pagador' },
+                        { key: 'receptor', label: 'Receptor' },
+                        { key: 'estado', label: 'Estado', type: 'status' },
+                        { key: 'total', label: 'Total', type: 'currency' },
+                        { key: 'pagado', label: 'Pagado', type: 'currency' },
+                        { key: 'tipo', label: 'Tipo', type: 'status' },
+                        { key: 'tipo_gasto', label: 'Categoría' },
+                        { key: 'fecha', label: 'Fecha' },
+                    ],
+                    filters: [
+                        { key: 'estado', label: 'Estado', options: ['Sin pagar', 'Parcial', 'Pagado'] },
+                        { key: 'tipo', label: 'Tipo', options: ['ingreso', 'gasto'] },
+                        { key: 'tipo_gasto', label: 'Categoría', options: ['IBI', 'Comunidad', 'Seguro', 'Mantenimiento', 'Suministros', 'Hipoteca', 'Impuestos', 'Otro'] },
+                        { key: 'receptor', label: 'Receptor', asyncOptions: '/contabilidad/receptors' },
+                        { key: 'activo', label: 'Activo', asyncOptions: '/activos/names' }
+                    ],
+                    onRowClick: (row) => {
+                        detailPanel.openContabilidad(row);
+                    },
+                    onAction: async (action, row) => {
+                        if (action === 'create') formPanel.open();
+                        if (action === 'edit') formPanel.open(row);
+                        if (action === 'history') historyPanel.open('contabilidad', row.id);
+                        if (action === 'delete') {
+                            const ok = await confirmAction('Eliminar factura', `¿Eliminar "${row.referencia}"? Esta acción no se puede deshacer.`);
+                            if (ok) {
+                                try {
+                                    await api.del(`/contabilidad/${row.id}`);
+                                    Toast.show('Factura eliminada');
+                                    table.load();
+                                } catch (e) { Toast.show(e.message, 'error'); }
+                            }
+                        }
+                    }
+                });
+            });
+        </script>

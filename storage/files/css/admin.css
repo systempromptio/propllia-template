@@ -1,0 +1,15 @@
+/* ============================================
+   Marcbo Admin Dashboard — Entry Point
+   Modular CSS architecture with @import
+   ============================================ */
+
+@import url('admin/tokens.css');      /* Design tokens: colors, typography, spacing */
+@import url('admin/base.css');        /* Reset, layout, header, focus styles */
+@import url('admin/sidebar.css');     /* Sidebar navigation + section colors */
+@import url('admin/controls.css');    /* Buttons, toolbar, badges, progress bars */
+@import url('admin/tables.css');      /* Data tables, pagination, clickable rows */
+@import url('admin/panels.css');      /* Side panels, forms, detail views, timeline */
+@import url('admin/dashboard.css');   /* KPI cards, alerts, activity feed */
+@import url('admin/gallery.css');     /* Presentation modal, lightbox, images */
+@import url('admin/feedback.css');    /* Toast notifications, loading spinner */
+@import url('admin/responsive.css');  /* Media queries, mobile adaptation */

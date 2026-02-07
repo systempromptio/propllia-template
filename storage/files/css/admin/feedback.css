@@ -1,0 +1,58 @@
+/* ============================================
+   Feedback — Toast notifications, loading spinner
+   ============================================ */
+
+.toast-container {
+    position: fixed;
+    top: var(--space-5);
+    right: var(--space-5);
+    z-index: 2000;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
+
+.toast {
+    padding: var(--space-3) var(--space-5);
+    border-radius: var(--radius-md);
+    font-size: var(--text-sm);
+    font-weight: 500;
+    animation: toastIn 300ms var(--ease-out);
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    max-width: 400px;
+    box-shadow: var(--shadow-lg);
+    backdrop-filter: blur(8px);
+}
+
+.toast-success {
+    background: var(--success-strong);
+    border: 1px solid rgba(61, 139, 94, 0.25);
+    color: var(--success);
+}
+
+.toast-error {
+    background: var(--danger-strong);
+    border: 1px solid rgba(196, 69, 58, 0.25);
+    color: var(--danger);
+}
+
+@keyframes toastIn {
+    from { opacity: 0; transform: translateX(40px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+.loading-spinner {
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    border: 2px solid var(--border-default);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 600ms linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}

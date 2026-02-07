@@ -1,0 +1,35 @@
+/* ============================================
+   Responsive — Breakpoints and mobile adaptation
+   ============================================ */
+
+@media (max-width: 768px) {
+    .admin-sidebar { display: none; }
+    .admin-main { padding: var(--space-4); }
+    .toolbar { flex-direction: column; }
+    .search-input { min-width: 100%; }
+    .form-row { grid-template-columns: 1fr; }
+    .side-panel { width: 100vw; }
+    .dashboard-grid { grid-template-columns: 1fr 1fr; }
+    .alerts-row { grid-template-columns: 1fr; }
+    .dashboard-two-col { grid-template-columns: 1fr; }
+    .detail-grid { grid-template-columns: 1fr; }
+    .financial-cards { grid-template-columns: 1fr; }
+
+    .presentation-content { flex-direction: column; }
+    .presentation-details { min-width: unset; }
+    .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+    .presentation-stats { grid-template-columns: repeat(2, 1fr); }
+    .presentation-financial-cards { grid-template-columns: repeat(2, 1fr); }
+    .presentation-modal { width: 98vw; max-height: 95vh; }
+
+    .table-container {
+        margin: 0 calc(-1 * var(--space-4));
+        border-radius: 0;
+        border-left: none;
+        border-right: none;
+    }
+}
+
+@media (max-width: 480px) {
+    .dashboard-grid { grid-template-columns: 1fr; }
+}

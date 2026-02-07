@@ -1,0 +1,217 @@
+/* ============================================
+   Controls — Buttons, toolbar, search, filters,
+   badges, progress bars
+   ============================================ */
+
+/* Toolbar */
+.toolbar {
+    display: flex;
+    gap: var(--space-3);
+    align-items: center;
+    margin-bottom: var(--space-4);
+    flex-wrap: wrap;
+}
+
+.search-input {
+    flex: 1;
+    min-width: 200px;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-sm);
+    padding: var(--space-2) var(--space-4);
+    color: var(--text-primary);
+    font-size: var(--text-base);
+    font-family: inherit;
+    outline: none;
+    transition: border-color var(--duration-fast), box-shadow var(--duration-fast);
+}
+
+.search-input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-dim);
+}
+
+.search-input::placeholder {
+    color: var(--text-disabled);
+}
+
+.filter-select, .period-select {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-sm);
+    padding: var(--space-2) var(--space-4);
+    color: var(--text-primary);
+    font-size: var(--text-sm);
+    font-family: inherit;
+    outline: none;
+    cursor: pointer;
+    transition: border-color var(--duration-fast);
+}
+
+.filter-select.async-filter {
+    min-width: 160px;
+}
+
+.filter-select:focus, .period-select:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-dim);
+}
+
+.filter-select option, .period-select option {
+    background: var(--bg-surface-overlay);
+    color: var(--text-primary);
+}
+
+/* Buttons */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-4);
+    border: 1px solid transparent;
+    border-radius: var(--radius-sm);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all var(--duration-fast) var(--ease-in-out);
+    text-decoration: none;
+    white-space: nowrap;
+    line-height: 20px;
+}
+
+.btn:active { transform: scale(0.97); }
+
+.btn:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--bg-canvas), 0 0 0 4px var(--accent);
+}
+
+.btn-primary {
+    background: var(--accent);
+    color: var(--text-on-accent);
+    border-color: var(--accent);
+}
+
+.btn-primary:hover {
+    background: var(--accent-hover);
+    border-color: var(--accent-hover);
+    box-shadow: var(--shadow-sm);
+}
+
+.btn-secondary {
+    background: transparent;
+    color: var(--text-secondary);
+    border-color: var(--border-default);
+}
+
+.btn-secondary:hover {
+    background: rgba(45, 41, 37, 0.04);
+    border-color: var(--border-strong);
+    color: var(--text-primary);
+}
+
+.btn-danger {
+    background: transparent;
+    color: var(--danger);
+    border-color: rgba(196, 69, 58, 0.3);
+}
+
+.btn-danger:hover {
+    background: var(--danger-dim);
+    border-color: rgba(196, 69, 58, 0.5);
+}
+
+.btn-view {
+    background: transparent;
+    color: var(--accent);
+    border-color: rgba(183, 96, 74, 0.3);
+}
+
+.btn-view:hover {
+    background: var(--accent-dim);
+    border-color: var(--accent);
+}
+
+.btn-sm {
+    padding: var(--space-1) var(--space-3);
+    font-size: var(--text-xs);
+}
+
+.btn-icon {
+    padding: var(--space-2);
+    min-width: 36px;
+    justify-content: center;
+}
+
+.btn-gallery {
+    padding: var(--space-1) var(--space-2);
+    background: transparent;
+    border: 1px solid var(--border-default);
+    color: var(--text-secondary);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-size: var(--text-sm);
+    transition: all var(--duration-fast);
+}
+
+.btn-gallery:hover {
+    background: var(--accent-dim);
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+/* Status Badges */
+.badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 2px 10px;
+    border-radius: var(--radius-full);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    white-space: nowrap;
+    line-height: 20px;
+}
+
+.badge::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.badge-green { background: var(--success-dim); color: var(--success); }
+.badge-green::before { background: var(--success); }
+.badge-amber { background: var(--warning-dim); color: var(--warning); }
+.badge-amber::before { background: var(--warning); }
+.badge-red { background: var(--danger-dim); color: var(--danger); }
+.badge-red::before { background: var(--danger); }
+.badge-gray { background: rgba(45, 41, 37, 0.06); color: var(--text-secondary); }
+.badge-gray::before { background: var(--text-tertiary); }
+.badge-blue { background: var(--accent-dim); color: var(--accent); }
+.badge-blue::before { background: var(--accent); }
+
+/* Progress Bars */
+.progress-bar {
+    height: 6px;
+    background: rgba(45, 41, 37, 0.06);
+    border-radius: 3px;
+    overflow: hidden;
+    display: inline-block;
+    width: 100%;
+    vertical-align: middle;
+}
+
+.progress-fill {
+    height: 100%;
+    border-radius: 3px;
+    transition: width 600ms var(--ease-out);
+}
+
+.progress-green { background: var(--success); }
+.progress-amber { background: var(--warning); }
+.progress-red { background: var(--danger); }
+.progress-gray { background: rgba(45, 41, 37, 0.15); }
+.progress-blue { background: var(--accent); }

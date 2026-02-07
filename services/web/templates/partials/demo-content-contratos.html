@@ -1,0 +1,79 @@
+                <div id="table-root"></div>
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                const { DataTable, FormPanel, HistoryPanel, Toast, api, confirmAction } = AdminApp;
+                Toast.init();
+                const historyPanel = new HistoryPanel();
+                const detailPanel = new DetailPanel();
+
+                const formFields = [
+                    { key: 'contrato', label: 'Ref. contrato', required: true, placeholder: 'ej. CALLE MAYOR 15 - GARCIA' },
+                    { key: 'activo', label: 'Activo', required: true, placeholder: 'Nombre del activo' },
+                    { key: 'direccion', label: 'Dirección', placeholder: 'Dirección completa' },
+                    { key: 'inquilino', label: 'Inquilino', placeholder: 'Nombre del inquilino' },
+                    { key: 'estado', label: 'Estado', type: 'select', options: ['Iniciado', 'Activo', 'Finalizado', 'Suspendido'], default: 'Iniciado' },
+                    { key: 'alquiler', label: 'Alquiler mensual (€)', type: 'number', placeholder: '0.00' },
+                    { key: 'total', label: 'Valor total del contrato (€)', type: 'number', placeholder: '0.00' },
+                    { key: 'fecha_inicio', label: 'Fecha inicio', type: 'date' },
+                    { key: 'fecha_fin', label: 'Fecha fin', type: 'date' },
+                    { key: 'etiquetas', label: 'Etiquetas (separadas por coma)', placeholder: 'etiqueta1, etiqueta2' },
+                ];
+
+                const formPanel = new FormPanel({
+                    title: 'Contrato',
+                    fields: formFields,
+                    onSubmit: async (data, isEdit, original) => {
+                        try {
+                            if (isEdit) {
+                                await api.put(`/contratos/${original.id}`, data);
+                                Toast.show('Contrato actualizado');
+                            } else {
+                                await api.post('/contratos', data);
+                                Toast.show('Contrato creado');
+                            }
+                            table.load();
+                        } catch (e) {
+                            Toast.show(e.message, 'error');
+                        }
+                    }
+                });
+
+                const table = new DataTable('#table-root', {
+                    entity: 'contrato',
+                    apiPath: '/contratos',
+                    columns: [
+                        { key: 'contrato', label: 'Contrato' },
+                        { key: 'activo', label: 'Activo' },
+                        { key: 'inquilino', label: 'Inquilino' },
+                        { key: 'estado', label: 'Estado', type: 'status' },
+                        { key: 'alquiler', label: 'Alquiler', type: 'currency' },
+                        { key: 'fecha_inicio', label: 'Inicio', type: 'date' },
+                        { key: 'fecha_fin', label: 'Fin', type: 'date' },
+                        { key: 'doc_count', label: 'Docs', type: 'badge_count', suffix: 'docs' },
+                        { key: 'etiquetas', label: 'Etiquetas', type: 'tags' },
+                    ],
+                    filters: [
+                        { key: 'estado', label: 'Estado', options: ['Iniciado', 'Activo', 'Finalizado', 'Suspendido'] },
+                        { key: 'activo', label: 'Activo', asyncOptions: '/activos/names' }
+                    ],
+                    onRowClick: (row) => {
+                        detailPanel.openContrato(row);
+                    },
+                    onAction: async (action, row) => {
+                        if (action === 'create') formPanel.open();
+                        if (action === 'edit') formPanel.open(row);
+                        if (action === 'history') historyPanel.open('contratos', row.id);
+                        if (action === 'delete') {
+                            const ok = await confirmAction('Eliminar contrato', `¿Eliminar "${row.contrato}"? Esta acción no se puede deshacer.`);
+                            if (ok) {
+                                try {
+                                    await api.del(`/contratos/${row.id}`);
+                                    Toast.show('Contrato eliminado');
+                                    table.load();
+                                } catch (e) { Toast.show(e.message, 'error'); }
+                            }
+                        }
+                    }
+                });
+            });
+        </script>

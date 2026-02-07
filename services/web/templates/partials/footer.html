@@ -1,0 +1,35 @@
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="footer-logo">
+          <img src="/files/images/logo.svg" alt="{{ORG_NAME}}" class="logo-svg" />
+        </div>
+        <p>{{site.branding.description}}</p>
+      </div>
+      <div class="footer-links">
+        <h4>Recursos</h4>
+        <a href="/documentation">Documentación</a>
+        <a href="/documentation/getting-started">Primeros pasos</a>
+        <a href="/blog">Blog</a>
+        <a href="/sitemap.xml">Sitemap</a>
+      </div>
+      <div class="footer-links">
+        <h4>Producto</h4>
+        <a href="/documentation/inmuebles">Inmuebles</a>
+        <a href="/documentation/contratos">Contratos LAU</a>
+        <a href="/documentation/facturacion">Facturación</a>
+        <a href="/documentation/agente-ia">Agente IA</a>
+      </div>
+      <div class="footer-links">
+        <h4>Legal</h4>
+        {{#each site.navigation.footer.legal}}
+        <a href="{{this.path}}">{{this.label}}</a>
+        {{/each}}
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; {{site.branding.copyright}}</p>
+    </div>
+  </div>
+</footer>

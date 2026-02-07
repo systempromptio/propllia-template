@@ -1,0 +1,262 @@
+/* ============================================
+   Data Tables — Headers, cells, striping, pagination
+   ============================================ */
+
+.table-container {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    max-width: 100%;
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+.data-table th {
+    background: var(--bg-surface-raised);
+    padding: var(--space-3) var(--space-4);
+    text-align: left;
+    font-size: var(--text-xs);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-tertiary);
+    border-bottom: 1px solid var(--border-default);
+    cursor: pointer;
+    user-select: none;
+    white-space: nowrap;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+.data-table th:hover {
+    color: var(--text-secondary);
+}
+
+.data-table th .sort-icon {
+    display: inline-block;
+    margin-left: 4px;
+    opacity: 0.3;
+    transition: opacity var(--duration-fast);
+}
+
+.data-table th.sorted .sort-icon {
+    opacity: 1;
+    color: var(--accent);
+}
+
+.data-table td {
+    padding: var(--space-3) var(--space-4);
+    border-bottom: 1px solid var(--border-subtle);
+    font-size: var(--text-sm);
+    line-height: 1.5;
+    color: var(--text-secondary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.data-table td.truncate {
+    max-width: 250px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* First column emphasis */
+.data-table td:first-child {
+    color: var(--text-primary);
+    font-weight: 500;
+}
+
+/* Subtle row striping */
+.data-table tbody tr:nth-child(even) td {
+    background: rgba(45, 41, 37, 0.02);
+}
+
+.data-table tbody tr:nth-child(even) td.actions {
+    background: var(--bg-surface);
+}
+
+.data-table tr:hover td {
+    background: rgba(45, 41, 37, 0.04);
+}
+
+.data-table tr.selected td {
+    background: var(--accent-dim);
+}
+
+.data-table td.actions {
+    white-space: nowrap;
+    text-align: right;
+    width: 100px;
+    overflow: visible;
+    position: sticky;
+    right: 0;
+    background: var(--bg-surface);
+    box-shadow: -2px 0 4px rgba(0,0,0,0.05);
+    z-index: 2;
+}
+
+.data-table th:last-child {
+    width: 100px;
+    position: sticky;
+    right: 0;
+    background: var(--bg-surface-raised);
+    box-shadow: -2px 0 4px rgba(0,0,0,0.05);
+    z-index: 3;
+}
+
+.data-table td.numeric {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+}
+
+.data-table td.date {
+    white-space: nowrap;
+    color: var(--text-tertiary);
+}
+
+.data-table th.numeric { text-align: right; }
+
+.data-table th.rate-col,
+.data-table td.rate-col {
+    text-align: right;
+    min-width: 120px;
+    white-space: nowrap;
+}
+
+.data-table .empty-state {
+    text-align: center;
+    padding: var(--space-12) var(--space-4);
+    color: var(--text-tertiary);
+    font-size: var(--text-base);
+}
+
+/* Clickable rows */
+.clickable-row {
+    cursor: pointer;
+    transition: background var(--duration-fast);
+}
+
+.clickable-row:hover td {
+    background: var(--accent-dim);
+}
+
+/* Pagination */
+.pagination {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-3) var(--space-4);
+    border-top: 1px solid var(--border-subtle);
+    font-size: var(--text-sm);
+    color: var(--text-secondary);
+}
+
+.pagination-info {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+}
+
+.pagination-controls {
+    display: flex;
+    align-items: center;
+    gap: var(--space-1);
+}
+
+.pagination-controls button {
+    background: none;
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-sm);
+    color: var(--text-secondary);
+    padding: var(--space-1) var(--space-3);
+    cursor: pointer;
+    font-size: var(--text-sm);
+    font-family: inherit;
+    transition: all var(--duration-fast);
+}
+
+.pagination-controls button:hover:not(:disabled) {
+    background: rgba(45, 41, 37, 0.04);
+    border-color: var(--border-strong);
+    color: var(--text-primary);
+}
+
+.pagination-controls button:disabled {
+    opacity: 0.3;
+    cursor: default;
+}
+
+.pagination-controls .current-page {
+    padding: var(--space-1) var(--space-3);
+    color: var(--accent);
+    font-weight: 600;
+}
+
+.per-page-select {
+    background: transparent;
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-sm);
+    color: var(--text-secondary);
+    padding: 3px var(--space-2);
+    font-size: var(--text-sm);
+    font-family: inherit;
+}
+
+/* Summary / totals row */
+.data-table tfoot td {
+    background: var(--bg-surface-raised);
+    border-top: 2px solid var(--border-default);
+    font-weight: 700;
+    color: var(--text-primary);
+    padding: var(--space-3) var(--space-4);
+    font-size: var(--text-sm);
+    white-space: nowrap;
+}
+
+.data-table tfoot td.actions {
+    background: var(--bg-surface-raised);
+}
+
+/* Invoice count link */
+.invoice-link {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.invoice-link:hover {
+    text-decoration: underline;
+    opacity: 0.85;
+}
+
+/* Thumbnail cells */
+.thumbnail-cell {
+    width: 56px;
+    padding: var(--space-1) !important;
+    text-align: center;
+}
+
+.table-thumbnail {
+    width: 48px;
+    height: 36px;
+    object-fit: cover;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border-subtle);
+}
+
+.table-thumbnail-empty {
+    display: inline-block;
+    width: 48px;
+    height: 36px;
+    line-height: 36px;
+    text-align: center;
+    color: var(--text-muted);
+}

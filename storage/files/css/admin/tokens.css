@@ -1,0 +1,130 @@
+/* ============================================
+   Design Tokens — Marcbo Admin
+   Warm light theme with rust/copper palette
+   ============================================ */
+
+:root {
+    /* Typography */
+    --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    --font-heading: 'Nunito', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    --text-xs: 0.6875rem;   /* 11px */
+    --text-sm: 0.8125rem;   /* 13px */
+    --text-base: 0.9375rem; /* 15px */
+    --text-md: 1rem;        /* 16px */
+    --text-lg: 1.25rem;     /* 20px */
+    --text-xl: 1.5rem;      /* 24px */
+    --text-2xl: 2rem;       /* 32px */
+
+    /* Primary scale — Rust/Copper */
+    --primary-50: #FDF5F3;
+    --primary-100: #FAE8E3;
+    --primary-200: #F5CEC3;
+    --primary-300: #E8A594;
+    --primary-400: #D4806A;
+    --primary-500: #B7604A;
+    --primary-600: #9E4F3B;
+    --primary-700: #843F2F;
+    --primary-800: #6B3226;
+    --primary-900: #52261D;
+    --primary-950: #371812;
+
+    /* Warm neutral scale */
+    --warm-50: #FAFAF8;
+    --warm-100: #F3F1ED;
+    --warm-200: #E8E4DE;
+    --warm-300: #D5CFC7;
+    --warm-400: #B5ADA2;
+    --warm-500: #918780;
+    --warm-600: #766D65;
+    --warm-700: #5C544D;
+    --warm-800: #423C37;
+    --warm-900: #2D2925;
+    --warm-950: #1C1A17;
+
+    /* Background layers (warm cream) */
+    --bg-base: #FAF7F4;
+    --bg-canvas: #FDFAF8;
+    --bg-surface: #FFFFFF;
+    --bg-surface-raised: #F7F4F0;
+    --bg-surface-overlay: #FFFFFF;
+
+    /* Borders */
+    --border-subtle: #EDE9E3;
+    --border-default: #D5CFC7;
+    --border-strong: #B5ADA2;
+
+    /* Text hierarchy (WCAG AA compliant on cream) */
+    --text-primary: #2D2925;
+    --text-secondary: #5C544D;
+    --text-tertiary: #918780;
+    --text-disabled: #B5ADA2;
+    --text-on-accent: #FFFFFF;
+
+    /* Primary accent */
+    --accent: #B7604A;
+    --accent-hover: #9E4F3B;
+    --accent-dim: rgba(183, 96, 74, 0.08);
+    --accent-strong: rgba(183, 96, 74, 0.15);
+
+    /* Semantic colors (warm-shifted) */
+    --success: #3D8B5E;
+    --success-dim: rgba(61, 139, 94, 0.10);
+    --success-strong: rgba(61, 139, 94, 0.18);
+    --warning: #C6882B;
+    --warning-dim: rgba(198, 136, 43, 0.10);
+    --warning-strong: rgba(198, 136, 43, 0.18);
+    --danger: #C4453A;
+    --danger-dim: rgba(196, 69, 58, 0.08);
+    --danger-strong: rgba(196, 69, 58, 0.15);
+
+    /* Section accent colors (warm earth tones) */
+    --section-dashboard: #B7604A;
+    --section-properties: #6B8F5B;
+    --section-contracts: #8E5570;
+    --section-invoices: #B88B2E;
+    --section-tenants: #5A8A83;
+    --section-incidents: #B84C3A;
+    --section-tools: #7A7168;
+
+    /* Section dim variants (for backgrounds) */
+    --section-dashboard-dim: rgba(183, 96, 74, 0.10);
+    --section-properties-dim: rgba(107, 143, 91, 0.10);
+    --section-contracts-dim: rgba(142, 85, 112, 0.10);
+    --section-invoices-dim: rgba(184, 139, 46, 0.10);
+    --section-tenants-dim: rgba(90, 138, 131, 0.10);
+    --section-incidents-dim: rgba(184, 76, 58, 0.10);
+    --section-tools-dim: rgba(122, 113, 104, 0.10);
+
+    /* Shadows (warm-tinted for light backgrounds) */
+    --shadow-sm: 0 1px 3px rgba(45, 41, 37, 0.08), 0 1px 2px rgba(45, 41, 37, 0.04);
+    --shadow-md: 0 4px 6px rgba(45, 41, 37, 0.07), 0 2px 4px rgba(45, 41, 37, 0.04);
+    --shadow-lg: 0 10px 15px rgba(45, 41, 37, 0.08), 0 4px 6px rgba(45, 41, 37, 0.04);
+    --shadow-xl: 0 20px 25px rgba(45, 41, 37, 0.10), 0 8px 10px rgba(45, 41, 37, 0.04);
+
+    /* Radii */
+    --radius-xs: 4px;
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 14px;
+    --radius-xl: 20px;
+    --radius-full: 9999px;
+
+    /* Spacing (8px base grid) */
+    --space-1: 4px;
+    --space-2: 8px;
+    --space-3: 12px;
+    --space-4: 16px;
+    --space-5: 20px;
+    --space-6: 24px;
+    --space-7: 28px;
+    --space-8: 32px;
+    --space-10: 40px;
+    --space-12: 48px;
+
+    /* Transitions */
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+    --duration-fast: 150ms;
+    --duration-normal: 200ms;
+    --duration-slow: 350ms;
+}

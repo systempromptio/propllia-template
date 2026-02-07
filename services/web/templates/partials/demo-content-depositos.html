@@ -1,0 +1,78 @@
+                <div id="table-root"></div>
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                const { DataTable, FormPanel, HistoryPanel, Toast, api, confirmAction } = AdminApp;
+                Toast.init();
+                const historyPanel = new HistoryPanel();
+
+                const formFields = [
+                    { key: 'fecha', label: 'Fecha', type: 'date', required: true },
+                    { key: 'propiedad', label: 'Activo', required: true, placeholder: 'Nombre del activo' },
+                    { key: 'pagador', label: 'Pagador', required: true, placeholder: 'Quién paga' },
+                    { key: 'receptor', label: 'Receptor', required: true, placeholder: 'Quién recibe' },
+                    { key: 'tipo', label: 'Tipo', required: true, placeholder: 'ej. Fianza' },
+                    { key: 'estado', label: 'Estado', type: 'select', required: true, options: ['Depositado', 'Pendiente', 'Pagado', 'Devuelto', 'Organo oficial'] },
+                    { key: 'total', label: 'Importe', type: 'number', required: true, placeholder: '0.00' },
+                    { key: 'fecha_pago', label: 'Fecha de pago', type: 'date' },
+                    { key: 'fecha_devolucion', label: 'Fecha devolución', type: 'date' },
+                    { key: 'contrato', label: 'Ref. contrato', placeholder: 'Referencia del contrato' },
+                    { key: 'pagado', label: 'Importe pagado', type: 'number', placeholder: '0.00' },
+                    { key: 'devuelto', label: 'Importe devuelto', type: 'number', placeholder: '0.00' },
+                ];
+
+                const formPanel = new FormPanel({
+                    title: 'Depósito',
+                    fields: formFields,
+                    onSubmit: async (data, isEdit, original) => {
+                        try {
+                            if (isEdit) {
+                                await api.put(`/depositos/${original.id}`, data);
+                                Toast.show('Depósito actualizado');
+                            } else {
+                                await api.post('/depositos', data);
+                                Toast.show('Depósito creado');
+                            }
+                            table.load();
+                        } catch (e) {
+                            Toast.show(e.message, 'error');
+                        }
+                    }
+                });
+
+                const table = new DataTable('#table-root', {
+                    entity: 'deposito',
+                    apiPath: '/depositos',
+                    columns: [
+                        { key: 'fecha', label: 'Fecha', type: 'date' },
+                        { key: 'propiedad', label: 'Activo' },
+                        { key: 'pagador', label: 'Pagador' },
+                        { key: 'receptor', label: 'Receptor' },
+                        { key: 'estado', label: 'Estado', type: 'status' },
+                        { key: 'total', label: 'Importe', type: 'currency' },
+                        { key: 'created_at', label: 'Creado', type: 'date' },
+                    ],
+                    filters: [
+                        { key: 'estado', label: 'Estado', options: ['Depositado', 'Pendiente', 'Pagado', 'Devuelto', 'Organo oficial'] },
+                        { key: 'propiedad', label: 'Activo', asyncOptions: '/activos/names' }
+                    ],
+                    onRowClick: (row) => {
+                        formPanel.open(row);
+                    },
+                    onAction: async (action, row) => {
+                        if (action === 'create') formPanel.open();
+                        if (action === 'edit') formPanel.open(row);
+                        if (action === 'history') historyPanel.open('depositos', row.id);
+                        if (action === 'delete') {
+                            const ok = await confirmAction('Eliminar depósito', `¿Eliminar depósito de "${row.propiedad}"? Esta acción no se puede deshacer.`);
+                            if (ok) {
+                                try {
+                                    await api.del(`/depositos/${row.id}`);
+                                    Toast.show('Depósito eliminado');
+                                    table.load();
+                                } catch (e) { Toast.show(e.message, 'error'); }
+                            }
+                        }
+                    }
+                });
+            });
+        </script>

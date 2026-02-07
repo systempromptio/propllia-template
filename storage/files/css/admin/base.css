@@ -1,0 +1,74 @@
+/* ============================================
+   Base — Reset, layout, main structure, header
+   ============================================ */
+
+*, *::before, *::after { box-sizing: border-box; }
+body { margin: 0; }
+
+.admin-layout {
+    display: flex;
+    min-height: 100vh;
+    background: var(--bg-canvas);
+    color: var(--text-primary);
+    font-family: var(--font-family);
+    font-size: var(--text-base);
+    line-height: 1.5;
+    font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.admin-main {
+    flex: 1;
+    padding: var(--space-8) var(--space-10);
+    min-width: 0;
+}
+
+.admin-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--space-7);
+    padding-bottom: var(--space-5);
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+.admin-header h1 {
+    font-size: var(--text-xl);
+    font-weight: 600;
+    margin: 0;
+    color: var(--text-primary);
+    letter-spacing: -0.01em;
+    font-family: var(--font-heading);
+}
+
+.admin-layout h1, .admin-layout h2, .admin-layout h3 {
+    font-family: var(--font-heading);
+}
+
+/* Section-colored underline on page title */
+[data-section="dashboard"] .admin-header h1 { border-bottom: 2px solid var(--section-dashboard); padding-bottom: var(--space-1); display: inline; }
+[data-section="properties"] .admin-header h1 { border-bottom: 2px solid var(--section-properties); padding-bottom: var(--space-1); display: inline; }
+[data-section="contracts"] .admin-header h1 { border-bottom: 2px solid var(--section-contracts); padding-bottom: var(--space-1); display: inline; }
+[data-section="invoices"] .admin-header h1 { border-bottom: 2px solid var(--section-invoices); padding-bottom: var(--space-1); display: inline; }
+[data-section="tenants"] .admin-header h1 { border-bottom: 2px solid var(--section-tenants); padding-bottom: var(--space-1); display: inline; }
+[data-section="incidents"] .admin-header h1 { border-bottom: 2px solid var(--section-incidents); padding-bottom: var(--space-1); display: inline; }
+[data-section="tools"] .admin-header h1 { border-bottom: 2px solid var(--section-tools); padding-bottom: var(--space-1); display: inline; }
+
+.section-title {
+    font-size: var(--text-md);
+    font-weight: 600;
+    margin: var(--space-7) 0 var(--space-4);
+    color: var(--text-primary);
+    letter-spacing: -0.01em;
+}
+
+/* Focus visible — global accessibility */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--bg-canvas), 0 0 0 4px var(--accent);
+}

@@ -1,0 +1,79 @@
+                <div id="table-root"></div>
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                const { DataTable, FormPanel, HistoryPanel, Toast, api, confirmAction, PropertyPresentation } = AdminApp;
+                Toast.init();
+                const historyPanel = new HistoryPanel();
+                const detailPanel = new DetailPanel();
+
+                const formFields = [
+                    { key: 'activo', label: 'Nombre del activo', required: true, placeholder: 'ej. Piso Calle Mayor 15' },
+                    { key: 'direccion', label: 'Dirección', required: true, placeholder: 'Dirección completa' },
+                    { key: 'contrato', label: 'Ref. contrato', placeholder: 'Referencia del contrato' },
+                    { key: 'estado', label: 'Estado', type: 'select', options: ['Libre', 'Ocupado', 'Alquilado', 'En reforma'], default: 'Libre' },
+                    { key: 'alquiler', label: 'Alquiler mensual (€)', type: 'number', placeholder: '0.00' },
+                    { key: 'fecha_inicio', label: 'Inicio contrato', type: 'date' },
+                    { key: 'fecha_fin', label: 'Fin contrato', type: 'date' },
+                    { key: 'etiquetas', label: 'Etiquetas (separadas por coma)', placeholder: 'etiqueta1, etiqueta2' },
+                    { key: 'imagen_carpeta', label: 'Carpeta de imágenes', placeholder: 'ej. Villa de Bilbao 38' },
+                ];
+
+                const formPanel = new FormPanel({
+                    title: 'Activo',
+                    fields: formFields,
+                    onSubmit: async (data, isEdit, original) => {
+                        try {
+                            if (isEdit) {
+                                await api.put(`/activos/${original.id}`, data);
+                                Toast.show('Activo actualizado');
+                            } else {
+                                await api.post('/activos', data);
+                                Toast.show('Activo creado');
+                            }
+                            table.load();
+                        } catch (e) {
+                            Toast.show(e.message, 'error');
+                        }
+                    }
+                });
+
+                const table = new DataTable('#table-root', {
+                    entity: 'activo',
+                    apiPath: '/activos',
+                    exportPath: '/export/activos',
+                    columns: [
+                        { key: 'thumbnail_url', label: 'Foto', type: 'thumbnail' },
+                        { key: 'activo', label: 'Nombre' },
+                        { key: 'direccion', label: 'Dirección' },
+                        { key: 'estado', label: 'Estado', type: 'status' },
+                        { key: 'contrato', label: 'Contrato' },
+                        { key: 'alquiler', label: 'Alquiler', type: 'currency' },
+                        { key: 'fecha_inicio', label: 'Inicio', type: 'date' },
+                        { key: 'fecha_fin', label: 'Fin', type: 'date' },
+                        { key: 'etiquetas', label: 'Etiquetas', type: 'tags' },
+                    ],
+                    filters: [
+                        { key: 'estado', label: 'Estado', options: ['Libre', 'Ocupado', 'Alquilado', 'En reforma'] }
+                    ],
+                    onRowClick: (row) => {
+                        detailPanel.openActivo(row.id);
+                    },
+                    onAction: async (action, row) => {
+                        if (action === 'create') formPanel.open();
+                        if (action === 'edit') formPanel.open(row);
+                        if (action === 'history') historyPanel.open('activos', row.id);
+                        if (action === 'gallery') PropertyPresentation.open(row.id);
+                        if (action === 'delete') {
+                            const ok = await confirmAction('Eliminar activo', `¿Eliminar "${row.activo}"? Esta acción no se puede deshacer.`);
+                            if (ok) {
+                                try {
+                                    await api.del(`/activos/${row.id}`);
+                                    Toast.show('Activo eliminado');
+                                    table.load();
+                                } catch (e) { Toast.show(e.message, 'error'); }
+                            }
+                        }
+                    }
+                });
+            });
+        </script>

@@ -1,0 +1,159 @@
+/* ==========================================================================
+   Homepage Feature Cards Section
+   Replaces the old playbooks/CLI section with clean product feature cards
+   ========================================================================== */
+
+.features-section {
+  padding: var(--space-4xl) 0;
+  background: linear-gradient(180deg, transparent 0%, rgba(var(--color-primary-rgb), 0.02) 50%, transparent 100%);
+}
+
+.features-section .section-title {
+  margin-bottom: var(--space-3xl);
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-lg);
+}
+
+/* Feature Card */
+.feature-card {
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  padding: var(--space-xl);
+  transition: all var(--transition-normal);
+  position: relative;
+}
+
+.feature-card:hover {
+  text-decoration: none;
+  border-color: var(--primary-400);
+  transform: translateY(-4px);
+  box-shadow: 0 8px 32px rgba(var(--color-primary-rgb), 0.12);
+}
+
+.feature-card--highlight {
+  border-color: var(--primary-600);
+  background: linear-gradient(135deg, rgba(var(--color-primary-rgb), 0.06) 0%, var(--color-surface) 60%);
+}
+
+/* Icon */
+.feature-card__icon {
+  width: 44px;
+  height: 44px;
+  margin-bottom: var(--space-md);
+  color: var(--color-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.feature-card__icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* Text */
+.feature-card__title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+  color: var(--color-text);
+}
+
+.feature-card__subtitle {
+  font-size: 0.8rem;
+  color: var(--color-primary);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: var(--space-sm);
+}
+
+.feature-card__desc {
+  font-size: 0.9rem;
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+  margin-bottom: var(--space-md);
+}
+
+/* Bullet Points */
+.feature-card__points {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 var(--space-md) 0;
+  flex-grow: 1;
+}
+
+.feature-card__points li {
+  padding: 3px 0 3px var(--space-md);
+  position: relative;
+  color: var(--color-text-secondary);
+  font-size: 0.825rem;
+  line-height: 1.5;
+}
+
+.feature-card__points li::before {
+  content: "\25B8";
+  position: absolute;
+  left: 0;
+  color: var(--color-primary);
+  font-size: 0.7rem;
+}
+
+/* Link hint */
+.feature-card__link {
+  font-size: 0.85rem;
+  color: var(--color-primary);
+  font-weight: 500;
+  opacity: 0;
+  transform: translateX(-4px);
+  transition: all var(--transition-normal);
+  margin-top: auto;
+}
+
+.feature-card:hover .feature-card__link {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .features-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-md);
+  }
+}
+
+@media (max-width: 768px) {
+  .features-section {
+    padding: var(--space-3xl) 0;
+  }
+
+  .features-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-md);
+  }
+
+  .feature-card {
+    padding: var(--space-lg);
+  }
+
+  .feature-card__link {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@media (max-width: 480px) {
+  .features-grid {
+    grid-template-columns: 1fr;
+  }
+}

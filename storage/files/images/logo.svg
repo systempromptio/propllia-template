@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 40" fill="none">
+  <style>
+    @font-face {
+      font-family: "Inter";
+      src: url("data:font/woff2;base64,d09GMgABAAAAAANwABQAAAAAB6wAAAMFAAQAQgAAAAAAAAAAAAAAAAAAAAAAAAAAGyAcKj9IVkFSLz9NVkFSXgZgP1NUQVSBTicmAAQvbBEICgEqMBgBNgIkAwQLBAAEIAWFbAcgDAcbdQbILgbc3R1U0lA5qoALjNTVJlC3dL8tnuffLuq+X9UDwbsOGarPRkYshhDijZQNrta2j1km3tDMkpjnV9/HpkOt5AaF7O4FpzyBoqQupMT9l6QwsBDANfnx+QG3W4Xo0LIsErAw03A2kcZobaD5cKDwb5smuG1JtESiRCKkvQVt9DNAlq1YnyGihmsDnmKEUcp0qXOH0YD0wjtAQDeMARC0E3QSBBACWmmY9tEx/2JXaxeAmx5nCql0Abj1ikitp4R+ty3vex8s0gcFBXlq35cldf10mho0ptaf4qGmVT51d3lcrjQqFDUAwJbdnODH89fC71/tQqtfiwjUBxpfYZB2Ilqp0E1bjFMuXnLf1CxuORJSkdM30hq1iE8PQ0wwxwpXDMPbx/2Cktk6IEImOjaZ5AO0J2ccquaipEl5285PzX/ItLILjE73mVENIj2zuivGwZ+wGCAIiJbvex+0+7QtvR/q2WbEicx9U6dmkT6AoJMiummt1ZsVwIE0Cf0UkkzEMZBJ+IBMJuPIFNIkU8l/ZBplF8h0yttkBtUgMhP9CZFr6wgCCqEG7xtxvXRfCGpL5u+v3zjYcd7/rapW4K+bv02Y9+i18pXfYrX6FZWy4fp/rO0gR7y8ZxK5VxqLsgqFOC5mj6AAgFrQvaKSujWaTKKNJkUHD1GZ5AVqffxAwwz/KFvo0yijRLssYaJW2cAk3drBZG1yhik6eIip2uVGpunUbUzXKk1m6NIDzNQmLzFLr15mtlb5hEUS+UZOFovlD0uZLC8OmUiCiCkmmWyGQbaR8IjVDIjnIDZxmBQ8FiIW8yCJyeEiRjkFIYuraaKJTpIhiYdRcpRJV3Y9l85Vdjp4NJuyyRFP5NHQHA0TTLrp27m2ONk4acGk4qrXtIUErzjbJTMZSKjrynTRjG45zUxHVRzpNSV/w9fmqEpbZph4Fhy0te0dR9ngcWQe3QlPJxsyaTj2breajqxtWaodC5KxaBpiK9kbr2oaSgvocIPHon9GM/iBq9xNyl/PNa7vAQAAAA==") format("woff2");
+      font-weight: 700;
+      font-style: normal;
+    }
+  </style>
+  <!-- Building blocks icon -->
+  <rect x="2" y="20" width="8" height="16" rx="1.5" fill="#0D7D6C"/>
+  <rect x="12" y="8" width="8" height="28" rx="1.5" fill="#0D7D6C"/>
+  <rect x="22" y="14" width="8" height="22" rx="1.5" fill="#38B5A0"/>
+  <!-- Wordmark -->
+  <text x="40" y="32" font-family="Inter, system-ui, sans-serif" font-weight="700" font-size="30">
+    <tspan fill="#0D7D6C">Propl</tspan><tspan fill="#38B5A0">ia</tspan>
+  </text>
+</svg>

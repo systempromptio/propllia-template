@@ -1,0 +1,69 @@
+                <div id="table-root"></div>
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                const { DataTable, FormPanel, HistoryPanel, Toast, api, confirmAction } = AdminApp;
+                Toast.init();
+                const historyPanel = new HistoryPanel();
+
+                const formFields = [
+                    { key: 'nombre', label: 'Nombre completo', required: true, placeholder: 'Nombre y apellidos' },
+                    { key: 'identificacion', label: 'Identificación (DNI/NIF)', required: true, placeholder: 'DNI/NIF/NIE' },
+                    { key: 'email', label: 'Email', placeholder: 'email@ejemplo.com' },
+                    { key: 'telefono', label: 'Teléfono', placeholder: '+34 600 000 000' },
+                    { key: 'direccion', label: 'Dirección', placeholder: 'Dirección actual' },
+                    { key: 'banco', label: 'Cuenta bancaria', placeholder: 'Nombre del banco o IBAN' },
+                    { key: 'activo', label: 'Activo', placeholder: 'Activo asociado' },
+                    { key: 'direccion_activo', label: 'Dirección del activo', placeholder: 'Dirección del activo' },
+                ];
+
+                const formPanel = new FormPanel({
+                    title: 'Propietario',
+                    fields: formFields,
+                    onSubmit: async (data, isEdit, original) => {
+                        try {
+                            if (isEdit) {
+                                await api.put(`/propietarios/${original.id}`, data);
+                                Toast.show('Propietario actualizado');
+                            } else {
+                                await api.post('/propietarios', data);
+                                Toast.show('Propietario creado');
+                            }
+                            table.load();
+                        } catch (e) {
+                            Toast.show(e.message, 'error');
+                        }
+                    }
+                });
+
+                const table = new DataTable('#table-root', {
+                    entity: 'propietario',
+                    apiPath: '/propietarios',
+                    columns: [
+                        { key: 'nombre', label: 'Nombre' },
+                        { key: 'identificacion', label: 'Identificación' },
+                        { key: 'email', label: 'Email' },
+                        { key: 'telefono', label: 'Teléfono' },
+                        { key: 'activo', label: 'Activo' },
+                        { key: 'created_at', label: 'Creado', type: 'date' },
+                    ],
+                    onRowClick: (row) => {
+                        formPanel.open(row);
+                    },
+                    onAction: async (action, row) => {
+                        if (action === 'create') formPanel.open();
+                        if (action === 'edit') formPanel.open(row);
+                        if (action === 'history') historyPanel.open('propietarios', row.id);
+                        if (action === 'delete') {
+                            const ok = await confirmAction('Eliminar propietario', `¿Eliminar "${row.nombre}"? Esta acción no se puede deshacer.`);
+                            if (ok) {
+                                try {
+                                    await api.del(`/propietarios/${row.id}`);
+                                    Toast.show('Propietario eliminado');
+                                    table.load();
+                                } catch (e) { Toast.show(e.message, 'error'); }
+                            }
+                        }
+                    }
+                });
+            });
+        </script>

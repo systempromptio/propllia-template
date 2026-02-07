@@ -1,0 +1,140 @@
+# Feature: Banca y SEPA (Banking & SEPA)
+
+slug: "banca-sepa"
+title: "Banca y SEPA - Pagos integrados"
+icon: "bank"
+headline: "Banca y"
+headline_highlight: "pagos SEPA integrados"
+subtitle: "Validación IBAN con MOD-97, BIC automático para bancos españoles y exportación SEPA XML (PAIN.008) para domiciliaciones bancarias."
+
+highlights:
+  - id: "iban"
+    text: "Validación IBAN (MOD-97)"
+  - id: "bic"
+    text: "BIC/SWIFT automático"
+  - id: "sepa"
+    text: "Exportación SEPA XML"
+  - id: "bancos"
+    text: "10+ bancos españoles"
+
+sections:
+  - id: "iban"
+    title: "Validación IBAN internacional"
+    visual_position: "right"
+    visual_svg: |
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <!-- Shield -->
+        <path d="M200 60 L270 90 L270 170 Q270 230 200 260 Q130 230 130 170 L130 90 Z"/>
+        <!-- Checkmark inside shield -->
+        <polyline points="170,155 190,178 230,125" stroke-width="2.5"/>
+        <!-- Card outline to the right -->
+        <rect x="290" y="100" width="90" height="60" rx="6"/>
+        <!-- Lines on card -->
+        <line x1="300" y1="120" x2="370" y2="120"/>
+        <line x1="300" y1="135" x2="350" y2="135"/>
+        <!-- Chip on card -->
+        <rect x="305" y="108" width="15" height="10" rx="2"/>
+        <!-- Connection from shield to card -->
+        <line x1="270" y1="130" x2="290" y2="130" stroke-dasharray="4,4"/>
+      </svg>
+    content: |
+      <p>Proplia valida automáticamente los IBAN usando el algoritmo MOD-97 del estándar ISO 13616 en 4 pasos:</p>
+      <ol>
+        <li>Verifica la longitud según el código de país</li>
+        <li>Mueve los 4 primeros caracteres al final de la cadena</li>
+        <li>Convierte letras a números (A=10, B=11...)</li>
+        <li>Calcula módulo 97 — el resultado debe ser 1</li>
+      </ol>
+      <p>Soporta más de 50 países. Para IBANs españoles, además valida la estructura BBAN: código de entidad + oficina + dígitos de control + número de cuenta.</p>
+      <p>El endpoint <code>GET /admin/api/validate/iban?iban=ES91...</code> devuelve validez, país, BIC y nombre del banco en una sola llamada.</p>
+
+  - id: "bic"
+    title: "BIC/SWIFT automático"
+    visual_position: "left"
+    visual_svg: |
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <!-- Bank building -->
+        <polygon points="200,60 120,100 280,100"/>
+        <rect x="130" y="100" width="140" height="100"/>
+        <line x1="120" y1="200" x2="280" y2="200"/>
+        <!-- Columns -->
+        <line x1="155" y1="100" x2="155" y2="200"/>
+        <line x1="200" y1="100" x2="200" y2="200"/>
+        <line x1="245" y1="100" x2="245" y2="200"/>
+        <!-- Base -->
+        <rect x="115" y="200" width="170" height="12" rx="2"/>
+        <!-- Connecting lines to BIC codes -->
+        <line x1="285" y1="120" x2="330" y2="100"/>
+        <line x1="285" y1="150" x2="330" y2="150"/>
+        <line x1="285" y1="180" x2="330" y2="200"/>
+        <!-- BIC code blocks -->
+        <rect x="330" y="88" width="55" height="22" rx="4"/>
+        <rect x="330" y="138" width="55" height="22" rx="4"/>
+        <rect x="330" y="188" width="55" height="22" rx="4"/>
+      </svg>
+    content: |
+      <p>Al introducir un IBAN español, Proplia resuelve automáticamente el código BIC/SWIFT del banco correspondiente a partir del código de entidad (posiciones 5-8 del IBAN).</p>
+    items:
+      - title: "Santander (0049)"
+        description: "BSCHESMMXXX"
+      - title: "BBVA (0182)"
+        description: "BBVAESMMXXX"
+      - title: "CaixaBank (2100)"
+        description: "CAIXESBBXXX"
+      - title: "Banco Popular (0075)"
+        description: "POPUESMMXXX"
+      - title: "Abanca (2080)"
+        description: "CAABORIMXXX"
+      - title: "Sabadell (0081)"
+        description: "BSABESBBXXX"
+      - title: "Bankia (2038)"
+        description: "CAABORIMXXX"
+      - title: "Bankinter (0128)"
+        description: "BKBKESMMXXX"
+      - title: "Kutxabank (0487)"
+        description: "NEABORIMXXX"
+      - title: "Cajamar (3058)"
+        description: "CCABORIMXXX"
+
+  - id: "sepa"
+    title: "Exportación SEPA XML"
+    content: |
+      <p>Genera ficheros XML en formato PAIN.008.001.02 compatible con la banca española para cobrar las rentas por domiciliación bancaria. El flujo completo:</p>
+      <ol>
+        <li>Las facturas se generan automáticamente (job mensual)</li>
+        <li>Se seleccionan las facturas a cobrar por domiciliación</li>
+        <li>Se crea la remesa SEPA con los datos de cada factura</li>
+        <li>Se exporta el XML con <code>GET /admin/api/export/remesas_sepa_xml</code></li>
+        <li>Se sube el archivo al banco online</li>
+        <li>Se actualiza el estado de las facturas según el resultado del cobro</li>
+      </ol>
+      <p>El XML incluye cabecera con datos del acreedor, información de cobro (fecha, importe, moneda), datos del deudor (nombre, IBAN, BIC), referencia del mandato SEPA y referencia end-to-end.</p>
+
+  - id: "bancos"
+    title: "Tabla de remesas SEPA"
+    content: |
+      <p>La tabla <code>remesas_sepa</code> almacena todas las remesas de cobro con trazabilidad completa:</p>
+      <table>
+        <thead><tr><th>Campo</th><th>Descripción</th></tr></thead>
+        <tbody>
+          <tr><td><strong>remesa_id</strong></td><td>Identificador único de la remesa</td></tr>
+          <tr><td><strong>fecha_cobro</strong></td><td>Fecha de cobro solicitada al banco</td></tr>
+          <tr><td><strong>acreedor / acreedor_iban</strong></td><td>Datos del propietario/cobrador</td></tr>
+          <tr><td><strong>deudor / deudor_iban</strong></td><td>Datos del inquilino/pagador</td></tr>
+          <tr><td><strong>importe / moneda</strong></td><td>Importe a cobrar en EUR</td></tr>
+          <tr><td><strong>mandato_id</strong></td><td>ID del mandato SEPA de domiciliación</td></tr>
+          <tr><td><strong>referencia</strong></td><td>Referencia de la factura asociada</td></tr>
+          <tr><td><strong>archivo</strong></td><td>Ruta del archivo XML generado</td></tr>
+        </tbody>
+      </table>
+
+related:
+  - title: "Facturación"
+    description: "Las remesas SEPA se generan a partir de las facturas pendientes."
+    url: "/features/facturacion"
+  - title: "Contratos LAU"
+    description: "Los datos bancarios se vinculan a cada contrato de alquiler."
+    url: "/features/contratos-lau"
+  - title: "Informes"
+    description: "Controla los cobros y la morosidad con informes detallados."
+    url: "/features/informes"

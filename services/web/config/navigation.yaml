@@ -1,0 +1,111 @@
+# Proplia Navigation Configuration
+
+header:
+  items:
+    - id: funcionalidades
+      label: "Funcionalidades"
+      href: "/features/agente-ia"
+      dropdown: true
+      sections:
+        - title: "Plataforma"
+          links:
+            - label: "Agente IA"
+              href: "/features/agente-ia"
+            - label: "Inmuebles"
+              href: "/features/inmuebles"
+            - label: "Inquilinos"
+              href: "/features/inquilinos"
+            - label: "Contratos LAU"
+              href: "/features/contratos-lau"
+            - label: "Facturación"
+              href: "/features/facturacion"
+        - title: "Operaciones"
+          links:
+            - label: "Banca y SEPA"
+              href: "/features/banca-sepa"
+            - label: "Informes"
+              href: "/features/informes"
+            - label: "Herramientas MCP"
+              href: "/documentation/herramientas"
+            - label: "API REST"
+              href: "/documentation/api-endpoints"
+
+    - id: documentation
+      label: "Docs"
+      href: "/documentation"
+      dropdown: true
+      sections:
+        - title: "Empezar"
+          links:
+            - label: "Primeros pasos"
+              href: "/documentation/getting-started"
+            - label: "Instalación"
+              href: "/documentation/installation"
+        - title: "Referencia"
+          links:
+            - label: "Herramientas MCP"
+              href: "/documentation/herramientas"
+            - label: "Autenticación API"
+              href: "/documentation/api-auth"
+            - label: "Endpoints REST"
+              href: "/documentation/api-endpoints"
+      view_all:
+        label: "Ver toda la documentación"
+        href: "/documentation"
+
+    - id: demo
+      label: "Demo"
+      href: "/demo"
+
+    - id: blog
+      label: "Blog"
+      href: "/blog"
+      dropdown: true
+      sections:
+        - title: "Categorías"
+          links:
+            - label: "Todos los artículos"
+              href: "/blog"
+            - label: "Guías"
+              href: "/blog?category=guide"
+            - label: "Artículos"
+              href: "/blog?category=article"
+
+footer:
+  legal:
+    - path: "/legal/privacidad"
+      label: "Política de Privacidad"
+    - path: "/legal/terminos"
+      label: "Términos de Servicio"
+    - path: "/legal/cookies"
+      label: "Política de Cookies"
+  resources:
+    - path: "/documentation"
+      label: "Documentación"
+    - path: "/blog"
+      label: "Blog"
+    - path: "/documentation/getting-started"
+      label: "Primeros pasos"
+
+social:
+  - href: "https://twitter.com/proplia_io"
+    type: "twitter"
+    label: "Twitter"
+
+docs_sidebar:
+  - title: "Empezar"
+    links:
+      - label: "Documentación"
+        href: "/documentation"
+      - label: "Primeros pasos"
+        href: "/documentation/getting-started"
+      - label: "Instalación"
+        href: "/documentation/installation"
+  - title: "Referencia técnica"
+    links:
+      - label: "Herramientas MCP"
+        href: "/documentation/herramientas"
+      - label: "Autenticación"
+        href: "/documentation/api-auth"
+      - label: "Endpoints REST"
+        href: "/documentation/api-endpoints"

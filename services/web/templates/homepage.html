@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {{{HEAD_ASSETS}}}
+    <title>{{site.branding.title}}</title>
+    <meta name="description" content="{{site.branding.description}}">
+    <link rel="icon" type="image/x-icon" href="{{site.branding.favicon}}">
+    <link rel="canonical" href="{{ORG_URL}}">
+    <meta property="og:title" content="{{site.branding.title}}">
+    <meta property="og:description" content="{{site.branding.description}}">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ORG_URL}}">
+    <meta property="og:image" content="{{site.branding.image}}">
+    <meta property="og:site_name" content="{{site.branding.name}}">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="{{site.branding.twitter_handle}}">
+    <meta name="twitter:title" content="{{site.branding.title}}">
+    <meta name="twitter:description" content="{{site.branding.description}}">
+    <meta name="twitter:image" content="{{site.branding.image}}">
+    <meta name="theme-color" content="{{site.branding.themeColor}}">
+    <link rel="stylesheet" href="/css/homepage.css">
+</head>
+<body>
+    {{{HEADER}}}
+
+    <main>
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="container">
+                <div class="hero__layout">
+                    <div class="hero__content">
+                        <h1 class="hero__title">{{site.homepage.hero.title}} <span class="highlight">{{site.homepage.hero.title_highlight}}</span></h1>
+                        <p class="hero__subtitle">{{site.homepage.hero.subtitle}}</p>
+                        <div class="hero__ctas">
+                            <a href="{{site.homepage.hero.cta_url}}" class="btn btn--primary">{{site.homepage.hero.cta}}</a>
+                            <a href="{{site.homepage.hero.cta_secondary_url}}" class="btn btn--secondary">{{site.homepage.hero.cta_secondary}}</a>
+                        </div>
+                    </div>
+                    <div class="hero__visual">
+                        <div class="chat-demo">
+                            <div class="chat-demo__header">
+                                <span class="chat-demo__logo">
+                                    <svg viewBox="0 0 41 41" fill="none" xmlns="http://www.w3.org/2000/svg" width="20" height="20">
+                                        <path d="M37.532 16.87a9.963 9.963 0 0 0-.856-8.184 10.078 10.078 0 0 0-10.855-4.835A9.964 9.964 0 0 0 18.306.5a10.079 10.079 0 0 0-9.614 6.977 9.967 9.967 0 0 0-6.664 4.834 10.08 10.08 0 0 0 1.24 11.817 9.965 9.965 0 0 0 .856 8.185 10.079 10.079 0 0 0 10.855 4.835 9.965 9.965 0 0 0 7.516 3.35 10.078 10.078 0 0 0 9.617-6.981 9.967 9.967 0 0 0 6.663-4.834 10.079 10.079 0 0 0-1.243-11.813ZM22.498 37.886a7.474 7.474 0 0 1-4.799-1.735c.061-.033.168-.091.237-.134l7.964-4.6a1.294 1.294 0 0 0 .655-1.134V19.054l3.366 1.944a.12.12 0 0 1 .066.092v9.299a7.505 7.505 0 0 1-7.49 7.496ZM6.392 31.006a7.471 7.471 0 0 1-.894-5.023c.06.036.162.099.237.141l7.964 4.6a1.297 1.297 0 0 0 1.308 0l9.724-5.614v3.888a.12.12 0 0 1-.048.103l-8.051 4.649a7.504 7.504 0 0 1-10.24-2.744ZM4.297 13.62A7.469 7.469 0 0 1 8.2 10.333c0 .068-.004.19-.004.274v9.201a1.294 1.294 0 0 0 .654 1.132l9.723 5.614-3.366 1.944a.12.12 0 0 1-.114.012L7.044 23.86a7.504 7.504 0 0 1-2.747-10.24Zm27.658 6.437-9.724-5.615 3.367-1.943a.121.121 0 0 1 .113-.012l8.051 4.649a7.498 7.498 0 0 1-1.158 13.528v-9.476a1.293 1.293 0 0 0-.649-1.131Zm3.35-5.043c-.059-.037-.162-.099-.236-.141l-7.965-4.6a1.298 1.298 0 0 0-1.308 0l-9.723 5.614v-3.888a.12.12 0 0 1 .048-.103l8.05-4.645a7.497 7.497 0 0 1 11.135 7.763Zm-21.063 6.929-3.367-1.944a.12.12 0 0 1-.065-.092v-9.299a7.497 7.497 0 0 1 12.293-5.756 6.94 6.94 0 0 0-.236.134l-7.965 4.6a1.294 1.294 0 0 0-.654 1.132l-.006 11.225Zm1.829-3.943 4.33-2.501 4.332 2.5v5l-4.331 2.5-4.331-2.5V18Z" fill="currentColor"/>
+                                    </svg>
+                                </span>
+                                <span class="chat-demo__title">{{site.homepage.hero.chat_demo.title}}</span>
+                            </div>
+                            <div class="chat-demo__messages">
+                                <div class="chat-demo__msg chat-demo__msg--user">
+                                    <p>{{site.homepage.hero.chat_demo.user_message}}</p>
+                                </div>
+                                <div class="chat-demo__msg chat-demo__msg--agent">
+                                    <p>{{site.homepage.hero.chat_demo.agent_response.intro}}</p>
+                                    <div class="chat-demo__results">
+                                        {{#each site.homepage.hero.chat_demo.agent_response.items}}
+                                        <div class="chat-demo__result">
+                                            <span class="chat-demo__tenant">{{this.tenant}}</span>
+                                            <span class="chat-demo__address">{{this.address}}</span>
+                                            <span class="chat-demo__meta">{{this.type}} · {{this.date}}</span>
+                                        </div>
+                                        {{/each}}
+                                    </div>
+                                    <p class="chat-demo__suggestion">{{site.homepage.hero.chat_demo.agent_response.suggestion}}</p>
+                                </div>
+                            </div>
+                            <div class="chat-demo__input">
+                                <span class="chat-demo__cursor"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="features-section">
+            <div class="container">
+                <h2 class="section-title">{{site.homepage.features.title}} <span class="highlight">{{site.homepage.features.title_highlight}}</span></h2>
+                <div class="features-grid">
+                    {{#each site.homepage.features.cards}}
+                    <a href="{{this.href}}" class="feature-card {{#if this.highlight}}feature-card--highlight{{/if}}">
+                        <div class="feature-card__icon feature-card__icon--{{this.icon}}">
+                            {{#if (eq this.icon "house")}}
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                            {{/if}}
+                            {{#if (eq this.icon "file-contract")}}
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                            {{/if}}
+                            {{#if (eq this.icon "receipt")}}
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 2v20l3-2 3 2 3-2 3 2 3-2 3 2V2l-3 2-3-2-3 2-3-2-3 2z"/><line x1="8" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="13" y2="14"/></svg>
+                            {{/if}}
+                            {{#if (eq this.icon "bank")}}
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 21h18"/><path d="M3 10h18"/><path d="M5 6l7-3 7 3"/><path d="M4 10v11"/><path d="M20 10v11"/><path d="M8 10v11"/><path d="M12 10v11"/><path d="M16 10v11"/></svg>
+                            {{/if}}
+                            {{#if (eq this.icon "bot")}}
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="11" width="18" height="10" rx="2"/><circle cx="12" cy="5" r="2"/><path d="M12 7v4"/><circle cx="8" cy="16" r="1"/><circle cx="16" cy="16" r="1"/></svg>
+                            {{/if}}
+                            {{#if (eq this.icon "chart")}}
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/><line x1="3" y1="20" x2="21" y2="20"/></svg>
+                            {{/if}}
+                        </div>
+                        <h3 class="feature-card__title">{{this.title}}</h3>
+                        <p class="feature-card__subtitle">{{this.subtitle}}</p>
+                        <p class="feature-card__desc">{{this.description}}</p>
+                        <ul class="feature-card__points">
+                            {{#each this.points}}
+                            <li>{{this}}</li>
+                            {{/each}}
+                        </ul>
+                        <span class="feature-card__link">Saber más &rarr;</span>
+                    </a>
+                    {{/each}}
+                </div>
+            </div>
+        </section>
+
+        <!-- How it Works Section -->
+        {{#if site.homepage.whats_next.title}}
+        <h2 class="section-title how-it-works-title">{{site.homepage.whats_next.title}}</h2>
+        {{/if}}
+        <section class="diagonal-hero">
+            {{#each site.homepage.whats_next.cards}}
+            <div class="diagonal-pane diagonal-pane--{{this.id}}">
+                <div class="diagonal-content">
+                    <div class="diagonal-icon">
+                        {{{this.icon_svg}}}
+                    </div>
+                    <h2 class="diagonal-title">{{this.title}} <span class="highlight">{{this.title_highlight}}</span></h2>
+                    <p class="diagonal-subtitle">{{this.subtitle}}</p>
+                    <ul class="diagonal-features">
+                        {{#each this.features}}
+                        <li>{{this}}</li>
+                        {{/each}}
+                    </ul>
+                    <a href="{{this.url}}" class="diagonal-cta">Saber más &rarr;</a>
+                </div>
+            </div>
+            {{/each}}
+        </section>
+
+        <!-- Pricing Section -->
+        {{#if site.homepage.pricing}}
+        <section class="pricing-section">
+            <div class="container">
+                <h2 class="section-title">{{site.homepage.pricing.title}} <span class="highlight">{{site.homepage.pricing.title_highlight}}</span></h2>
+                <p class="section-subtitle">{{site.homepage.pricing.subtitle}}</p>
+                <div class="pricing-grid">
+                    {{#each site.homepage.pricing.tiers}}
+                    <div class="pricing-card {{#if this.highlight}}pricing-card--highlight{{/if}}">
+                        {{#if this.badge}}
+                        <span class="pricing-card__badge">{{this.badge}}</span>
+                        {{/if}}
+                        <h3 class="pricing-card__name">{{this.name}}</h3>
+                        <div class="pricing-card__price">
+                            <span class="pricing-card__amount">{{this.price}}</span>
+                            {{#if this.period}}<span class="pricing-card__period">{{this.period}}</span>{{/if}}
+                        </div>
+                        <p class="pricing-card__desc">{{this.description}}</p>
+                        <ul class="pricing-card__features">
+                            {{#each this.features}}
+                            <li>{{this}}</li>
+                            {{/each}}
+                        </ul>
+                        <a href="{{this.cta_url}}" class="btn {{#if this.highlight}}btn--primary{{else}}btn--secondary{{/if}}">{{this.cta}}</a>
+                    </div>
+                    {{/each}}
+                </div>
+                {{#if site.homepage.pricing.annual_note}}
+                <p class="pricing-note">{{site.homepage.pricing.annual_note}}</p>
+                {{/if}}
+            </div>
+        </section>
+        {{/if}}
+
+        <!-- Final CTA Section -->
+        {{#if site.homepage.final_cta}}
+        <section class="final-cta">
+            <div class="container">
+                <h2>{{site.homepage.final_cta.title}}</h2>
+                <p>{{site.homepage.final_cta.subtitle}}</p>
+                <a href="{{site.homepage.final_cta.button_url}}" class="btn btn--primary btn--lg">{{site.homepage.final_cta.button}}</a>
+            </div>
+        </section>
+        {{/if}}
+    </main>
+
+    {{{FOOTER}}}
+    {{{SCRIPTS}}}
+</body>
+</html>

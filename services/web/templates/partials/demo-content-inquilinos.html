@@ -1,0 +1,74 @@
+                <div id="table-root"></div>
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                const { DataTable, FormPanel, HistoryPanel, Toast, api, confirmAction } = AdminApp;
+                Toast.init();
+                const historyPanel = new HistoryPanel();
+
+                const formFields = [
+                    { key: 'nombre', label: 'Nombre completo', required: true, placeholder: 'Nombre y apellidos' },
+                    { key: 'identificacion', label: 'DNI/NIE', required: true, placeholder: 'Número de documento' },
+                    { key: 'email', label: 'Email', required: true, placeholder: 'email@ejemplo.com' },
+                    { key: 'telefono', label: 'Teléfono', required: true, placeholder: '+34 600 000 000' },
+                    { key: 'direccion', label: 'Dirección', placeholder: 'Dirección actual' },
+                    { key: 'banco', label: 'Cuenta bancaria (IBAN)', placeholder: 'ES00 0000 0000 0000 0000 0000' },
+                    { key: 'activo', label: 'Propiedad', placeholder: 'Propiedad asociada' },
+                    { key: 'direccion_activo', label: 'Dirección propiedad', placeholder: 'Dirección de la propiedad' },
+                    { key: 'es_antiguo', label: 'Inquilino antiguo', type: 'select', options: ['false', 'true'], default: 'false' },
+                    { key: 'fiador_nombre', label: 'Nombre fiador', placeholder: 'Nombre completo del fiador' },
+                    { key: 'fiador_identificacion', label: 'DNI/NIE fiador', placeholder: 'Documento del fiador' },
+                    { key: 'fiador_telefono', label: 'Teléfono fiador', placeholder: '+34 600 000 000' },
+                    { key: 'fiador_email', label: 'Email fiador', placeholder: 'fiador@ejemplo.com' },
+                ];
+
+                const formPanel = new FormPanel({
+                    title: 'Inquilino',
+                    fields: formFields,
+                    onSubmit: async (data, isEdit, original) => {
+                        try {
+                            if (isEdit) {
+                                await api.put(`/inquilinos/${original.id}`, data);
+                                Toast.show('Inquilino actualizado');
+                            } else {
+                                await api.post('/inquilinos', data);
+                                Toast.show('Inquilino creado');
+                            }
+                            table.load();
+                        } catch (e) {
+                            Toast.show(e.message, 'error');
+                        }
+                    }
+                });
+
+                const table = new DataTable('#table-root', {
+                    entity: 'inquilino',
+                    apiPath: '/inquilinos',
+                    columns: [
+                        { key: 'nombre', label: 'Nombre' },
+                        { key: 'identificacion', label: 'DNI/NIE' },
+                        { key: 'email', label: 'Email' },
+                        { key: 'telefono', label: 'Teléfono' },
+                        { key: 'activo', label: 'Propiedad' },
+                        { key: 'created_at', label: 'Creado', type: 'date' },
+                    ],
+                    onRowClick: (row) => {
+                        formPanel.open(row);
+                    },
+                    onAction: async (action, row) => {
+                        if (action === 'create') formPanel.open();
+                        if (action === 'edit') formPanel.open(row);
+                        if (action === 'history') historyPanel.open('inquilinos', row.id);
+                        if (action === 'delete') {
+                            const ok = await confirmAction('Eliminar inquilino', `¿Eliminar "${row.nombre}"? Esta acción no se puede deshacer.`);
+                            if (ok) {
+                                try {
+                                    await api.del(`/inquilinos/${row.id}`);
+                                    Toast.show('Inquilino eliminado');
+                                    table.load();
+                                } catch (e) { Toast.show(e.message, 'error'); }
+                            }
+                        }
+                    }
+                });
+            });
+        </script>

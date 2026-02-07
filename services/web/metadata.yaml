@@ -1,0 +1,21 @@
+# Site Metadata
+# SEO, branding, and metadata configuration
+# ===== CUSTOMIZE THESE =====
+
+site:
+  name: "Your Project"
+  title: "Your Project - Your Tagline Here"
+  description: "Replace this with your project description for SEO and social sharing."
+  author: "Your Name"
+  baseUrl: "https://your-domain.com"
+
+seo:
+  defaultImage: "/files/images/logo.png"
+  twitterHandle: "@your_handle"
+  keywords: "your, keywords, here"
+
+copyright:
+  holder: "Your Company"
+  year: 2025
+  link: "https://your-domain.com"
+  notice: "Your copyright notice"

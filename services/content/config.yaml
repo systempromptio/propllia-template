@@ -1,0 +1,88 @@
+# Content Sources Configuration
+
+content_sources:
+  blog:
+    path: "content/blog"
+    source_id: "blog"
+    category_id: "blog"
+    enabled: true
+    description: "Artículos y guías de gestión inmobiliaria"
+    allowed_content_types: ["blog"]
+    branding:
+      name: "Blog"
+      description: "Artículos sobre gestión de alquileres, LAU y tecnología"
+      image: "/files/images/og-default.png"
+      keywords: "blog, gestión alquileres, proplia, erp inmobiliario"
+    indexing:
+      clear_before: false
+      recursive: true
+    sitemap:
+      enabled: true
+      url_pattern: "/blog/{slug}"
+      priority: 0.8
+      changefreq: "weekly"
+      fetch_from: "database"
+      parent_route:
+        enabled: true
+        url: "/blog"
+        priority: 0.9
+        changefreq: "daily"
+
+  documentation:
+    path: "content/documentation"
+    source_id: "documentation"
+    category_id: "documentation"
+    enabled: true
+    description: "Documentación y guías de Proplia"
+    allowed_content_types: ["guide", "reference", "tutorial", "docs", "feature"]
+    branding:
+      name: "Documentación"
+      description: "Guías y referencia técnica de Proplia"
+      image: "/files/images/logo.png"
+      keywords: "documentación, guías, api, mcp, proplia"
+    indexing:
+      clear_before: false
+      recursive: true
+    sitemap:
+      enabled: true
+      url_pattern: "/documentation/{slug}"
+      priority: 0.7
+      changefreq: "weekly"
+      fetch_from: "database"
+      parent_route:
+        enabled: true
+        url: "/documentation"
+        priority: 0.9
+        changefreq: "daily"
+
+categories:
+  blog:
+    name: "Blog"
+    slug: "blog"
+  documentation:
+    name: "Documentación"
+    slug: "documentation"
+
+metadata:
+  default_author: "Proplia"
+  language: "es"
+
+  structured_data:
+    organization:
+      name: "Proplia"
+      url: "https://proplia.io"
+      logo: "https://proplia.io/files/images/logo.png"
+      description: "ERP inmobiliario con agente IA integrado"
+
+    blog:
+      type: "Blog"
+      name: "Blog de Proplia"
+      url: "https://proplia.io/blog"
+      description: "Artículos sobre gestión de alquileres, LAU y tecnología"
+      article_section: "Property Management"
+      language: "es-ES"
+
+    article:
+      type: "BlogPosting"
+      language: "es-ES"
+      article_section: "Property Management"
