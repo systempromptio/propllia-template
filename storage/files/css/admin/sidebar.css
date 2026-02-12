@@ -1,7 +1,4 @@
-/* ============================================
-   Sidebar — Navigation, brand, section colors
-   ============================================ */
-
+@layer components {
 .admin-sidebar {
     width: 220px;
     background: var(--bg-base);
@@ -46,6 +43,11 @@
     padding-top: var(--space-3);
 }
 
+.nav-label-sub {
+    font-size: 0.625rem;
+    padding: var(--space-4) var(--space-5) var(--space-1);
+}
+
 .admin-sidebar nav a {
     display: flex;
     align-items: center;
@@ -61,7 +63,7 @@
 }
 
 .admin-sidebar nav a:hover {
-    background: rgba(45, 41, 37, 0.04);
+    background: color-mix(in srgb, var(--warm-900) 4%, transparent);
     color: var(--text-primary);
 }
 
@@ -71,7 +73,6 @@
     font-weight: 600;
 }
 
-/* Section-colored active states */
 [data-section="properties"] .admin-sidebar nav a.active {
     background: var(--section-properties-dim);
     color: var(--section-properties);
@@ -80,9 +81,14 @@
     background: var(--section-contracts-dim);
     color: var(--section-contracts);
 }
-[data-section="invoices"] .admin-sidebar nav a.active {
-    background: var(--section-invoices-dim);
-    color: var(--section-invoices);
+[data-section="invoices"] .admin-sidebar nav a.active,
+[data-section="facturacion"] .admin-sidebar nav a.active {
+    background: var(--section-facturacion-dim);
+    color: var(--section-facturacion);
+}
+[data-section="costes"] .admin-sidebar nav a.active {
+    background: var(--section-costes-dim);
+    color: var(--section-costes);
 }
 [data-section="tenants"] .admin-sidebar nav a.active {
     background: var(--section-tenants-dim);
@@ -116,4 +122,76 @@
     font-weight: 600;
     padding: 1px 7px;
     border-radius: var(--radius-full);
+}
+
+.sidebar-toggle {
+    display: none;
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    cursor: pointer;
+    padding: var(--space-2);
+    border-radius: var(--radius-sm);
+    min-width: 44px;
+    min-height: 44px;
+    align-items: center;
+    justify-content: center;
+    transition: color var(--duration-fast), background var(--duration-fast);
+    flex-shrink: 0;
+}
+
+.sidebar-toggle:hover {
+    background: color-mix(in srgb, var(--warm-900) 6%, transparent);
+    color: var(--text-primary);
+}
+
+.sidebar-toggle:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--bg-canvas), 0 0 0 4px var(--accent);
+}
+
+.sidebar-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0);
+    z-index: var(--z-sidebar);
+    transition: background var(--duration-slow) var(--ease-in-out);
+}
+
+.sidebar-overlay.open {
+    display: block;
+    background: var(--overlay-light);
+    backdrop-filter: blur(2px);
+}
+
+.sidebar-close-btn {
+    display: none;
+    position: absolute;
+    top: var(--space-3);
+    right: var(--space-3);
+    width: 36px;
+    height: 36px;
+    border: none;
+    background: color-mix(in srgb, var(--warm-900) 6%, transparent);
+    color: var(--text-secondary);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-size: 1.2rem;
+    line-height: 1;
+    z-index: 1;
+    align-items: center;
+    justify-content: center;
+    transition: background var(--duration-fast), color var(--duration-fast);
+}
+
+.sidebar-close-btn:hover {
+    background: var(--danger-dim);
+    color: var(--danger);
+}
+
+.sidebar-close-btn:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--bg-canvas), 0 0 0 4px var(--accent);
+}
 }

@@ -7,39 +7,39 @@
                 const detailPanel = new DetailPanel();
 
                 const formFields = [
-                    { key: 'referencia', label: 'Referencia', required: true, placeholder: 'FAC-2026-001' },
-                    { key: 'concepto', label: 'Concepto', required: true, placeholder: 'Descripción de la factura' },
-                    { key: 'contrato', label: 'Contrato', required: true, placeholder: 'Referencia del contrato' },
-                    { key: 'activo', label: 'Activo', required: true, placeholder: 'Nombre del activo' },
-                    { key: 'pagador', label: 'Pagador', required: true, placeholder: 'Nombre del pagador' },
-                    { key: 'receptor', label: 'Receptor', required: true, placeholder: 'Nombre del receptor' },
-                    { key: 'estado', label: 'Estado', type: 'select', options: ['Auto', 'Sin pagar', 'Parcial', 'Pagado'], default: 'Auto' },
-                    { key: 'tipo', label: 'Tipo', type: 'select', options: ['ingreso', 'gasto'], default: 'ingreso' },
-                    { key: 'tipo_gasto', label: 'Categoría de gasto', type: 'select', options: ['', 'IBI', 'Comunidad', 'Seguro', 'Mantenimiento', 'Suministros', 'Hipoteca', 'Impuestos', 'Otro'] },
-                    { key: 'total', label: 'Total (€)', type: 'number', required: true, placeholder: '0.00' },
-                    { key: 'pagado', label: 'Pagado (€)', type: 'number', placeholder: '0.00' },
-                    { key: 'vat', label: 'IVA (€)', type: 'number', placeholder: '0.00' },
-                    { key: 'fecha', label: 'Fecha factura', required: true, placeholder: 'AAAA-MM-DD' },
-                    { key: 'fecha_de_pago', label: 'Fecha de pago', type: 'date' },
-                    { key: 'metodo_pago', label: 'Método de pago', type: 'select', options: ['', 'transferencia', 'bizum', 'efectivo', 'domiciliacion'] },
-                    { key: 'notas', label: 'Notas', type: 'textarea', placeholder: 'Notas adicionales...' },
-                    { key: 'descuento', label: 'Descuento (€)', type: 'number', placeholder: '0.00' },
-                    { key: 'descuento_pct', label: 'Descuento %', type: 'number', placeholder: '0.00' },
-                    { key: 'cuenta_pagador', label: 'Cuenta pagador', placeholder: 'IBAN' },
+                    { key: 'reference', label: 'Reference', required: true, placeholder: 'INV-2026-001' },
+                    { key: 'description', label: 'Description', required: true, placeholder: 'Invoice description' },
+                    { key: 'contract_ref', label: 'Contract', required: true, placeholder: 'Contract reference' },
+                    { key: 'property_name', label: 'Property', required: true, placeholder: 'Property name' },
+                    { key: 'payer', label: 'Payer', required: true, placeholder: 'Payer name' },
+                    { key: 'payee', label: 'Payee', required: true, placeholder: 'Payee name' },
+                    { key: 'status', label: 'Status', type: 'select', options: ['Auto', 'Unpaid', 'Partial', 'Paid'], default: 'Auto' },
+                    { key: 'type', label: 'Type', type: 'select', options: ['income', 'expense'], default: 'income' },
+                    { key: 'expense_category', label: 'Expense category', type: 'select', options: ['', 'Council Tax', 'Service Charge', 'Insurance', 'Maintenance', 'Utilities', 'Mortgage', 'Tax', 'Other'] },
+                    { key: 'total', label: 'Total', type: 'number', required: true, placeholder: '0.00' },
+                    { key: 'paid', label: 'Paid', type: 'number', placeholder: '0.00' },
+                    { key: 'vat', label: 'VAT', type: 'number', placeholder: '0.00' },
+                    { key: 'invoice_date', label: 'Invoice date', required: true, placeholder: 'YYYY-MM-DD' },
+                    { key: 'payment_date', label: 'Payment date', type: 'date' },
+                    { key: 'payment_method', label: 'Payment method', type: 'select', options: ['', 'bank transfer', 'direct debit', 'cash', 'card'] },
+                    { key: 'notes', label: 'Notes', type: 'textarea', placeholder: 'Additional notes...' },
+                    { key: 'discount', label: 'Discount', type: 'number', placeholder: '0.00' },
+                    { key: 'discount_pct', label: 'Discount %', type: 'number', placeholder: '0.00' },
+                    { key: 'payer_account', label: 'Payer account', placeholder: 'IBAN' },
                 ];
 
                 const formPanel = new FormPanel({
-                    title: 'Factura',
+                    title: 'Invoice',
                     fields: formFields,
                     onSubmit: async (data, isEdit, original) => {
                         try {
-                            if (data.estado === 'Auto') delete data.estado;
+                            if (data.status === 'Auto') delete data.status;
                             if (isEdit) {
-                                await api.put(`/contabilidad/${original.id}`, data);
-                                Toast.show('Factura actualizada');
+                                await api.put(`/invoices/${original.id}`, data);
+                                Toast.show('Invoice updated');
                             } else {
-                                await api.post('/contabilidad', data);
-                                Toast.show('Factura creada');
+                                await api.post('/invoices', data);
+                                Toast.show('Invoice created');
                             }
                             table.load();
                         } catch (e) {
@@ -49,29 +49,29 @@
                 });
 
                 const table = new DataTable('#table-root', {
-                    entity: 'contabilidad',
-                    apiPath: '/contabilidad',
-                    exportPath: '/export/contabilidad',
+                    entity: 'invoice',
+                    apiPath: '/invoices',
+                    exportPath: '/export/invoices',
                     showPeriodFilter: true,
                     columns: [
-                        { key: 'referencia', label: 'Ref' },
-                        { key: 'concepto', label: 'Concepto' },
-                        { key: 'activo', label: 'Activo' },
-                        { key: 'pagador', label: 'Pagador' },
-                        { key: 'receptor', label: 'Receptor' },
-                        { key: 'estado', label: 'Estado', type: 'status' },
+                        { key: 'reference', label: 'Ref' },
+                        { key: 'description', label: 'Description' },
+                        { key: 'property_name', label: 'Property' },
+                        { key: 'payer', label: 'Payer' },
+                        { key: 'payee', label: 'Payee' },
+                        { key: 'status', label: 'Status', type: 'status' },
                         { key: 'total', label: 'Total', type: 'currency' },
-                        { key: 'pagado', label: 'Pagado', type: 'currency' },
-                        { key: 'tipo', label: 'Tipo', type: 'status' },
-                        { key: 'tipo_gasto', label: 'Categoría' },
-                        { key: 'fecha', label: 'Fecha' },
+                        { key: 'paid', label: 'Paid', type: 'currency' },
+                        { key: 'type', label: 'Type', type: 'status' },
+                        { key: 'expense_category', label: 'Category' },
+                        { key: 'invoice_date', label: 'Date' },
                     ],
                     filters: [
-                        { key: 'estado', label: 'Estado', options: ['Sin pagar', 'Parcial', 'Pagado'] },
-                        { key: 'tipo', label: 'Tipo', options: ['ingreso', 'gasto'] },
-                        { key: 'tipo_gasto', label: 'Categoría', options: ['IBI', 'Comunidad', 'Seguro', 'Mantenimiento', 'Suministros', 'Hipoteca', 'Impuestos', 'Otro'] },
-                        { key: 'receptor', label: 'Receptor', asyncOptions: '/contabilidad/receptors' },
-                        { key: 'activo', label: 'Activo', asyncOptions: '/activos/names' }
+                        { key: 'status', label: 'Status', options: ['Unpaid', 'Partial', 'Paid'] },
+                        { key: 'type', label: 'Type', options: ['income', 'expense'] },
+                        { key: 'expense_category', label: 'Category', options: ['Council Tax', 'Service Charge', 'Insurance', 'Maintenance', 'Utilities', 'Mortgage', 'Tax', 'Other'] },
+                        { key: 'payee', label: 'Payee', asyncOptions: '/invoices/payees' },
+                        { key: 'property_name', label: 'Property', asyncOptions: '/properties/names' }
                     ],
                     onRowClick: (row) => {
                         detailPanel.openContabilidad(row);
@@ -79,13 +79,13 @@
                     onAction: async (action, row) => {
                         if (action === 'create') formPanel.open();
                         if (action === 'edit') formPanel.open(row);
-                        if (action === 'history') historyPanel.open('contabilidad', row.id);
+                        if (action === 'history') historyPanel.open('invoices', row.id);
                         if (action === 'delete') {
-                            const ok = await confirmAction('Eliminar factura', `¿Eliminar "${row.referencia}"? Esta acción no se puede deshacer.`);
+                            const ok = await confirmAction('Delete invoice', `Delete "${row.reference}"? This action cannot be undone.`);
                             if (ok) {
                                 try {
-                                    await api.del(`/contabilidad/${row.id}`);
-                                    Toast.show('Factura eliminada');
+                                    await api.del(`/invoices/${row.id}`);
+                                    Toast.show('Invoice deleted');
                                     table.load();
                                 } catch (e) { Toast.show(e.message, 'error'); }
                             }

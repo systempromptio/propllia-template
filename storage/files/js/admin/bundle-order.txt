@@ -1,0 +1,41 @@
+# Bundle manifest — defines concatenation order for admin-bundle.js
+# Single source of truth. BundleAdminJsJob reads this and concatenates.
+#
+# Foundation (must be first, in this order)
+core.js
+routes.js
+utils.js
+panels.js
+# UI components (order-independent after foundation)
+datatable-actions.js
+datatable-filters.js
+datatable-filters-async.js
+datatable.js
+formpanel.js
+historypanel.js
+entity-configs.js
+page-init.js
+detailpanel.js
+detail-shared.js
+detail-contabilidad.js
+detail-inquilino.js
+detail-propietario.js
+detail-deposito.js
+detail-incidencia.js
+detail-remesa.js
+detail-lead.js
+pages-dashboard.js
+pages-financial.js
+pages-audit.js
+gallery.js
+activo-detail.js
+activo-resumen.js
+activo-tabs.js
+activo-fotos.js
+activo-web.js
+contrato-detail.js
+contrato-resumen.js
+contrato-revision.js
+contrato-descuentos.js
+contrato-tabs.js
+remesa-builder.js

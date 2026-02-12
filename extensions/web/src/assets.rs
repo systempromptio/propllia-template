@@ -41,6 +41,10 @@ pub fn web_assets(paths: &dyn systemprompt::extension::AssetPaths) -> Vec<AssetD
             storage_css.join("homepage-playbooks.css"),
             "css/homepage-playbooks.css",
         ),
+        AssetDefinition::css(
+            storage_css.join("homepage-contact.css"),
+            "css/homepage-contact.css",
+        ),
         AssetDefinition::css(storage_css.join("blog.css"), "css/blog.css"),
         AssetDefinition::css(storage_css.join("blog-code.css"), "css/blog-code.css"),
         AssetDefinition::css(storage_css.join("blog-layout.css"), "css/blog-layout.css"),
@@ -98,8 +102,16 @@ pub fn web_assets(paths: &dyn systemprompt::extension::AssetPaths) -> Vec<AssetD
             storage_css.join("admin/responsive.css"),
             "css/admin/responsive.css",
         ),
+        AssetDefinition::css(
+            storage_css.join("admin/split-layout.css"),
+            "css/admin/split-layout.css",
+        ),
+        AssetDefinition::css(
+            storage_css.join("admin/detail-page.css"),
+            "css/admin/detail-page.css",
+        ),
         // Admin JS (for demo section)
-        AssetDefinition::js(storage_js.join("admin.js"), "js/admin.js"),
+        AssetDefinition::js(storage_js.join("admin-bundle.js"), "js/admin.js"),
         AssetDefinition::js(storage_js.join("demo-mock.js"), "js/demo-mock.js"),
         // Demo HTML pages are now rendered via DemoPagePrerenderer (not static assets)
     ]

@@ -1,28 +1,23 @@
-/* ============================================
-   Panels — Side panels, forms, detail views,
-   timeline/history, confirm dialog
-   ============================================ */
+@layer components {
 
-/* Overlay */
 .panel-overlay {
     position: fixed;
     inset: 0;
     background: rgba(0, 0, 0, 0);
-    z-index: 999;
+    z-index: var(--z-dropdown);
     opacity: 0;
     visibility: hidden;
-    transition: all 300ms ease;
+    transition: all var(--duration-slow) var(--ease-in-out);
     backdrop-filter: blur(0px);
 }
 
 .panel-overlay.open {
     opacity: 1;
     visibility: visible;
-    background: rgba(0, 0, 0, 0.5);
+    background: var(--overlay-light);
     backdrop-filter: blur(4px);
 }
 
-/* Side Panel */
 .side-panel {
     position: fixed;
     top: 0;
@@ -33,7 +28,7 @@
     background: var(--bg-surface);
     border-left: 1px solid var(--border-subtle);
     box-shadow: var(--shadow-xl);
-    z-index: 1000;
+    z-index: var(--z-panel);
     transform: translateX(100%);
     transition: transform var(--duration-slow) var(--ease-out);
     display: flex;
@@ -61,7 +56,7 @@
 }
 
 .panel-close {
-    background: rgba(45, 41, 37, 0.06);
+    background: color-mix(in srgb, var(--warm-900) 6%, transparent);
     border: none;
     color: var(--text-secondary);
     font-size: 20px;
@@ -74,7 +69,7 @@
 
 .panel-close:hover {
     color: var(--text-primary);
-    background: rgba(45, 41, 37, 0.08);
+    background: color-mix(in srgb, var(--warm-900) 8%, transparent);
 }
 
 .panel-body {
@@ -92,7 +87,6 @@
     flex-shrink: 0;
 }
 
-/* Panel content entrance animation */
 @keyframes panelContentIn {
     from { opacity: 0; transform: translateY(8px); }
     to { opacity: 1; transform: translateY(0); }
@@ -100,7 +94,7 @@
 
 .side-panel.open .panel-body .form-group,
 .side-panel.open .panel-body .detail-section {
-    animation: panelContentIn 300ms ease both;
+    animation: panelContentIn var(--duration-slow) var(--ease-in-out) both;
 }
 
 .side-panel.open .panel-body .form-group:nth-child(1),
@@ -114,7 +108,6 @@
 .side-panel.open .panel-body .form-group:nth-child(n+5),
 .side-panel.open .panel-body .detail-section:nth-child(n+5) { animation-delay: 250ms; }
 
-/* Form Fields */
 .form-group {
     margin-bottom: var(--space-5);
 }
@@ -172,7 +165,6 @@
     gap: var(--space-4);
 }
 
-/* Detail Sections */
 .detail-section {
     margin-bottom: var(--space-6);
     padding-bottom: var(--space-5);
@@ -226,7 +218,6 @@
     color: var(--text-primary);
 }
 
-/* Financial mini-cards */
 .financial-cards {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
@@ -262,7 +253,6 @@
 .mini-card.success .mini-value { color: var(--success); }
 .mini-card.error .mini-value { color: var(--danger); }
 
-/* Timeline / History */
 .timeline {
     position: relative;
     padding-left: var(--space-8);
@@ -351,7 +341,6 @@
 
 .diff-new { color: var(--success); font-weight: 500; }
 
-/* Empty state (used in panels) */
 .empty-state {
     text-align: center;
     padding: var(--space-12) var(--space-4);
@@ -359,17 +348,16 @@
     font-size: var(--text-base);
 }
 
-/* Confirm Dialog */
 .confirm-overlay {
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.6);
+    background: var(--overlay-medium);
     backdrop-filter: blur(4px);
-    z-index: 1500;
+    z-index: var(--z-modal);
     display: flex;
     align-items: center;
     justify-content: center;
-    animation: fadeIn 200ms ease;
+    animation: fadeIn var(--duration-normal) var(--ease-in-out);
 }
 
 .confirm-dialog {
@@ -411,4 +399,54 @@
 @keyframes dialogIn {
     from { opacity: 0; transform: scale(0.95) translateY(8px); }
     to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.doc-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: var(--overlay-medium);
+    z-index: var(--z-modal);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.doc-modal {
+    background: var(--bg-surface-overlay);
+    border-radius: var(--radius-lg);
+    width: 90%;
+    max-width: 800px;
+    max-height: 85vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+}
+.doc-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-4) var(--space-6);
+    border-bottom: 1px solid var(--border-default);
+}
+.doc-modal-header h3 {
+    margin: 0;
+    font-size: var(--text-md);
+}
+.doc-modal-close-btn {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: var(--text-secondary);
+    line-height: 1;
+}
+.doc-modal-body {
+    padding: var(--space-6);
+    overflow-y: auto;
+    flex: 1;
+    font-family: var(--font-mono, 'Menlo', monospace);
+    font-size: var(--text-sm);
+    line-height: 1.7;
+    white-space: pre-wrap;
+    color: var(--text-primary);
+}
 }

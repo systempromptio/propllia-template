@@ -440,3 +440,27 @@ demo_partial!(
     "demo-content-audit",
     "../../../services/web/templates/partials/demo-content-audit.html"
 );
+
+demo_partial!(
+    DemoContentInsurancePartialRenderer,
+    "web:demo-content-insurance",
+    "DEMO_CONTENT_INSURANCE",
+    "demo-content-insurance",
+    "../../../services/web/templates/partials/demo-content-insurance.html"
+);
+
+demo_partial!(
+    DemoContentLeadsPartialRenderer,
+    "web:demo-content-leads",
+    "DEMO_CONTENT_LEADS",
+    "demo-content-leads",
+    "../../../services/web/templates/partials/demo-content-leads.html"
+);
+
+demo_partial!(
+    DemoContentContactsPartialRenderer,
+    "web:demo-content-contacts",
+    "DEMO_CONTENT_CONTACTS",
+    "demo-content-contacts",
+    "../../../services/web/templates/partials/demo-content-contacts.html"
+);

@@ -1,0 +1,67 @@
+                <div id="table-root"></div>
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                const { DataTable, FormPanel, HistoryPanel, Toast, api, confirmAction } = AdminApp;
+                Toast.init();
+                const historyPanel = new HistoryPanel();
+
+                const formFields = [
+                    { key: 'name', label: 'Name', required: true, placeholder: 'Contact name or company' },
+                    { key: 'tax_id', label: 'Tax ID', placeholder: 'Company or personal reference' },
+                    { key: 'iban', label: 'IBAN', placeholder: 'GB00 0000 0000 0000 0000 00' },
+                    { key: 'email', label: 'Email', placeholder: 'email@example.co.uk' },
+                    { key: 'phone', label: 'Phone', placeholder: '+44 7700 900000' },
+                    { key: 'type', label: 'Type', type: 'select', options: ['Council', 'Insurance', 'Management', 'Contractor', 'Utility', 'Other'], default: 'Other' },
+                ];
+
+                const formPanel = new FormPanel({
+                    title: 'Contact',
+                    fields: formFields,
+                    onSubmit: async (data, isEdit, original) => {
+                        try {
+                            if (isEdit) {
+                                await api.put(`/contacts/${original.id}`, data);
+                                Toast.show('Contact updated');
+                            } else {
+                                await api.post('/contacts', data);
+                                Toast.show('Contact created');
+                            }
+                            table.load();
+                        } catch (e) {
+                            Toast.show(e.message, 'error');
+                        }
+                    }
+                });
+
+                const table = new DataTable('#table-root', {
+                    entity: 'contact',
+                    apiPath: '/contacts',
+                    columns: [
+                        { key: 'name', label: 'Name' },
+                        { key: 'tax_id', label: 'Tax ID' },
+                        { key: 'iban', label: 'IBAN' },
+                        { key: 'email', label: 'Email' },
+                        { key: 'phone', label: 'Phone' },
+                        { key: 'type', label: 'Type' },
+                    ],
+                    onRowClick: (row) => {
+                        formPanel.open(row);
+                    },
+                    onAction: async (action, row) => {
+                        if (action === 'create') formPanel.open();
+                        if (action === 'edit') formPanel.open(row);
+                        if (action === 'history') historyPanel.open('contacts', row.id);
+                        if (action === 'delete') {
+                            const ok = await confirmAction('Delete contact', `Delete "${row.name}"? This action cannot be undone.`);
+                            if (ok) {
+                                try {
+                                    await api.del(`/contacts/${row.id}`);
+                                    Toast.show('Contact deleted');
+                                    table.load();
+                                } catch (e) { Toast.show(e.message, 'error'); }
+                            }
+                        }
+                    }
+                });
+            });
+        </script>

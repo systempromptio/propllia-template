@@ -1,0 +1,42 @@
+[package]
+name = "systemprompt-admin-extension"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+description = "Admin extension for SystemPrompt - property management API with demo data"
+
+[lints]
+workspace = true
+
+[dependencies]
+# Core facade
+systemprompt = { workspace = true, features = ["full"] }
+
+# Database access
+sqlx.workspace = true
+
+# Web framework
+axum.workspace = true
+
+# Async
+tokio.workspace = true
+async-trait.workspace = true
+
+# Serialization
+serde.workspace = true
+serde_json.workspace = true
+
+# Utilities
+chrono.workspace = true
+uuid.workspace = true
+thiserror.workspace = true
+tracing.workspace = true
+anyhow.workspace = true
+inventory.workspace = true
+
+# PDF generation
+printpdf = { version = "0.7", features = ["embedded_images"] }
+
+[dev-dependencies]
+tokio = { workspace = true, features = ["test-util", "macros"] }

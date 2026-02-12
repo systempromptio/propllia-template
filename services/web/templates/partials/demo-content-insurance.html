@@ -1,0 +1,75 @@
+                <div id="table-root"></div>
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                const { DataTable, FormPanel, HistoryPanel, Toast, api, confirmAction } = AdminApp;
+                Toast.init();
+                const historyPanel = new HistoryPanel();
+
+                const formFields = [
+                    { key: 'property_name', label: 'Property', required: true, placeholder: 'Property name' },
+                    { key: 'type', label: 'Type', required: true, type: 'select', options: ['Buildings', 'Contents', 'Buildings & Contents', 'Landlord', 'Liability'], default: 'Buildings' },
+                    { key: 'company', label: 'Company', required: true, placeholder: 'Insurance company' },
+                    { key: 'policy_number', label: 'Policy number', required: true, placeholder: 'Policy reference' },
+                    { key: 'start_date', label: 'Start date', type: 'date', required: true },
+                    { key: 'end_date', label: 'End date', type: 'date', required: true },
+                    { key: 'premium', label: 'Premium', type: 'number', required: true, placeholder: '0.00' },
+                    { key: 'status', label: 'Status', type: 'select', options: ['Active', 'Expired', 'Cancelled'], default: 'Active' },
+                ];
+
+                const formPanel = new FormPanel({
+                    title: 'Insurance Policy',
+                    fields: formFields,
+                    onSubmit: async (data, isEdit, original) => {
+                        try {
+                            if (isEdit) {
+                                await api.put(`/insurance/${original.id}`, data);
+                                Toast.show('Policy updated');
+                            } else {
+                                await api.post('/insurance', data);
+                                Toast.show('Policy created');
+                            }
+                            table.load();
+                        } catch (e) {
+                            Toast.show(e.message, 'error');
+                        }
+                    }
+                });
+
+                const table = new DataTable('#table-root', {
+                    entity: 'insurance',
+                    apiPath: '/insurance',
+                    columns: [
+                        { key: 'property_name', label: 'Property' },
+                        { key: 'type', label: 'Type' },
+                        { key: 'company', label: 'Company' },
+                        { key: 'policy_number', label: 'Policy Number' },
+                        { key: 'start_date', label: 'Start Date', type: 'date' },
+                        { key: 'end_date', label: 'End Date', type: 'date' },
+                        { key: 'premium', label: 'Premium', type: 'currency' },
+                        { key: 'status', label: 'Status', type: 'status' },
+                    ],
+                    filters: [
+                        { key: 'status', label: 'Status', options: ['Active', 'Expired', 'Cancelled'] },
+                        { key: 'property_name', label: 'Property', asyncOptions: '/properties/names' }
+                    ],
+                    onRowClick: (row) => {
+                        formPanel.open(row);
+                    },
+                    onAction: async (action, row) => {
+                        if (action === 'create') formPanel.open();
+                        if (action === 'edit') formPanel.open(row);
+                        if (action === 'history') historyPanel.open('insurance', row.id);
+                        if (action === 'delete') {
+                            const ok = await confirmAction('Delete policy', `Delete policy "${row.policy_number}"? This action cannot be undone.`);
+                            if (ok) {
+                                try {
+                                    await api.del(`/insurance/${row.id}`);
+                                    Toast.show('Policy deleted');
+                                    table.load();
+                                } catch (e) { Toast.show(e.message, 'error'); }
+                            }
+                        }
+                    }
+                });
+            });
+        </script>

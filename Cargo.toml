@@ -4,6 +4,7 @@ members = [
     "extensions/web",
     "extensions/soul",
     "extensions/moltbook",
+    "extensions/admin",
     # MCP servers
     "extensions/mcp/systemprompt",
     "extensions/mcp/soul",
@@ -27,13 +28,14 @@ license = "MIT"
 # ============================================
 # CORE FACADE (single dependency for all systemprompt-core)
 # ============================================
-systemprompt = { version = "0.1.8", features = ["full"] }
+systemprompt = { version = "0.1.13", features = ["full"] }
 
 # ============================================
 # LOCAL EXTENSIONS
 # ============================================
 systemprompt-web-extension = { path = "extensions/web" }
 systemprompt-soul-extension = { path = "extensions/soul" }
+systemprompt-admin-extension = { path = "extensions/admin" }
 
 # ============================================
 # VERSION PINNING OPTIONS (uncomment to use)
@@ -181,6 +183,7 @@ systemprompt = { workspace = true }
 # Local extensions
 systemprompt-web-extension = { workspace = true }
 systemprompt-soul-extension = { workspace = true }
+systemprompt-admin-extension = { workspace = true }
 
 # Runtime
 tokio = { workspace = true }
@@ -202,5 +205,5 @@ workspace = true
 # ============================================
 # LOCAL DEVELOPMENT PATCHES
 # ============================================
-# [patch.crates-io]
-# systemprompt = { path = "../../systemprompt-core/systemprompt" }
+[patch.crates-io]
+systemprompt = { path = "../systemprompt-core/systemprompt" }

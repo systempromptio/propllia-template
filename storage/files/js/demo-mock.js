@@ -1,6 +1,6 @@
 /**
  * Demo Mock API - Property Management
- * Intercepts window.fetch to simulate a REST API with realistic Spanish property data.
+ * Intercepts window.fetch to simulate a REST API with realistic UK property data.
  * Must be loaded BEFORE admin.js.
  */
 (function () {
@@ -57,7 +57,7 @@
     // Fixed UUIDs (so cross-references are stable)
     // ========================================================================
     const IDS = {
-        activos: [
+        properties: [
             'a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d',
             'b2c3d4e5-f6a7-4b8c-9d0e-1f2a3b4c5d6e',
             'c3d4e5f6-a7b8-4c9d-0e1f-2a3b4c5d6e7f',
@@ -67,7 +67,7 @@
             '07b8c9d0-e1f2-4a3b-4c5d-6e7f80910213',
             '18c9d0e1-f2a3-4b4c-5d6e-7f8091021324'
         ],
-        inquilinos: [
+        tenants: [
             '21d0e1f2-a3b4-4c5d-6e7f-809102132435',
             '32e1f2a3-b4c5-4d6e-7f80-910213243546',
             '43f2a3b4-c5d6-4e7f-8091-021324354657',
@@ -75,7 +75,7 @@
             '65b4c5d6-e7f8-4091-0213-243546576879',
             '76c5d6e7-f809-4102-1324-35465768798a'
         ],
-        propietarios: [
+        owners: [
             '87d6e7f8-0910-4213-2435-46576879809b',
             '98e7f809-1021-4324-3546-5768798a90ac',
             'a9f80910-2132-4435-4657-68798a9bacbd',
@@ -83,7 +83,7 @@
             'cb1a2b3c-4d5e-4f60-7182-93a4b5c6d7e8',
             'dc2b3c4d-5e6f-4071-8293-a4b5c6d7e8f9'
         ],
-        contratos: [
+        contracts: [
             'cb102132-4354-4657-6879-8a9bacbdcedf',
             'dc213243-5465-4768-798a-9bacbdcedfe0',
             'ed324354-6576-4879-8a9b-acbdcedfe0f1',
@@ -92,8 +92,8 @@
             '1a657687-9809-4ba2-bcde-f0f102132435',
             '2b768798-a910-4cb3-cdef-010213243546'
         ],
-        contabilidad: [],
-        depositos: [
+        invoices: [],
+        deposits: [
             '105a6b7c-8d9e-4f01-a2b3-c4d5e6f70819',
             '216b7c8d-9e0f-4012-b3c4-d5e6f7081920',
             '327c8d9e-0f01-4123-c4d5-e6f708192031',
@@ -101,7 +101,7 @@
             '549e0f0b-2123-4345-e6f7-b81920314253',
             '65af010c-3234-4456-f708-c92031425364'
         ],
-        remesas: [
+        sepa_batches: [
             '438d9e0f-0112-4234-d5e6-f70819203142',
             '549e0f01-1223-4345-e6f7-081920314253',
             '65af0102-a334-4456-a708-192031425364',
@@ -109,425 +109,444 @@
             '87c12324-c556-4678-c920-314253647586',
             '98d23435-d667-4789-d031-425364758697'
         ],
-        incidencias: [
+        issues: [
             '65af0102-2334-4456-f708-192031425364',
             '76b01213-3445-4567-0819-203142536475',
             '87c12324-4556-4678-1920-314253647586',
             '98d23435-5667-4789-2031-425364758697',
             'a9e34546-6778-4890-3142-536475869708',
             'baf45657-7889-4901-4253-647586970819'
+        ],
+        insurance: [
+            'ins10001-aaaa-4bbb-cccc-ddddeeee0001',
+            'ins10002-aaaa-4bbb-cccc-ddddeeee0002',
+            'ins10003-aaaa-4bbb-cccc-ddddeeee0003',
+            'ins10004-aaaa-4bbb-cccc-ddddeeee0004'
+        ],
+        contacts: [
+            'con10001-aaaa-4bbb-cccc-ddddeeee0001',
+            'con10002-aaaa-4bbb-cccc-ddddeeee0002',
+            'con10003-aaaa-4bbb-cccc-ddddeeee0003',
+            'con10004-aaaa-4bbb-cccc-ddddeeee0004',
+            'con10005-aaaa-4bbb-cccc-ddddeeee0005'
+        ],
+        leads: [
+            'lea10001-aaaa-4bbb-cccc-ddddeeee0001',
+            'lea10002-aaaa-4bbb-cccc-ddddeeee0002',
+            'lea10003-aaaa-4bbb-cccc-ddddeeee0003',
+            'lea10004-aaaa-4bbb-cccc-ddddeeee0004'
         ]
     };
 
     // Generate 15 invoice IDs
     for (let i = 0; i < 15; i++) {
-        IDS.contabilidad.push(uuid());
+        IDS.invoices.push(uuid());
     }
 
     // ========================================================================
-    // Properties (Activos)
+    // Properties
     // ========================================================================
-    const activos = [
+    const properties = [
         {
-            id: IDS.activos[0],
-            activo: 'Piso Calle Mayor 15, 3B',
-            direccion: 'Calle Mayor 15, 3B, 28013 Madrid',
-            contrato: 'CALLE MAYOR 15 - GARCIA',
-            estado: 'Alquilado',
-            alquiler: 850,
-            fecha_inicio: monthsAgo(14),
-            fecha_fin: monthsFromNow(10),
-            etiquetas: ['Residencial', 'Centro'],
-            imagen_carpeta: 'calle-mayor-15',
+            id: IDS.properties[0],
+            property_name: '14 King Street, Flat 3B',
+            address: '14 King Street, Flat 3B, Manchester M2 4WQ',
+            contract_ref: 'KING ST 14 - JOHNSON',
+            status: 'Rented',
+            rent: 1250,
+            start_date: monthsAgo(14),
+            end_date: monthsFromNow(10),
+            tags: ['Residential', 'City Centre'],
+            image_folder: 'king-street-14',
             created_at: monthsAgo(18),
             updated_at: daysAgo(5)
         },
         {
-            id: IDS.activos[1],
-            activo: 'Apartamento Paseo de Gracia 42',
-            direccion: 'Paseo de Gracia 42, 2A, 08007 Barcelona',
-            contrato: 'GRACIA 42 - MARTINEZ',
-            estado: 'Alquilado',
-            alquiler: 1200,
-            fecha_inicio: monthsAgo(10),
-            fecha_fin: monthsFromNow(14),
-            etiquetas: ['Residencial', 'Premium'],
-            imagen_carpeta: 'gracia-42',
+            id: IDS.properties[1],
+            property_name: '42 Royal Crescent',
+            address: '42 Royal Crescent, Bath BA1 2LR',
+            contract_ref: 'ROYAL CRESCENT 42 - WILLIAMS',
+            status: 'Rented',
+            rent: 1800,
+            start_date: monthsAgo(10),
+            end_date: monthsFromNow(14),
+            tags: ['Residential', 'Premium'],
+            image_folder: 'royal-crescent-42',
             created_at: monthsAgo(12),
             updated_at: daysAgo(3)
         },
         {
-            id: IDS.activos[2],
-            activo: 'Local Comercial Gran Via 8',
-            direccion: 'Gran Via 8, Bajo, 46002 Valencia',
-            contrato: '',
-            estado: 'Libre',
-            alquiler: 950,
-            fecha_inicio: null,
-            fecha_fin: null,
-            etiquetas: ['Comercial'],
-            imagen_carpeta: 'gran-via-8',
+            id: IDS.properties[2],
+            property_name: '8 Commercial Road, Unit B',
+            address: '8 Commercial Road, Unit B, Birmingham B1 1RS',
+            contract_ref: '',
+            status: 'Vacant',
+            rent: 1400,
+            start_date: null,
+            end_date: null,
+            tags: ['Commercial'],
+            image_folder: 'commercial-road-8',
             created_at: monthsAgo(24),
             updated_at: daysAgo(15)
         },
         {
-            id: IDS.activos[3],
-            activo: 'Villa Urbanizacion Las Palmeras 7',
-            direccion: 'Urbanizacion Las Palmeras 7, 29660 Marbella',
-            contrato: 'LAS PALMERAS 7 - FERNANDEZ',
-            estado: 'Alquilado',
-            alquiler: 2100,
-            fecha_inicio: monthsAgo(18),
-            fecha_fin: monthsFromNow(6),
-            etiquetas: ['Residencial', 'Premium', 'Costa'],
-            imagen_carpeta: 'las-palmeras-7',
+            id: IDS.properties[3],
+            property_name: '7 Palm Grove, Kensington',
+            address: '7 Palm Grove, Kensington, London W8 5PT',
+            contract_ref: 'PALM GROVE 7 - THOMPSON',
+            status: 'Rented',
+            rent: 3200,
+            start_date: monthsAgo(18),
+            end_date: monthsFromNow(6),
+            tags: ['Residential', 'Premium', 'Prime'],
+            image_folder: 'palm-grove-7',
             created_at: monthsAgo(20),
             updated_at: daysAgo(7)
         },
         {
-            id: IDS.activos[4],
-            activo: 'Estudio Calle Sierpes 22',
-            direccion: 'Calle Sierpes 22, 1C, 41004 Sevilla',
-            contrato: '',
-            estado: 'En reforma',
-            alquiler: 550,
-            fecha_inicio: null,
-            fecha_fin: null,
-            etiquetas: ['Residencial', 'Reforma'],
-            imagen_carpeta: 'sierpes-22',
+            id: IDS.properties[4],
+            property_name: '22 Serpentine Walk, Flat 1C',
+            address: '22 Serpentine Walk, Flat 1C, Bristol BS1 4DJ',
+            contract_ref: '',
+            status: 'Under Renovation',
+            rent: 850,
+            start_date: null,
+            end_date: null,
+            tags: ['Residential', 'Renovation'],
+            image_folder: 'serpentine-walk-22',
             created_at: monthsAgo(15),
             updated_at: daysAgo(2)
         },
         {
-            id: IDS.activos[5],
-            activo: 'Piso Avenida Diagonal 156',
-            direccion: 'Avenida Diagonal 156, 4B, 08018 Barcelona',
-            contrato: 'DIAGONAL 156 - LOPEZ',
-            estado: 'Alquilado',
-            alquiler: 1400,
-            fecha_inicio: monthsAgo(8),
-            fecha_fin: monthsFromNow(16),
-            etiquetas: ['Residencial'],
-            imagen_carpeta: 'diagonal-156',
+            id: IDS.properties[5],
+            property_name: '156 Diagonal Avenue, Flat 4B',
+            address: '156 Diagonal Avenue, Flat 4B, Edinburgh EH1 2NG',
+            contract_ref: 'DIAGONAL AVE 156 - BROWN',
+            status: 'Rented',
+            rent: 2100,
+            start_date: monthsAgo(8),
+            end_date: monthsFromNow(16),
+            tags: ['Residential'],
+            image_folder: 'diagonal-avenue-156',
             created_at: monthsAgo(10),
             updated_at: daysAgo(4)
         },
         {
-            id: IDS.activos[6],
-            activo: 'Atico Paseo del Prado 30',
-            direccion: 'Paseo del Prado 30, Atico, 28014 Madrid',
-            contrato: 'PRADO 30 - RUIZ',
-            estado: 'Alquilado',
-            alquiler: 1850,
-            fecha_inicio: monthsAgo(12),
-            fecha_fin: monthsFromNow(12),
-            etiquetas: ['Residencial', 'Premium', 'Centro'],
-            imagen_carpeta: 'prado-30',
+            id: IDS.properties[6],
+            property_name: '30 Meadow Lane, Penthouse',
+            address: '30 Meadow Lane, Penthouse, London SW1A 1AA',
+            contract_ref: 'MEADOW LN 30 - TAYLOR',
+            status: 'Rented',
+            rent: 2800,
+            start_date: monthsAgo(12),
+            end_date: monthsFromNow(12),
+            tags: ['Residential', 'Premium', 'City Centre'],
+            image_folder: 'meadow-lane-30',
             created_at: monthsAgo(14),
             updated_at: daysAgo(1)
         },
         {
-            id: IDS.activos[7],
-            activo: 'Nave Industrial Poligono Norte 3',
-            direccion: 'Poligono Industrial Norte, Parcela 3, 50014 Zaragoza',
-            contrato: '',
-            estado: 'Libre',
-            alquiler: 1600,
-            fecha_inicio: null,
-            fecha_fin: null,
-            etiquetas: ['Industrial'],
-            imagen_carpeta: 'poligono-norte-3',
+            id: IDS.properties[7],
+            property_name: '3 Northern Industrial Park',
+            address: '3 Northern Industrial Park, Leeds LS9 8AG',
+            contract_ref: '',
+            status: 'Vacant',
+            rent: 2400,
+            start_date: null,
+            end_date: null,
+            tags: ['Industrial'],
+            image_folder: 'northern-industrial-3',
             created_at: monthsAgo(22),
             updated_at: daysAgo(20)
         }
     ];
 
     // ========================================================================
-    // Tenants (Inquilinos)
+    // Tenants
     // ========================================================================
-    const inquilinos = [
+    const tenants = [
         {
-            id: IDS.inquilinos[0],
-            nombre: 'Ana Garcia Lopez',
-            identificacion: '12345678A',
-            email: 'ana.garcia@email.com',
-            telefono: '+34 612 345 678',
-            direccion: 'Calle Mayor 15, 3B, 28013 Madrid',
-            banco: 'ES91 2100 0418 4502 0005 1332',
-            activo: 'Piso Calle Mayor 15, 3B',
-            direccion_activo: 'Calle Mayor 15, 3B, 28013 Madrid',
-            es_antiguo: false,
+            id: IDS.tenants[0],
+            name: 'Sarah Johnson',
+            tax_id: 'AB123456C',
+            email: 'sarah.johnson@email.co.uk',
+            phone: '+44 7700 900123',
+            address: '14 King Street, Flat 3B, Manchester M2 4WQ',
+            bank_account: 'GB29 NWBK 6016 1331 9268 19',
+            property_name: '14 King Street, Flat 3B',
+            property_address: '14 King Street, Flat 3B, Manchester M2 4WQ',
+            is_legacy: false,
             created_at: monthsAgo(14),
             updated_at: daysAgo(5)
         },
         {
-            id: IDS.inquilinos[1],
-            nombre: 'Carlos Martinez Ruiz',
-            identificacion: '23456789B',
-            email: 'carlos.martinez@email.com',
-            telefono: '+34 623 456 789',
-            direccion: 'Paseo de Gracia 42, 2A, 08007 Barcelona',
-            banco: 'ES79 2100 0813 6102 0008 4567',
-            activo: 'Apartamento Paseo de Gracia 42',
-            direccion_activo: 'Paseo de Gracia 42, 2A, 08007 Barcelona',
-            es_antiguo: false,
+            id: IDS.tenants[1],
+            name: 'James Williams',
+            tax_id: 'CD234567D',
+            email: 'james.williams@email.co.uk',
+            phone: '+44 7700 900234',
+            address: '42 Royal Crescent, Bath BA1 2LR',
+            bank_account: 'GB82 WEST 1234 5698 7654 32',
+            property_name: '42 Royal Crescent',
+            property_address: '42 Royal Crescent, Bath BA1 2LR',
+            is_legacy: false,
             created_at: monthsAgo(10),
             updated_at: daysAgo(3)
         },
         {
-            id: IDS.inquilinos[2],
-            nombre: 'Elena Fernandez Torres',
-            identificacion: '34567890C',
-            email: 'elena.fernandez@email.com',
-            telefono: '+34 634 567 890',
-            direccion: 'Urbanizacion Las Palmeras 7, 29660 Marbella',
-            banco: 'ES68 0049 1500 0512 1106 7890',
-            activo: 'Villa Urbanizacion Las Palmeras 7',
-            direccion_activo: 'Urbanizacion Las Palmeras 7, 29660 Marbella',
-            es_antiguo: false,
+            id: IDS.tenants[2],
+            name: 'Emma Thompson',
+            tax_id: 'EF345678E',
+            email: 'emma.thompson@email.co.uk',
+            phone: '+44 7700 900345',
+            address: '7 Palm Grove, Kensington, London W8 5PT',
+            bank_account: 'GB76 BARC 2026 0508 1234 56',
+            property_name: '7 Palm Grove, Kensington',
+            property_address: '7 Palm Grove, Kensington, London W8 5PT',
+            is_legacy: false,
             created_at: monthsAgo(18),
             updated_at: daysAgo(7)
         },
         {
-            id: IDS.inquilinos[3],
-            nombre: 'Miguel Lopez Sanchez',
-            identificacion: '45678901D',
-            email: 'miguel.lopez@email.com',
-            telefono: '+34 645 678 901',
-            direccion: 'Avenida Diagonal 156, 4B, 08018 Barcelona',
-            banco: 'ES17 0081 0200 6100 0134 5678',
-            activo: 'Piso Avenida Diagonal 156',
-            direccion_activo: 'Avenida Diagonal 156, 4B, 08018 Barcelona',
-            es_antiguo: false,
+            id: IDS.tenants[3],
+            name: 'David Brown',
+            tax_id: 'GH456789F',
+            email: 'david.brown@email.co.uk',
+            phone: '+44 7700 900456',
+            address: '156 Diagonal Avenue, Flat 4B, Edinburgh EH1 2NG',
+            bank_account: 'GB33 BUKB 2020 1555 5555 55',
+            property_name: '156 Diagonal Avenue, Flat 4B',
+            property_address: '156 Diagonal Avenue, Flat 4B, Edinburgh EH1 2NG',
+            is_legacy: false,
             created_at: monthsAgo(8),
             updated_at: daysAgo(4)
         },
         {
-            id: IDS.inquilinos[4],
-            nombre: 'Lucia Ruiz Moreno',
-            identificacion: '56789012E',
-            email: 'lucia.ruiz@email.com',
-            telefono: '+34 656 789 012',
-            direccion: 'Paseo del Prado 30, Atico, 28014 Madrid',
-            banco: 'ES23 0182 3140 4800 2013 4567',
-            activo: 'Atico Paseo del Prado 30',
-            direccion_activo: 'Paseo del Prado 30, Atico, 28014 Madrid',
-            es_antiguo: false,
+            id: IDS.tenants[4],
+            name: 'Lucy Taylor',
+            tax_id: 'IJ567890G',
+            email: 'lucy.taylor@email.co.uk',
+            phone: '+44 7700 900567',
+            address: '30 Meadow Lane, Penthouse, London SW1A 1AA',
+            bank_account: 'GB09 HABU 6216 1140 0486 42',
+            property_name: '30 Meadow Lane, Penthouse',
+            property_address: '30 Meadow Lane, Penthouse, London SW1A 1AA',
+            is_legacy: false,
             created_at: monthsAgo(12),
             updated_at: daysAgo(1)
         },
         {
-            id: IDS.inquilinos[5],
-            nombre: 'Pablo Navarro Gil',
-            identificacion: '67890123F',
-            email: 'pablo.navarro@email.com',
-            telefono: '+34 667 890 123',
-            direccion: 'Calle Serrano 88, 2A, 28006 Madrid',
-            banco: 'ES56 0075 0001 8506 0012 3456',
-            activo: '',
-            direccion_activo: '',
-            es_antiguo: true,
+            id: IDS.tenants[5],
+            name: 'Paul Mitchell',
+            tax_id: 'KL678901H',
+            email: 'paul.mitchell@email.co.uk',
+            phone: '+44 7700 900678',
+            address: '15 Harley Street, London W1G 9QY',
+            bank_account: 'GB62 MIDL 4025 1639 8750 90',
+            property_name: '',
+            property_address: '',
+            is_legacy: true,
             created_at: monthsAgo(24),
             updated_at: monthsAgo(6)
         }
     ];
 
     // ========================================================================
-    // Owners (Propietarios)
+    // Owners
     // ========================================================================
-    const propietarios = [
+    const owners = [
         {
-            id: IDS.propietarios[0],
-            nombre: 'Inmobiliaria Horizonte S.L.',
-            identificacion: 'B12345678',
-            email: 'admin@horizonte-inmobiliaria.es',
-            telefono: '+34 911 234 567',
-            direccion: 'Calle Velazquez 50, 28001 Madrid',
-            banco: 'ES91 2100 0418 4502 0005 1332',
-            activo: 'Piso Calle Mayor 15, 3B / Atico Paseo del Prado 30',
-            direccion_activo: 'Madrid',
+            id: IDS.owners[0],
+            name: 'Horizon Properties Ltd',
+            tax_id: '12345678',
+            email: 'admin@horizonproperties.co.uk',
+            phone: '+44 20 7946 0123',
+            address: '50 Chancery Lane, London WC2A 1HL',
+            bank_account: 'GB29 NWBK 6016 1331 9268 19',
+            property_name: '14 King Street, Flat 3B / 30 Meadow Lane, Penthouse',
+            property_address: 'Manchester / London',
             created_at: monthsAgo(24),
             updated_at: daysAgo(10)
         },
         {
-            id: IDS.propietarios[1],
-            nombre: 'Maria Josefa Rodriguez Perez',
-            identificacion: '11223344A',
-            email: 'mjrodriguez@email.com',
-            telefono: '+34 622 334 455',
-            direccion: 'Calle Balmes 120, 08008 Barcelona',
-            banco: 'ES79 2100 0813 6102 0008 4567',
-            activo: 'Apartamento Paseo de Gracia 42 / Piso Avenida Diagonal 156',
-            direccion_activo: 'Barcelona',
+            id: IDS.owners[1],
+            name: 'Margaret Chen',
+            tax_id: 'AA112233B',
+            email: 'margaret.chen@email.co.uk',
+            phone: '+44 7700 900789',
+            address: '120 Queen Street, Bath BA1 1HE',
+            bank_account: 'GB82 WEST 1234 5698 7654 32',
+            property_name: '42 Royal Crescent / 156 Diagonal Avenue, Flat 4B',
+            property_address: 'Bath / Edinburgh',
             created_at: monthsAgo(18),
             updated_at: daysAgo(8)
         },
         {
-            id: IDS.propietarios[2],
-            nombre: 'Inversiones Mediterraneo S.A.',
-            identificacion: 'A87654321',
-            email: 'contacto@invmed.es',
-            telefono: '+34 961 876 543',
-            direccion: 'Avenida del Puerto 22, 46023 Valencia',
-            banco: 'ES68 0049 1500 0512 1106 7890',
-            activo: 'Local Comercial Gran Via 8 / Villa Urbanizacion Las Palmeras 7 / Nave Industrial Poligono Norte 3',
-            direccion_activo: 'Valencia / Marbella / Zaragoza',
+            id: IDS.owners[2],
+            name: 'Mediterranean Investments Ltd',
+            tax_id: '87654321',
+            email: 'contact@medinvest.co.uk',
+            phone: '+44 20 7946 0456',
+            address: '22 Harbour Road, Bristol BS1 5TY',
+            bank_account: 'GB76 BARC 2026 0508 1234 56',
+            property_name: '8 Commercial Road, Unit B / 7 Palm Grove, Kensington / 3 Northern Industrial Park',
+            property_address: 'Birmingham / London / Leeds',
             created_at: monthsAgo(24),
             updated_at: daysAgo(15)
         },
         {
-            id: IDS.propietarios[3],
-            nombre: 'Fernando Gutierrez Blanco',
-            identificacion: '22334455B',
-            email: 'fgutierrez@email.com',
-            telefono: '+34 655 443 322',
-            direccion: 'Calle Feria 90, 41003 Sevilla',
-            banco: 'ES17 0081 0200 6100 0134 5678',
-            activo: 'Estudio Calle Sierpes 22',
-            direccion_activo: 'Sevilla',
+            id: IDS.owners[3],
+            name: 'Frank Morrison',
+            tax_id: 'BB223344C',
+            email: 'frank.morrison@email.co.uk',
+            phone: '+44 7700 900890',
+            address: '90 Park Row, Bristol BS1 5LJ',
+            bank_account: 'GB33 BUKB 2020 1555 5555 55',
+            property_name: '22 Serpentine Walk, Flat 1C',
+            property_address: 'Bristol',
             created_at: monthsAgo(15),
             updated_at: daysAgo(12)
         },
         {
-            id: IDS.propietarios[4],
-            nombre: 'Grupo Pirineos Inmobiliaria S.L.',
-            identificacion: 'B50123456',
-            email: 'info@grupopirineos.es',
-            telefono: '+34 976 234 567',
-            direccion: 'Paseo Independencia 18, 50001 Zaragoza',
-            banco: 'ES34 2085 0100 1103 3012 3456',
-            activo: 'Nave Industrial Poligono Norte 3',
-            direccion_activo: 'Zaragoza',
+            id: IDS.owners[4],
+            name: 'Pinnacle Real Estate Ltd',
+            tax_id: '50123456',
+            email: 'info@pinnaclerealestate.co.uk',
+            phone: '+44 113 294 5678',
+            address: '18 Victoria Street, Leeds LS1 5DL',
+            bank_account: 'GB41 LOYD 3096 1731 2345 67',
+            property_name: '3 Northern Industrial Park',
+            property_address: 'Leeds',
             created_at: monthsAgo(20),
             updated_at: daysAgo(6)
         },
         {
-            id: IDS.propietarios[5],
-            nombre: 'Isabel Navarro Delgado',
-            identificacion: '33445566C',
-            email: 'inavarro@email.com',
-            telefono: '+34 666 778 899',
-            direccion: 'Calle Larios 5, 29015 Malaga',
-            banco: 'ES56 0182 5740 4500 1023 4567',
-            activo: 'Local Comercial Gran Via 8',
-            direccion_activo: 'Valencia',
+            id: IDS.owners[5],
+            name: 'Isabel Clarke',
+            tax_id: 'CC334455D',
+            email: 'isabel.clarke@email.co.uk',
+            phone: '+44 7700 900901',
+            address: '5 The Esplanade, Brighton BN2 1AL',
+            bank_account: 'GB56 HBUK 1093 4010 2345 67',
+            property_name: '8 Commercial Road, Unit B',
+            property_address: 'Birmingham',
             created_at: monthsAgo(12),
             updated_at: daysAgo(9)
         }
     ];
 
     // ========================================================================
-    // Contracts (Contratos)
+    // Contracts
     // ========================================================================
-    const contratos = [
+    const contracts = [
         {
-            id: IDS.contratos[0],
-            contrato: 'CALLE MAYOR 15 - GARCIA',
-            activo: 'Piso Calle Mayor 15, 3B',
-            direccion: 'Calle Mayor 15, 3B, 28013 Madrid',
-            inquilino: 'Ana Garcia Lopez',
-            estado: 'Activo',
-            alquiler: 850,
-            total: 850 * 12,
-            fecha_inicio: monthsAgo(14),
-            fecha_fin: monthsFromNow(10),
-            etiquetas: ['Residencial', 'Anual'],
+            id: IDS.contracts[0],
+            contract_ref: 'KING ST 14 - JOHNSON',
+            property_name: '14 King Street, Flat 3B',
+            address: '14 King Street, Flat 3B, Manchester M2 4WQ',
+            tenant: 'Sarah Johnson',
+            status: 'Active',
+            rent: 1250,
+            total: 1250 * 12,
+            start_date: monthsAgo(14),
+            end_date: monthsFromNow(10),
+            tags: ['Residential', 'Annual'],
             doc_count: 2,
             created_at: monthsAgo(14),
             updated_at: daysAgo(5)
         },
         {
-            id: IDS.contratos[1],
-            contrato: 'GRACIA 42 - MARTINEZ',
-            activo: 'Apartamento Paseo de Gracia 42',
-            direccion: 'Paseo de Gracia 42, 2A, 08007 Barcelona',
-            inquilino: 'Carlos Martinez Ruiz',
-            estado: 'Activo',
-            alquiler: 1200,
-            total: 1200 * 12,
-            fecha_inicio: monthsAgo(10),
-            fecha_fin: monthsFromNow(14),
-            etiquetas: ['Residencial', 'Anual'],
+            id: IDS.contracts[1],
+            contract_ref: 'ROYAL CRESCENT 42 - WILLIAMS',
+            property_name: '42 Royal Crescent',
+            address: '42 Royal Crescent, Bath BA1 2LR',
+            tenant: 'James Williams',
+            status: 'Active',
+            rent: 1800,
+            total: 1800 * 12,
+            start_date: monthsAgo(10),
+            end_date: monthsFromNow(14),
+            tags: ['Residential', 'Annual'],
             doc_count: 1,
             created_at: monthsAgo(10),
             updated_at: daysAgo(3)
         },
         {
-            id: IDS.contratos[2],
-            contrato: 'LAS PALMERAS 7 - FERNANDEZ',
-            activo: 'Villa Urbanizacion Las Palmeras 7',
-            direccion: 'Urbanizacion Las Palmeras 7, 29660 Marbella',
-            inquilino: 'Elena Fernandez Torres',
-            estado: 'Activo',
-            alquiler: 2100,
-            total: 2100 * 12,
-            fecha_inicio: monthsAgo(18),
-            fecha_fin: monthsFromNow(6),
-            etiquetas: ['Residencial', 'Anual', 'Premium'],
+            id: IDS.contracts[2],
+            contract_ref: 'PALM GROVE 7 - THOMPSON',
+            property_name: '7 Palm Grove, Kensington',
+            address: '7 Palm Grove, Kensington, London W8 5PT',
+            tenant: 'Emma Thompson',
+            status: 'Active',
+            rent: 3200,
+            total: 3200 * 12,
+            start_date: monthsAgo(18),
+            end_date: monthsFromNow(6),
+            tags: ['Residential', 'Annual', 'Premium'],
             doc_count: 3,
             created_at: monthsAgo(18),
             updated_at: daysAgo(7)
         },
         {
-            id: IDS.contratos[3],
-            contrato: 'DIAGONAL 156 - LOPEZ',
-            activo: 'Piso Avenida Diagonal 156',
-            direccion: 'Avenida Diagonal 156, 4B, 08018 Barcelona',
-            inquilino: 'Miguel Lopez Sanchez',
-            estado: 'Activo',
-            alquiler: 1400,
-            total: 1400 * 12,
-            fecha_inicio: monthsAgo(8),
-            fecha_fin: monthsFromNow(16),
-            etiquetas: ['Residencial', 'Anual'],
+            id: IDS.contracts[3],
+            contract_ref: 'DIAGONAL AVE 156 - BROWN',
+            property_name: '156 Diagonal Avenue, Flat 4B',
+            address: '156 Diagonal Avenue, Flat 4B, Edinburgh EH1 2NG',
+            tenant: 'David Brown',
+            status: 'Active',
+            rent: 2100,
+            total: 2100 * 12,
+            start_date: monthsAgo(8),
+            end_date: monthsFromNow(16),
+            tags: ['Residential', 'Annual'],
             doc_count: 1,
             created_at: monthsAgo(8),
             updated_at: daysAgo(4)
         },
         {
-            id: IDS.contratos[4],
-            contrato: 'PRADO 30 - RUIZ',
-            activo: 'Atico Paseo del Prado 30',
-            direccion: 'Paseo del Prado 30, Atico, 28014 Madrid',
-            inquilino: 'Lucia Ruiz Moreno',
-            estado: 'Activo',
-            alquiler: 1850,
-            total: 1850 * 12,
-            fecha_inicio: monthsAgo(12),
-            fecha_fin: monthsFromNow(12),
-            etiquetas: ['Residencial', 'Anual', 'Premium'],
+            id: IDS.contracts[4],
+            contract_ref: 'MEADOW LN 30 - TAYLOR',
+            property_name: '30 Meadow Lane, Penthouse',
+            address: '30 Meadow Lane, Penthouse, London SW1A 1AA',
+            tenant: 'Lucy Taylor',
+            status: 'Active',
+            rent: 2800,
+            total: 2800 * 12,
+            start_date: monthsAgo(12),
+            end_date: monthsFromNow(12),
+            tags: ['Residential', 'Annual', 'Premium'],
             doc_count: 2,
             created_at: monthsAgo(12),
             updated_at: daysAgo(1)
         },
         {
-            id: IDS.contratos[5],
-            contrato: 'GRAN VIA 8 - NAVARRO',
-            activo: 'Local Comercial Gran Via 8',
-            direccion: 'Gran Via 8, Bajo, 46007 Valencia',
-            inquilino: 'Pedro Navarro Gil',
-            estado: 'Activo',
-            alquiler: 1600,
-            total: 1600 * 12,
-            fecha_inicio: monthsAgo(6),
-            fecha_fin: monthsFromNow(18),
-            etiquetas: ['Comercial', 'Anual'],
+            id: IDS.contracts[5],
+            contract_ref: 'COMMERCIAL RD 8 - MITCHELL',
+            property_name: '8 Commercial Road, Unit B',
+            address: '8 Commercial Road, Unit B, Birmingham B1 1RS',
+            tenant: 'Paul Mitchell',
+            status: 'Active',
+            rent: 2400,
+            total: 2400 * 12,
+            start_date: monthsAgo(6),
+            end_date: monthsFromNow(18),
+            tags: ['Commercial', 'Annual'],
             doc_count: 1,
             created_at: monthsAgo(6),
             updated_at: daysAgo(10)
         },
         {
-            id: IDS.contratos[6],
-            contrato: 'SIERPES 22 - ROMERO',
-            activo: 'Estudio Calle Sierpes 22',
-            direccion: 'Calle Sierpes 22, 1A, 41004 Sevilla',
-            inquilino: 'Sofia Romero Vega',
-            estado: 'Iniciado',
-            alquiler: 550,
-            total: 550 * 12,
-            fecha_inicio: monthsAgo(2),
-            fecha_fin: monthsFromNow(10),
-            etiquetas: ['Residencial', 'Anual'],
+            id: IDS.contracts[6],
+            contract_ref: 'SERPENTINE 22 - HARRIS',
+            property_name: '22 Serpentine Walk, Flat 1C',
+            address: '22 Serpentine Walk, Flat 1C, Bristol BS1 4DJ',
+            tenant: 'Sophie Harris',
+            status: 'Pending',
+            rent: 850,
+            total: 850 * 12,
+            start_date: monthsAgo(2),
+            end_date: monthsFromNow(10),
+            tags: ['Residential', 'Annual'],
             doc_count: 1,
             created_at: monthsAgo(2),
             updated_at: daysAgo(2)
@@ -535,603 +554,780 @@
     ];
 
     // ========================================================================
-    // Invoices (Contabilidad) - 15 entries
+    // Invoices - 15 entries
     // ========================================================================
-    const contabilidad = [
+    const invoices = [
         // --- Rent invoices: Month -1 ---
         {
-            id: IDS.contabilidad[0],
-            referencia: 'FACT-2024-001',
-            concepto: 'Alquiler mensual - Calle Mayor 15',
-            contrato: 'CALLE MAYOR 15 - GARCIA',
-            activo: 'Piso Calle Mayor 15, 3B',
-            pagador: 'Ana Garcia Lopez',
-            receptor: 'Inmobiliaria Horizonte S.L.',
-            estado: 'Pagado',
-            total: 850,
-            pagado: 850,
+            id: IDS.invoices[0],
+            reference: 'INV-2024-001',
+            description: 'Monthly rent - King Street 14',
+            contract_ref: 'KING ST 14 - JOHNSON',
+            property_name: '14 King Street, Flat 3B',
+            payer: 'Sarah Johnson',
+            payee: 'Horizon Properties Ltd',
+            status: 'Paid',
+            total: 1250,
+            paid: 1250,
             vat: 0,
-            moneda: 'EUR',
-            fecha: monthsAgo(1),
-            fecha_de_pago: daysAgo(25),
-            tipo: 'ingreso',
-            tipo_gasto: null,
-            notas: '',
+            currency: 'GBP',
+            invoice_date: monthsAgo(1),
+            payment_date: daysAgo(25),
+            type: 'income',
+            expense_category: null,
+            notes: '',
             created_at: monthsAgo(1),
             updated_at: daysAgo(25)
         },
         {
-            id: IDS.contabilidad[1],
-            referencia: 'FACT-2024-002',
-            concepto: 'Alquiler mensual - Paseo de Gracia 42',
-            contrato: 'GRACIA 42 - MARTINEZ',
-            activo: 'Apartamento Paseo de Gracia 42',
-            pagador: 'Carlos Martinez Ruiz',
-            receptor: 'Maria Josefa Rodriguez Perez',
-            estado: 'Pagado',
-            total: 1200,
-            pagado: 1200,
+            id: IDS.invoices[1],
+            reference: 'INV-2024-002',
+            description: 'Monthly rent - Royal Crescent 42',
+            contract_ref: 'ROYAL CRESCENT 42 - WILLIAMS',
+            property_name: '42 Royal Crescent',
+            payer: 'James Williams',
+            payee: 'Margaret Chen',
+            status: 'Paid',
+            total: 1800,
+            paid: 1800,
             vat: 0,
-            moneda: 'EUR',
-            fecha: monthsAgo(1),
-            fecha_de_pago: daysAgo(28),
-            tipo: 'ingreso',
-            tipo_gasto: null,
-            notas: '',
+            currency: 'GBP',
+            invoice_date: monthsAgo(1),
+            payment_date: daysAgo(28),
+            type: 'income',
+            expense_category: null,
+            notes: '',
             created_at: monthsAgo(1),
             updated_at: daysAgo(28)
         },
         {
-            id: IDS.contabilidad[2],
-            referencia: 'FACT-2024-003',
-            concepto: 'Alquiler mensual - Las Palmeras 7',
-            contrato: 'LAS PALMERAS 7 - FERNANDEZ',
-            activo: 'Villa Urbanizacion Las Palmeras 7',
-            pagador: 'Elena Fernandez Torres',
-            receptor: 'Inversiones Mediterraneo S.A.',
-            estado: 'Pagado',
-            total: 2100,
-            pagado: 2100,
+            id: IDS.invoices[2],
+            reference: 'INV-2024-003',
+            description: 'Monthly rent - Palm Grove 7',
+            contract_ref: 'PALM GROVE 7 - THOMPSON',
+            property_name: '7 Palm Grove, Kensington',
+            payer: 'Emma Thompson',
+            payee: 'Mediterranean Investments Ltd',
+            status: 'Paid',
+            total: 3200,
+            paid: 3200,
             vat: 0,
-            moneda: 'EUR',
-            fecha: monthsAgo(1),
-            fecha_de_pago: daysAgo(26),
-            tipo: 'ingreso',
-            tipo_gasto: null,
-            notas: '',
+            currency: 'GBP',
+            invoice_date: monthsAgo(1),
+            payment_date: daysAgo(26),
+            type: 'income',
+            expense_category: null,
+            notes: '',
             created_at: monthsAgo(1),
             updated_at: daysAgo(26)
         },
         {
-            id: IDS.contabilidad[3],
-            referencia: 'FACT-2024-004',
-            concepto: 'Alquiler mensual - Diagonal 156',
-            contrato: 'DIAGONAL 156 - LOPEZ',
-            activo: 'Piso Avenida Diagonal 156',
-            pagador: 'Miguel Lopez Sanchez',
-            receptor: 'Maria Josefa Rodriguez Perez',
-            estado: 'Pagado',
-            total: 1400,
-            pagado: 1400,
+            id: IDS.invoices[3],
+            reference: 'INV-2024-004',
+            description: 'Monthly rent - Diagonal Avenue 156',
+            contract_ref: 'DIAGONAL AVE 156 - BROWN',
+            property_name: '156 Diagonal Avenue, Flat 4B',
+            payer: 'David Brown',
+            payee: 'Margaret Chen',
+            status: 'Paid',
+            total: 2100,
+            paid: 2100,
             vat: 0,
-            moneda: 'EUR',
-            fecha: monthsAgo(1),
-            fecha_de_pago: daysAgo(24),
-            tipo: 'ingreso',
-            tipo_gasto: null,
-            notas: '',
+            currency: 'GBP',
+            invoice_date: monthsAgo(1),
+            payment_date: daysAgo(24),
+            type: 'income',
+            expense_category: null,
+            notes: '',
             created_at: monthsAgo(1),
             updated_at: daysAgo(24)
         },
         {
-            id: IDS.contabilidad[4],
-            referencia: 'FACT-2024-005',
-            concepto: 'Alquiler mensual - Prado 30',
-            contrato: 'PRADO 30 - RUIZ',
-            activo: 'Atico Paseo del Prado 30',
-            pagador: 'Lucia Ruiz Moreno',
-            receptor: 'Inmobiliaria Horizonte S.L.',
-            estado: 'Pagado',
-            total: 1850,
-            pagado: 1850,
+            id: IDS.invoices[4],
+            reference: 'INV-2024-005',
+            description: 'Monthly rent - Meadow Lane 30',
+            contract_ref: 'MEADOW LN 30 - TAYLOR',
+            property_name: '30 Meadow Lane, Penthouse',
+            payer: 'Lucy Taylor',
+            payee: 'Horizon Properties Ltd',
+            status: 'Paid',
+            total: 2800,
+            paid: 2800,
             vat: 0,
-            moneda: 'EUR',
-            fecha: monthsAgo(1),
-            fecha_de_pago: daysAgo(27),
-            tipo: 'ingreso',
-            tipo_gasto: null,
-            notas: '',
+            currency: 'GBP',
+            invoice_date: monthsAgo(1),
+            payment_date: daysAgo(27),
+            type: 'income',
+            expense_category: null,
+            notes: '',
             created_at: monthsAgo(1),
             updated_at: daysAgo(27)
         },
         // --- Rent invoices: Current month ---
         {
-            id: IDS.contabilidad[5],
-            referencia: 'FACT-2024-006',
-            concepto: 'Alquiler mensual - Calle Mayor 15',
-            contrato: 'CALLE MAYOR 15 - GARCIA',
-            activo: 'Piso Calle Mayor 15, 3B',
-            pagador: 'Ana Garcia Lopez',
-            receptor: 'Inmobiliaria Horizonte S.L.',
-            estado: 'Pagado',
-            total: 850,
-            pagado: 850,
+            id: IDS.invoices[5],
+            reference: 'INV-2024-006',
+            description: 'Monthly rent - King Street 14',
+            contract_ref: 'KING ST 14 - JOHNSON',
+            property_name: '14 King Street, Flat 3B',
+            payer: 'Sarah Johnson',
+            payee: 'Horizon Properties Ltd',
+            status: 'Paid',
+            total: 1250,
+            paid: 1250,
             vat: 0,
-            moneda: 'EUR',
-            fecha: daysAgo(5),
-            fecha_de_pago: daysAgo(3),
-            tipo: 'ingreso',
-            tipo_gasto: null,
-            notas: '',
+            currency: 'GBP',
+            invoice_date: daysAgo(5),
+            payment_date: daysAgo(3),
+            type: 'income',
+            expense_category: null,
+            notes: '',
             created_at: daysAgo(5),
             updated_at: daysAgo(3)
         },
         {
-            id: IDS.contabilidad[6],
-            referencia: 'FACT-2024-007',
-            concepto: 'Alquiler mensual - Paseo de Gracia 42',
-            contrato: 'GRACIA 42 - MARTINEZ',
-            activo: 'Apartamento Paseo de Gracia 42',
-            pagador: 'Carlos Martinez Ruiz',
-            receptor: 'Maria Josefa Rodriguez Perez',
-            estado: 'Parcial',
-            total: 1200,
-            pagado: 600,
+            id: IDS.invoices[6],
+            reference: 'INV-2024-007',
+            description: 'Monthly rent - Royal Crescent 42',
+            contract_ref: 'ROYAL CRESCENT 42 - WILLIAMS',
+            property_name: '42 Royal Crescent',
+            payer: 'James Williams',
+            payee: 'Margaret Chen',
+            status: 'Partial',
+            total: 1800,
+            paid: 900,
             vat: 0,
-            moneda: 'EUR',
-            fecha: daysAgo(5),
-            fecha_de_pago: null,
-            tipo: 'ingreso',
-            tipo_gasto: null,
-            notas: 'Pago parcial recibido, pendiente segunda mitad',
+            currency: 'GBP',
+            invoice_date: daysAgo(5),
+            payment_date: null,
+            type: 'income',
+            expense_category: null,
+            notes: 'Partial payment received, second half pending',
             created_at: daysAgo(5),
             updated_at: daysAgo(2)
         },
         {
-            id: IDS.contabilidad[7],
-            referencia: 'FACT-2024-008',
-            concepto: 'Alquiler mensual - Las Palmeras 7',
-            contrato: 'LAS PALMERAS 7 - FERNANDEZ',
-            activo: 'Villa Urbanizacion Las Palmeras 7',
-            pagador: 'Elena Fernandez Torres',
-            receptor: 'Inversiones Mediterraneo S.A.',
-            estado: 'Pagado',
-            total: 2100,
-            pagado: 2100,
+            id: IDS.invoices[7],
+            reference: 'INV-2024-008',
+            description: 'Monthly rent - Palm Grove 7',
+            contract_ref: 'PALM GROVE 7 - THOMPSON',
+            property_name: '7 Palm Grove, Kensington',
+            payer: 'Emma Thompson',
+            payee: 'Mediterranean Investments Ltd',
+            status: 'Paid',
+            total: 3200,
+            paid: 3200,
             vat: 0,
-            moneda: 'EUR',
-            fecha: daysAgo(5),
-            fecha_de_pago: daysAgo(4),
-            tipo: 'ingreso',
-            tipo_gasto: null,
-            notas: '',
+            currency: 'GBP',
+            invoice_date: daysAgo(5),
+            payment_date: daysAgo(4),
+            type: 'income',
+            expense_category: null,
+            notes: '',
             created_at: daysAgo(5),
             updated_at: daysAgo(4)
         },
         {
-            id: IDS.contabilidad[8],
-            referencia: 'FACT-2024-009',
-            concepto: 'Alquiler mensual - Diagonal 156',
-            contrato: 'DIAGONAL 156 - LOPEZ',
-            activo: 'Piso Avenida Diagonal 156',
-            pagador: 'Miguel Lopez Sanchez',
-            receptor: 'Maria Josefa Rodriguez Perez',
-            estado: 'Sin pagar',
-            total: 1400,
-            pagado: 0,
+            id: IDS.invoices[8],
+            reference: 'INV-2024-009',
+            description: 'Monthly rent - Diagonal Avenue 156',
+            contract_ref: 'DIAGONAL AVE 156 - BROWN',
+            property_name: '156 Diagonal Avenue, Flat 4B',
+            payer: 'David Brown',
+            payee: 'Margaret Chen',
+            status: 'Unpaid',
+            total: 2100,
+            paid: 0,
             vat: 0,
-            moneda: 'EUR',
-            fecha: daysAgo(5),
-            fecha_de_pago: null,
-            tipo: 'ingreso',
-            tipo_gasto: null,
-            notas: 'Pendiente de cobro',
+            currency: 'GBP',
+            invoice_date: daysAgo(5),
+            payment_date: null,
+            type: 'income',
+            expense_category: null,
+            notes: 'Awaiting payment',
             created_at: daysAgo(5),
             updated_at: daysAgo(5)
         },
         {
-            id: IDS.contabilidad[9],
-            referencia: 'FACT-2024-010',
-            concepto: 'Alquiler mensual - Prado 30',
-            contrato: 'PRADO 30 - RUIZ',
-            activo: 'Atico Paseo del Prado 30',
-            pagador: 'Lucia Ruiz Moreno',
-            receptor: 'Inmobiliaria Horizonte S.L.',
-            estado: 'Pagado',
-            total: 1850,
-            pagado: 1850,
+            id: IDS.invoices[9],
+            reference: 'INV-2024-010',
+            description: 'Monthly rent - Meadow Lane 30',
+            contract_ref: 'MEADOW LN 30 - TAYLOR',
+            property_name: '30 Meadow Lane, Penthouse',
+            payer: 'Lucy Taylor',
+            payee: 'Horizon Properties Ltd',
+            status: 'Paid',
+            total: 2800,
+            paid: 2800,
             vat: 0,
-            moneda: 'EUR',
-            fecha: daysAgo(5),
-            fecha_de_pago: daysAgo(4),
-            tipo: 'ingreso',
-            tipo_gasto: null,
-            notas: '',
+            currency: 'GBP',
+            invoice_date: daysAgo(5),
+            payment_date: daysAgo(4),
+            type: 'income',
+            expense_category: null,
+            notes: '',
             created_at: daysAgo(5),
             updated_at: daysAgo(4)
         },
         // --- Rent invoices: Month -2 (two older ones) ---
         {
-            id: IDS.contabilidad[10],
-            referencia: 'FACT-2024-011',
-            concepto: 'Alquiler mensual - Diagonal 156',
-            contrato: 'DIAGONAL 156 - LOPEZ',
-            activo: 'Piso Avenida Diagonal 156',
-            pagador: 'Miguel Lopez Sanchez',
-            receptor: 'Maria Josefa Rodriguez Perez',
-            estado: 'Parcial',
-            total: 1400,
-            pagado: 700,
+            id: IDS.invoices[10],
+            reference: 'INV-2024-011',
+            description: 'Monthly rent - Diagonal Avenue 156',
+            contract_ref: 'DIAGONAL AVE 156 - BROWN',
+            property_name: '156 Diagonal Avenue, Flat 4B',
+            payer: 'David Brown',
+            payee: 'Margaret Chen',
+            status: 'Partial',
+            total: 2100,
+            paid: 1050,
             vat: 0,
-            moneda: 'EUR',
-            fecha: monthsAgo(2),
-            fecha_de_pago: null,
-            tipo: 'ingreso',
-            tipo_gasto: null,
-            notas: 'Pago parcial - pendiente desde hace 2 meses',
+            currency: 'GBP',
+            invoice_date: monthsAgo(2),
+            payment_date: null,
+            type: 'income',
+            expense_category: null,
+            notes: 'Partial payment - outstanding for 2 months',
             created_at: monthsAgo(2),
             updated_at: monthsAgo(1)
         },
         {
-            id: IDS.contabilidad[11],
-            referencia: 'FACT-2024-012',
-            concepto: 'Alquiler mensual - Prado 30',
-            contrato: 'PRADO 30 - RUIZ',
-            activo: 'Atico Paseo del Prado 30',
-            pagador: 'Lucia Ruiz Moreno',
-            receptor: 'Inmobiliaria Horizonte S.L.',
-            estado: 'Pagado',
-            total: 1850,
-            pagado: 1850,
+            id: IDS.invoices[11],
+            reference: 'INV-2024-012',
+            description: 'Monthly rent - Meadow Lane 30',
+            contract_ref: 'MEADOW LN 30 - TAYLOR',
+            property_name: '30 Meadow Lane, Penthouse',
+            payer: 'Lucy Taylor',
+            payee: 'Horizon Properties Ltd',
+            status: 'Paid',
+            total: 2800,
+            paid: 2800,
             vat: 0,
-            moneda: 'EUR',
-            fecha: monthsAgo(2),
-            fecha_de_pago: monthsAgo(2),
-            tipo: 'ingreso',
-            tipo_gasto: null,
-            notas: '',
+            currency: 'GBP',
+            invoice_date: monthsAgo(2),
+            payment_date: monthsAgo(2),
+            type: 'income',
+            expense_category: null,
+            notes: '',
             created_at: monthsAgo(2),
             updated_at: monthsAgo(2)
         },
         // --- Expense invoices ---
         {
-            id: IDS.contabilidad[12],
-            referencia: 'GASTO-2024-001',
-            concepto: 'IBI anual - Calle Mayor 15',
-            contrato: '',
-            activo: 'Piso Calle Mayor 15, 3B',
-            pagador: 'Inmobiliaria Horizonte S.L.',
-            receptor: 'Ayuntamiento de Madrid',
-            estado: 'Pagado',
+            id: IDS.invoices[12],
+            reference: 'EXP-2024-001',
+            description: 'Council tax - King Street 14',
+            contract_ref: '',
+            property_name: '14 King Street, Flat 3B',
+            payer: 'Horizon Properties Ltd',
+            payee: 'Manchester City Council',
+            status: 'Paid',
             total: 680,
-            pagado: 680,
+            paid: 680,
             vat: 0,
-            moneda: 'EUR',
-            fecha: monthsAgo(2),
-            fecha_de_pago: monthsAgo(2),
-            tipo: 'gasto',
-            tipo_gasto: 'IBI',
-            notas: 'Impuesto sobre Bienes Inmuebles 2024',
+            currency: 'GBP',
+            invoice_date: monthsAgo(2),
+            payment_date: monthsAgo(2),
+            type: 'expense',
+            expense_category: 'Council Tax',
+            notes: 'Annual council tax 2024',
             created_at: monthsAgo(2),
             updated_at: monthsAgo(2)
         },
         {
-            id: IDS.contabilidad[13],
-            referencia: 'GASTO-2024-002',
-            concepto: 'Cuota comunidad Q1 - Gracia 42',
-            contrato: '',
-            activo: 'Apartamento Paseo de Gracia 42',
-            pagador: 'Maria Josefa Rodriguez Perez',
-            receptor: 'Comunidad Paseo de Gracia 42',
-            estado: 'Pagado',
+            id: IDS.invoices[13],
+            reference: 'EXP-2024-002',
+            description: 'Service charge Q1 - Royal Crescent 42',
+            contract_ref: '',
+            property_name: '42 Royal Crescent',
+            payer: 'Margaret Chen',
+            payee: 'Royal Crescent Management Co',
+            status: 'Paid',
             total: 320,
-            pagado: 320,
+            paid: 320,
             vat: 0,
-            moneda: 'EUR',
-            fecha: monthsAgo(1),
-            fecha_de_pago: monthsAgo(1),
-            tipo: 'gasto',
-            tipo_gasto: 'Comunidad',
-            notas: 'Cuota trimestral de comunidad',
+            currency: 'GBP',
+            invoice_date: monthsAgo(1),
+            payment_date: monthsAgo(1),
+            type: 'expense',
+            expense_category: 'Service Charge',
+            notes: 'Quarterly service charge',
             created_at: monthsAgo(1),
             updated_at: monthsAgo(1)
         },
         {
-            id: IDS.contabilidad[14],
-            referencia: 'GASTO-2024-003',
-            concepto: 'Seguro hogar - Las Palmeras 7',
-            contrato: '',
-            activo: 'Villa Urbanizacion Las Palmeras 7',
-            pagador: 'Inversiones Mediterraneo S.A.',
-            receptor: 'Mapfre Seguros',
-            estado: 'Sin pagar',
+            id: IDS.invoices[14],
+            reference: 'EXP-2024-003',
+            description: 'Buildings insurance - Palm Grove 7',
+            contract_ref: '',
+            property_name: '7 Palm Grove, Kensington',
+            payer: 'Mediterranean Investments Ltd',
+            payee: 'Aviva Insurance',
+            status: 'Unpaid',
             total: 540,
-            pagado: 0,
-            vat: 113.40,
-            moneda: 'EUR',
-            fecha: daysAgo(10),
-            fecha_de_pago: null,
-            tipo: 'gasto',
-            tipo_gasto: 'Seguro',
-            notas: 'Poliza anual de seguro del hogar',
+            paid: 0,
+            vat: 108,
+            currency: 'GBP',
+            invoice_date: daysAgo(10),
+            payment_date: null,
+            type: 'expense',
+            expense_category: 'Insurance',
+            notes: 'Annual buildings insurance policy',
             created_at: daysAgo(10),
             updated_at: daysAgo(10)
         }
     ];
 
     // ========================================================================
-    // Deposits (Depositos)
+    // Deposits
     // ========================================================================
-    const depositos = [
+    const deposits = [
         {
-            id: IDS.depositos[0],
-            fecha: monthsAgo(14),
-            fecha_pago: monthsAgo(14),
-            fecha_devolucion: null,
-            propiedad: 'Piso Calle Mayor 15, 3B',
-            contrato: 'CALLE MAYOR 15 - GARCIA',
-            pagador: 'Ana Garcia Lopez',
-            receptor: 'Inmobiliaria Horizonte S.L.',
-            tipo: 'Fianza',
-            estado: 'Depositado',
-            total: 1700,
-            pagado: 1700,
-            devuelto: 0,
+            id: IDS.deposits[0],
+            invoice_date: monthsAgo(14),
+            payment_date: monthsAgo(14),
+            return_date: null,
+            property_name: '14 King Street, Flat 3B',
+            contract_ref: 'KING ST 14 - JOHNSON',
+            payer: 'Sarah Johnson',
+            payee: 'Horizon Properties Ltd',
+            type: 'Deposit',
+            status: 'Deposited',
+            total: 2500,
+            paid: 2500,
+            refunded: 0,
             created_at: monthsAgo(14),
             updated_at: monthsAgo(14)
         },
         {
-            id: IDS.depositos[1],
-            fecha: monthsAgo(10),
-            fecha_pago: monthsAgo(10),
-            fecha_devolucion: null,
-            propiedad: 'Apartamento Paseo de Gracia 42',
-            contrato: 'GRACIA 42 - MARTINEZ',
-            pagador: 'Carlos Martinez Ruiz',
-            receptor: 'Maria Josefa Rodriguez Perez',
-            tipo: 'Fianza',
-            estado: 'Depositado',
-            total: 2400,
-            pagado: 2400,
-            devuelto: 0,
+            id: IDS.deposits[1],
+            invoice_date: monthsAgo(10),
+            payment_date: monthsAgo(10),
+            return_date: null,
+            property_name: '42 Royal Crescent',
+            contract_ref: 'ROYAL CRESCENT 42 - WILLIAMS',
+            payer: 'James Williams',
+            payee: 'Margaret Chen',
+            type: 'Deposit',
+            status: 'Deposited',
+            total: 3600,
+            paid: 3600,
+            refunded: 0,
             created_at: monthsAgo(10),
             updated_at: monthsAgo(10)
         },
         {
-            id: IDS.depositos[2],
-            fecha: monthsAgo(18),
-            fecha_pago: monthsAgo(18),
-            fecha_devolucion: null,
-            propiedad: 'Villa Urbanizacion Las Palmeras 7',
-            contrato: 'LAS PALMERAS 7 - FERNANDEZ',
-            pagador: 'Elena Fernandez Torres',
-            receptor: 'Inversiones Mediterraneo S.A.',
-            tipo: 'Fianza',
-            estado: 'Depositado',
-            total: 4200,
-            pagado: 4200,
-            devuelto: 0,
+            id: IDS.deposits[2],
+            invoice_date: monthsAgo(18),
+            payment_date: monthsAgo(18),
+            return_date: null,
+            property_name: '7 Palm Grove, Kensington',
+            contract_ref: 'PALM GROVE 7 - THOMPSON',
+            payer: 'Emma Thompson',
+            payee: 'Mediterranean Investments Ltd',
+            type: 'Deposit',
+            status: 'Deposited',
+            total: 6400,
+            paid: 6400,
+            refunded: 0,
             created_at: monthsAgo(18),
             updated_at: monthsAgo(18)
         },
         {
-            id: IDS.depositos[3],
-            fecha: monthsAgo(8),
-            fecha_pago: monthsAgo(8),
-            fecha_devolucion: null,
-            propiedad: 'Piso Avenida Diagonal 156',
-            contrato: 'DIAGONAL 156 - LOPEZ',
-            pagador: 'Miguel Lopez Sanchez',
-            receptor: 'Maria Josefa Rodriguez Perez',
-            tipo: 'Fianza',
-            estado: 'Depositado',
-            total: 2800,
-            pagado: 2800,
-            devuelto: 0,
+            id: IDS.deposits[3],
+            invoice_date: monthsAgo(8),
+            payment_date: monthsAgo(8),
+            return_date: null,
+            property_name: '156 Diagonal Avenue, Flat 4B',
+            contract_ref: 'DIAGONAL AVE 156 - BROWN',
+            payer: 'David Brown',
+            payee: 'Margaret Chen',
+            type: 'Deposit',
+            status: 'Deposited',
+            total: 4200,
+            paid: 4200,
+            refunded: 0,
             created_at: monthsAgo(8),
             updated_at: monthsAgo(8)
         },
         {
-            id: IDS.depositos[4],
-            fecha: monthsAgo(12),
-            fecha_pago: monthsAgo(12),
-            fecha_devolucion: null,
-            propiedad: 'Atico Paseo del Prado 30',
-            contrato: 'PRADO 30 - RUIZ',
-            pagador: 'Lucia Ruiz Moreno',
-            receptor: 'Inmobiliaria Horizonte S.L.',
-            tipo: 'Fianza',
-            estado: 'Depositado',
-            total: 3700,
-            pagado: 3700,
-            devuelto: 0,
+            id: IDS.deposits[4],
+            invoice_date: monthsAgo(12),
+            payment_date: monthsAgo(12),
+            return_date: null,
+            property_name: '30 Meadow Lane, Penthouse',
+            contract_ref: 'MEADOW LN 30 - TAYLOR',
+            payer: 'Lucy Taylor',
+            payee: 'Horizon Properties Ltd',
+            type: 'Deposit',
+            status: 'Deposited',
+            total: 5600,
+            paid: 5600,
+            refunded: 0,
             created_at: monthsAgo(12),
             updated_at: monthsAgo(12)
         },
         {
-            id: IDS.depositos[5],
-            fecha: monthsAgo(6),
-            fecha_pago: monthsAgo(6),
-            fecha_devolucion: null,
-            propiedad: 'Local Comercial Gran Via 8',
-            contrato: 'GRAN VIA 8 - NAVARRO',
-            pagador: 'Pedro Navarro Gil',
-            receptor: 'Isabel Navarro Delgado',
-            tipo: 'Fianza',
-            estado: 'Depositado',
-            total: 3200,
-            pagado: 3200,
-            devuelto: 0,
+            id: IDS.deposits[5],
+            invoice_date: monthsAgo(6),
+            payment_date: monthsAgo(6),
+            return_date: null,
+            property_name: '8 Commercial Road, Unit B',
+            contract_ref: 'COMMERCIAL RD 8 - MITCHELL',
+            payer: 'Paul Mitchell',
+            payee: 'Isabel Clarke',
+            type: 'Deposit',
+            status: 'Deposited',
+            total: 4800,
+            paid: 4800,
+            refunded: 0,
             created_at: monthsAgo(6),
             updated_at: monthsAgo(6)
         }
     ];
 
     // ========================================================================
-    // SEPA Batches (Remesas SEPA)
+    // SEPA Batches
     // ========================================================================
-    const remesas_sepa = [
+    const sepa_batches = [
         {
-            id: IDS.remesas[0],
-            remesa_id: 'SEPA-2024-001',
-            fecha_cobro: daysAgo(3),
-            acreedor: 'Inmobiliaria Horizonte S.L.',
-            acreedor_iban: 'ES91 2100 0418 4502 0005 1332',
-            importe: 2700,
-            moneda: 'EUR',
-            deudor: 'Ana Garcia Lopez',
-            deudor_iban: 'ES23 0182 3140 4800 2013 4567',
-            mandato_id: 'MAND-2024-001',
-            referencia: 'Alquileres Enero - Horizonte',
+            id: IDS.sepa_batches[0],
+            batch_id: 'SEPA-2024-001',
+            collection_date: daysAgo(3),
+            creditor: 'Horizon Properties Ltd',
+            creditor_iban: 'GB29 NWBK 6016 1331 9268 19',
+            amount: 4050,
+            currency: 'GBP',
+            debtor: 'Sarah Johnson',
+            debtor_iban: 'GB09 HABU 6216 1140 0486 42',
+            mandate_id: 'MAND-2024-001',
+            reference: 'Rent January - Horizon',
             created_at: daysAgo(5),
             updated_at: daysAgo(3)
         },
         {
-            id: IDS.remesas[1],
-            remesa_id: 'SEPA-2024-002',
-            fecha_cobro: daysAgo(2),
-            acreedor: 'Maria Josefa Rodriguez Perez',
-            acreedor_iban: 'ES79 2100 0813 6102 0008 4567',
-            importe: 2600,
-            moneda: 'EUR',
-            deudor: 'Carlos Martinez Ruiz',
-            deudor_iban: 'ES79 2100 0813 6102 0008 4567',
-            mandato_id: 'MAND-2024-002',
-            referencia: 'Alquileres Enero - Rodriguez',
+            id: IDS.sepa_batches[1],
+            batch_id: 'SEPA-2024-002',
+            collection_date: daysAgo(2),
+            creditor: 'Margaret Chen',
+            creditor_iban: 'GB82 WEST 1234 5698 7654 32',
+            amount: 3900,
+            currency: 'GBP',
+            debtor: 'James Williams',
+            debtor_iban: 'GB82 WEST 1234 5698 7654 32',
+            mandate_id: 'MAND-2024-002',
+            reference: 'Rent January - Chen',
             created_at: daysAgo(4),
             updated_at: daysAgo(2)
         },
         {
-            id: IDS.remesas[2],
-            remesa_id: 'SEPA-2024-003',
-            fecha_cobro: daysAgo(1),
-            acreedor: 'Inversiones Mediterraneo S.A.',
-            acreedor_iban: 'ES68 0049 1500 0512 1106 7890',
-            importe: 2100,
-            moneda: 'EUR',
-            deudor: 'Elena Fernandez Torres',
-            deudor_iban: 'ES45 0182 3140 4800 5067 8901',
-            mandato_id: 'MAND-2024-003',
-            referencia: 'Alquileres Enero - Mediterraneo',
+            id: IDS.sepa_batches[2],
+            batch_id: 'SEPA-2024-003',
+            collection_date: daysAgo(1),
+            creditor: 'Mediterranean Investments Ltd',
+            creditor_iban: 'GB76 BARC 2026 0508 1234 56',
+            amount: 3200,
+            currency: 'GBP',
+            debtor: 'Emma Thompson',
+            debtor_iban: 'GB45 LOYD 3096 1731 2345 67',
+            mandate_id: 'MAND-2024-003',
+            reference: 'Rent January - Mediterranean',
             created_at: daysAgo(3),
             updated_at: daysAgo(1)
         },
         {
-            id: IDS.remesas[3],
-            remesa_id: 'SEPA-2024-004',
-            fecha_cobro: daysAgo(30),
-            acreedor: 'Inmobiliaria Horizonte S.L.',
-            acreedor_iban: 'ES91 2100 0418 4502 0005 1332',
-            importe: 2700,
-            moneda: 'EUR',
-            deudor: 'Ana Garcia Lopez',
-            deudor_iban: 'ES23 0182 3140 4800 2013 4567',
-            mandato_id: 'MAND-2024-001',
-            referencia: 'Alquileres Diciembre - Horizonte',
+            id: IDS.sepa_batches[3],
+            batch_id: 'SEPA-2024-004',
+            collection_date: daysAgo(30),
+            creditor: 'Horizon Properties Ltd',
+            creditor_iban: 'GB29 NWBK 6016 1331 9268 19',
+            amount: 4050,
+            currency: 'GBP',
+            debtor: 'Sarah Johnson',
+            debtor_iban: 'GB09 HABU 6216 1140 0486 42',
+            mandate_id: 'MAND-2024-001',
+            reference: 'Rent December - Horizon',
             created_at: daysAgo(32),
             updated_at: daysAgo(30)
         },
         {
-            id: IDS.remesas[4],
-            remesa_id: 'SEPA-2024-005',
-            fecha_cobro: daysAgo(30),
-            acreedor: 'Maria Josefa Rodriguez Perez',
-            acreedor_iban: 'ES79 2100 0813 6102 0008 4567',
-            importe: 2600,
-            moneda: 'EUR',
-            deudor: 'Miguel Lopez Sanchez',
-            deudor_iban: 'ES34 0049 2200 1234 5678 9012',
-            mandato_id: 'MAND-2024-004',
-            referencia: 'Alquileres Diciembre - Rodriguez',
+            id: IDS.sepa_batches[4],
+            batch_id: 'SEPA-2024-005',
+            collection_date: daysAgo(30),
+            creditor: 'Margaret Chen',
+            creditor_iban: 'GB82 WEST 1234 5698 7654 32',
+            amount: 3900,
+            currency: 'GBP',
+            debtor: 'David Brown',
+            debtor_iban: 'GB34 MIDL 4025 1639 8750 90',
+            mandate_id: 'MAND-2024-004',
+            reference: 'Rent December - Chen',
             created_at: daysAgo(33),
             updated_at: daysAgo(30)
         },
         {
-            id: IDS.remesas[5],
-            remesa_id: 'SEPA-2024-006',
-            fecha_cobro: daysAgo(1),
-            acreedor: 'Isabel Navarro Delgado',
-            acreedor_iban: 'ES56 0182 5740 4500 1023 4567',
-            importe: 1600,
-            moneda: 'EUR',
-            deudor: 'Pedro Navarro Gil',
-            deudor_iban: 'ES67 2100 4321 0512 0034 5678',
-            mandato_id: 'MAND-2024-005',
-            referencia: 'Alquileres Enero - Navarro',
+            id: IDS.sepa_batches[5],
+            batch_id: 'SEPA-2024-006',
+            collection_date: daysAgo(1),
+            creditor: 'Isabel Clarke',
+            creditor_iban: 'GB56 HBUK 1093 4010 2345 67',
+            amount: 2400,
+            currency: 'GBP',
+            debtor: 'Paul Mitchell',
+            debtor_iban: 'GB67 NWBK 6016 1331 1234 56',
+            mandate_id: 'MAND-2024-005',
+            reference: 'Rent January - Clarke',
             created_at: daysAgo(3),
             updated_at: daysAgo(1)
         }
     ];
 
     // ========================================================================
-    // Maintenance Issues (Incidencias)
+    // Issues
     // ========================================================================
-    const incidencias = [
+    const issues = [
         {
-            id: IDS.incidencias[0],
-            activo: 'Piso Calle Mayor 15, 3B',
-            titulo: 'Fuga de agua en el bano',
-            descripcion: 'El inquilino reporta una fuga en la tuberia del lavabo. Se observa humedad en la pared contigua. Requiere fontanero urgente.',
-            prioridad: 'Alta',
-            estado: 'Abierta',
-            coste: 350,
+            id: IDS.issues[0],
+            property_name: '14 King Street, Flat 3B',
+            title: 'Water leak in bathroom',
+            description: 'The tenant reports a leak from the washbasin pipe. Damp visible on the adjoining wall. Urgent plumber required.',
+            priority: 'High',
+            status: 'Open',
+            cost: 350,
             created_at: daysAgo(3),
             updated_at: daysAgo(1)
         },
         {
-            id: IDS.incidencias[1],
-            activo: 'Apartamento Paseo de Gracia 42',
-            titulo: 'Averia aire acondicionado',
-            descripcion: 'El sistema de aire acondicionado no enfria correctamente. Hace ruido al encender. Revision tecnica necesaria.',
-            prioridad: 'Media',
-            estado: 'En progreso',
-            coste: 220,
+            id: IDS.issues[1],
+            property_name: '42 Royal Crescent',
+            title: 'Air conditioning fault',
+            description: 'The air conditioning system is not cooling properly. Makes noise on startup. Technical inspection needed.',
+            priority: 'Medium',
+            status: 'In Progress',
+            cost: 220,
             created_at: daysAgo(7),
             updated_at: daysAgo(2)
         },
         {
-            id: IDS.incidencias[2],
-            activo: 'Estudio Calle Sierpes 22',
-            titulo: 'Reforma integral - pintura y suelos',
-            descripcion: 'Reforma completa del estudio: repintar paredes, sustituir suelo laminado, revision de instalacion electrica.',
-            prioridad: 'Baja',
-            estado: 'En progreso',
-            coste: 4500,
+            id: IDS.issues[2],
+            property_name: '22 Serpentine Walk, Flat 1C',
+            title: 'Full renovation - painting and flooring',
+            description: 'Complete renovation of the flat: repaint walls, replace laminate flooring, review electrical installation.',
+            priority: 'Low',
+            status: 'In Progress',
+            cost: 4500,
             created_at: daysAgo(15),
             updated_at: daysAgo(2)
         },
         {
-            id: IDS.incidencias[3],
-            activo: 'Atico Paseo del Prado 30',
-            titulo: 'Revision anual caldera',
-            descripcion: 'Revision obligatoria anual de la caldera de gas. Contactar con servicio tecnico autorizado.',
-            prioridad: 'Media',
-            estado: 'Cerrada',
-            coste: 120,
+            id: IDS.issues[3],
+            property_name: '30 Meadow Lane, Penthouse',
+            title: 'Annual boiler inspection',
+            description: 'Mandatory annual gas boiler inspection. Contact authorised service engineer.',
+            priority: 'Medium',
+            status: 'Closed',
+            cost: 120,
             created_at: daysAgo(20),
             updated_at: daysAgo(5)
         },
         {
-            id: IDS.incidencias[4],
-            activo: 'Local Comercial Gran Via 8',
-            titulo: 'Cerradura puerta principal rota',
-            descripcion: 'La cerradura de la puerta principal del local no cierra correctamente. El inquilino solicita cambio urgente por seguridad.',
-            prioridad: 'Alta',
-            estado: 'Abierta',
-            coste: 280,
+            id: IDS.issues[4],
+            property_name: '8 Commercial Road, Unit B',
+            title: 'Front door lock broken',
+            description: 'The main door lock does not close properly. The tenant requests urgent replacement for security reasons.',
+            priority: 'High',
+            status: 'Open',
+            cost: 280,
             created_at: daysAgo(2),
             updated_at: daysAgo(1)
         },
         {
-            id: IDS.incidencias[5],
-            activo: 'Villa Urbanizacion Las Palmeras 7',
-            titulo: 'Limpieza y mantenimiento piscina',
-            descripcion: 'Mantenimiento trimestral de la piscina comunitaria. Incluye limpieza de filtros, analisis de agua y ajuste de quimicos.',
-            prioridad: 'Baja',
-            estado: 'En progreso',
-            coste: 450,
+            id: IDS.issues[5],
+            property_name: '7 Palm Grove, Kensington',
+            title: 'Garden maintenance',
+            description: 'Quarterly garden maintenance. Includes hedge trimming, lawn care and patio cleaning.',
+            priority: 'Low',
+            status: 'In Progress',
+            cost: 450,
             created_at: daysAgo(10),
             updated_at: daysAgo(3)
+        }
+    ];
+
+    // ========================================================================
+    // Insurance Policies
+    // ========================================================================
+    const insurance = [
+        {
+            id: IDS.insurance[0],
+            property_name: '14 King Street, Flat 3B',
+            type: 'Buildings',
+            company: 'Aviva',
+            policy_number: 'AV-BLD-2024-001',
+            start_date: monthsAgo(6),
+            end_date: monthsFromNow(6),
+            premium: 420,
+            status: 'Active',
+            created_at: monthsAgo(6),
+            updated_at: monthsAgo(6)
+        },
+        {
+            id: IDS.insurance[1],
+            property_name: '7 Palm Grove, Kensington',
+            type: 'Buildings & Contents',
+            company: 'AXA',
+            policy_number: 'AXA-BC-2024-002',
+            start_date: monthsAgo(10),
+            end_date: monthsFromNow(2),
+            premium: 1250,
+            status: 'Active',
+            created_at: monthsAgo(10),
+            updated_at: monthsAgo(10)
+        },
+        {
+            id: IDS.insurance[2],
+            property_name: '42 Royal Crescent',
+            type: 'Landlord',
+            company: 'Direct Line',
+            policy_number: 'DL-LL-2023-045',
+            start_date: monthsAgo(18),
+            end_date: monthsAgo(6),
+            premium: 680,
+            status: 'Expired',
+            created_at: monthsAgo(18),
+            updated_at: monthsAgo(6)
+        },
+        {
+            id: IDS.insurance[3],
+            property_name: '30 Meadow Lane, Penthouse',
+            type: 'Buildings & Contents',
+            company: 'Zurich',
+            policy_number: 'ZU-BC-2024-018',
+            start_date: monthsAgo(3),
+            end_date: monthsFromNow(9),
+            premium: 980,
+            status: 'Active',
+            created_at: monthsAgo(3),
+            updated_at: monthsAgo(3)
+        }
+    ];
+
+    // ========================================================================
+    // Contacts / Creditors
+    // ========================================================================
+    const contacts = [
+        {
+            id: IDS.contacts[0],
+            name: 'Manchester City Council',
+            tax_id: '00-MCC-001',
+            iban: '',
+            email: 'revenues@manchester.gov.uk',
+            phone: '+44 161 234 5000',
+            type: 'Council',
+            created_at: monthsAgo(12),
+            updated_at: monthsAgo(12)
+        },
+        {
+            id: IDS.contacts[1],
+            name: 'Aviva Insurance',
+            tax_id: '02417910',
+            iban: 'GB45 BARC 2024 0512 3456 78',
+            email: 'claims@aviva.co.uk',
+            phone: '+44 800 051 5041',
+            type: 'Insurance',
+            created_at: monthsAgo(10),
+            updated_at: monthsAgo(10)
+        },
+        {
+            id: IDS.contacts[2],
+            name: 'Royal Crescent Management Co',
+            tax_id: '12-RCM-456',
+            iban: 'GB55 LOYD 3096 2814 5678 90',
+            email: 'admin@royalcrescentmgmt.co.uk',
+            phone: '+44 1225 444 555',
+            type: 'Management',
+            created_at: monthsAgo(18),
+            updated_at: monthsAgo(18)
+        },
+        {
+            id: IDS.contacts[3],
+            name: 'ProFix Plumbing',
+            tax_id: '23-PFX-789',
+            iban: 'GB88 MIDL 4025 1639 0012 34',
+            email: 'jobs@profixplumbing.co.uk',
+            phone: '+44 7911 123456',
+            type: 'Contractor',
+            created_at: monthsAgo(6),
+            updated_at: monthsAgo(6)
+        },
+        {
+            id: IDS.contacts[4],
+            name: 'GreenScape Gardens',
+            tax_id: '34-GSG-012',
+            iban: 'GB22 HBUK 1093 4015 6789 01',
+            email: 'bookings@greenscapegardens.co.uk',
+            phone: '+44 7922 234567',
+            type: 'Contractor',
+            created_at: monthsAgo(4),
+            updated_at: monthsAgo(4)
+        }
+    ];
+
+    // ========================================================================
+    // Leads (CRM)
+    // ========================================================================
+    const leads = [
+        {
+            id: IDS.leads[0],
+            name: 'Oliver Spencer',
+            email: 'oliver.spencer@email.co.uk',
+            phone: '+44 7700 901234',
+            source: 'Website',
+            status: 'Viewing',
+            interest: '2-bed flat, central Manchester',
+            property_name: '14 King Street, Flat 3B',
+            score: 75,
+            created_at: daysAgo(3),
+            updated_at: daysAgo(1)
+        },
+        {
+            id: IDS.leads[1],
+            name: 'Charlotte Evans',
+            email: 'charlotte.evans@email.co.uk',
+            phone: '+44 7700 902345',
+            source: 'Referral',
+            status: 'Contacted',
+            interest: 'Premium property, London area',
+            property_name: '30 Meadow Lane, Penthouse',
+            score: 60,
+            created_at: daysAgo(7),
+            updated_at: daysAgo(5)
+        },
+        {
+            id: IDS.leads[2],
+            name: 'Thomas Baker',
+            email: 'thomas.baker@email.co.uk',
+            phone: '+44 7700 903456',
+            source: 'Portal',
+            status: 'New',
+            interest: 'Commercial unit, Birmingham',
+            property_name: '8 Commercial Road, Unit B',
+            score: 40,
+            created_at: daysAgo(1),
+            updated_at: daysAgo(1)
+        },
+        {
+            id: IDS.leads[3],
+            name: 'Jessica Patel',
+            email: 'jessica.patel@email.co.uk',
+            phone: '+44 7700 904567',
+            source: 'Website',
+            status: 'Won',
+            interest: 'Family home, Bath area',
+            property_name: '42 Royal Crescent',
+            score: 95,
+            created_at: daysAgo(30),
+            updated_at: daysAgo(10)
         }
     ];
 
@@ -1141,122 +1337,122 @@
     const auditEntries = [
         {
             id: uuid(),
-            entity_type: 'contabilidad',
-            entity_id: IDS.contabilidad[5],
+            entity_type: 'invoices',
+            entity_id: IDS.invoices[5],
             action: 'create',
             old_values: null,
-            new_values: { referencia: 'FACT-2024-006', total: 850 },
-            changed_fields: ['referencia', 'concepto', 'total', 'estado'],
+            new_values: { reference: 'INV-2024-006', total: 1250 },
+            changed_fields: ['reference', 'description', 'total', 'status'],
             created_at: hoursAgo(2)
         },
         {
             id: uuid(),
-            entity_type: 'contabilidad',
-            entity_id: IDS.contabilidad[6],
+            entity_type: 'invoices',
+            entity_id: IDS.invoices[6],
             action: 'update',
-            old_values: { pagado: 0, estado: 'Sin pagar' },
-            new_values: { pagado: 600, estado: 'Parcial' },
-            changed_fields: ['pagado', 'estado'],
+            old_values: { paid: 0, status: 'Unpaid' },
+            new_values: { paid: 900, status: 'Partial' },
+            changed_fields: ['paid', 'status'],
             created_at: hoursAgo(5)
         },
         {
             id: uuid(),
-            entity_type: 'activos',
-            entity_id: IDS.activos[4],
+            entity_type: 'properties',
+            entity_id: IDS.properties[4],
             action: 'update',
-            old_values: { estado: 'Libre' },
-            new_values: { estado: 'En reforma' },
-            changed_fields: ['estado'],
+            old_values: { status: 'Vacant' },
+            new_values: { status: 'Under Renovation' },
+            changed_fields: ['status'],
             created_at: hoursAgo(8)
         },
         {
             id: uuid(),
-            entity_type: 'incidencias',
-            entity_id: IDS.incidencias[0],
+            entity_type: 'issues',
+            entity_id: IDS.issues[0],
             action: 'create',
             old_values: null,
-            new_values: { titulo: 'Fuga de agua en el bano', prioridad: 'Alta' },
-            changed_fields: ['titulo', 'descripcion', 'prioridad', 'estado'],
+            new_values: { title: 'Water leak in bathroom', priority: 'High' },
+            changed_fields: ['title', 'description', 'priority', 'status'],
             created_at: hoursAgo(12)
         },
         {
             id: uuid(),
-            entity_type: 'contratos',
-            entity_id: IDS.contratos[4],
+            entity_type: 'contracts',
+            entity_id: IDS.contracts[4],
             action: 'create',
             old_values: null,
-            new_values: { contrato: 'PRADO 30 - RUIZ', alquiler: 1850 },
-            changed_fields: ['contrato', 'activo', 'inquilino', 'alquiler'],
+            new_values: { contract_ref: 'MEADOW LN 30 - TAYLOR', rent: 2800 },
+            changed_fields: ['contract_ref', 'property_name', 'tenant', 'rent'],
             created_at: hoursAgo(24)
         },
         {
             id: uuid(),
-            entity_type: 'inquilinos',
-            entity_id: IDS.inquilinos[4],
+            entity_type: 'tenants',
+            entity_id: IDS.tenants[4],
             action: 'create',
             old_values: null,
-            new_values: { nombre: 'Lucia Ruiz Moreno' },
-            changed_fields: ['nombre', 'email', 'telefono', 'identificacion'],
+            new_values: { name: 'Lucy Taylor' },
+            changed_fields: ['name', 'email', 'phone', 'tax_id'],
             created_at: hoursAgo(25)
         },
         {
             id: uuid(),
-            entity_type: 'contabilidad',
-            entity_id: IDS.contabilidad[7],
+            entity_type: 'invoices',
+            entity_id: IDS.invoices[7],
             action: 'create',
             old_values: null,
-            new_values: { referencia: 'FACT-2024-008', total: 2100 },
-            changed_fields: ['referencia', 'concepto', 'total', 'estado'],
+            new_values: { reference: 'INV-2024-008', total: 3200 },
+            changed_fields: ['reference', 'description', 'total', 'status'],
             created_at: hoursAgo(30)
         },
         {
             id: uuid(),
-            entity_type: 'incidencias',
-            entity_id: IDS.incidencias[3],
+            entity_type: 'issues',
+            entity_id: IDS.issues[3],
             action: 'update',
-            old_values: { estado: 'Abierta' },
-            new_values: { estado: 'Cerrada' },
-            changed_fields: ['estado'],
+            old_values: { status: 'Open' },
+            new_values: { status: 'Closed' },
+            changed_fields: ['status'],
             created_at: hoursAgo(48)
         },
         {
             id: uuid(),
-            entity_type: 'depositos',
-            entity_id: IDS.depositos[2],
+            entity_type: 'deposits',
+            entity_id: IDS.deposits[2],
             action: 'create',
             old_values: null,
-            new_values: { propiedad: 'Villa Urbanizacion Las Palmeras 7', total: 4200 },
-            changed_fields: ['propiedad', 'contrato', 'total', 'pagado'],
+            new_values: { property_name: '7 Palm Grove, Kensington', total: 6400 },
+            changed_fields: ['property_name', 'contract_ref', 'total', 'paid'],
             created_at: hoursAgo(72)
         },
         {
             id: uuid(),
-            entity_type: 'activos',
-            entity_id: IDS.activos[7],
+            entity_type: 'properties',
+            entity_id: IDS.properties[7],
             action: 'update',
-            old_values: { alquiler: 1500 },
-            new_values: { alquiler: 1600 },
-            changed_fields: ['alquiler'],
+            old_values: { rent: 2200 },
+            new_values: { rent: 2400 },
+            changed_fields: ['rent'],
             created_at: hoursAgo(96)
         },
         {
             id: uuid(),
-            entity_type: 'propietarios',
-            entity_id: IDS.propietarios[0],
+            entity_type: 'owners',
+            entity_id: IDS.owners[0],
             action: 'update',
-            old_values: { telefono: '+34 911 234 560' },
-            new_values: { telefono: '+34 911 234 567' },
-            changed_fields: ['telefono'],
+            old_values: { phone: '+44 20 7946 0120' },
+            new_values: { phone: '+44 20 7946 0123' },
+            changed_fields: ['phone'],
             created_at: hoursAgo(120)
         },
         {
             id: uuid(),
-            entity_type: 'contabilidad',
-            entity_id: IDS.contabilidad[14],
+            entity_type: 'invoices',
+            entity_id: IDS.invoices[14],
             action: 'create',
             old_values: null,
-            new_values: { referencia: 'GASTO-2024-003', total: 540 },
-            changed_fields: ['referencia', 'concepto', 'total', 'tipo', 'tipo_gasto'],
+            new_values: { reference: 'EXP-2024-003', total: 540 },
+            changed_fields: ['reference', 'description', 'total', 'type', 'expense_category'],
             created_at: hoursAgo(144)
         }
     ];
@@ -1307,7 +1503,7 @@
                 if (typeof aVal === 'number' && typeof bVal === 'number') {
                     cmp = aVal - bVal;
                 } else {
-                    cmp = String(aVal).localeCompare(String(bVal), 'es');
+                    cmp = String(aVal).localeCompare(String(bVal), 'en');
                 }
                 return sortOrder === 'desc' ? -cmp : cmp;
             });
@@ -1322,9 +1518,9 @@
         return { data: data, total: total };
     }
 
-    // Helper: filter contabilidad for totals calculation (without pagination)
-    function filterContabilidadForTotals(params) {
-        let filtered = [...contabilidad];
+    // Helper: filter invoices for totals calculation (without pagination)
+    function filterInvoicesForTotals(params) {
+        let filtered = [...invoices];
         const search = params.get('search');
         if (search) {
             const q = search.toLowerCase();
@@ -1352,217 +1548,265 @@
     // Compute dashboard data from the datasets
     // ========================================================================
     function buildDashboard() {
-        const totalActivos = activos.length;
-        const activosByEstado = [];
-        const estadoCounts = {};
-        activos.forEach(function (a) {
-            estadoCounts[a.estado] = (estadoCounts[a.estado] || 0) + 1;
+        const totalProperties = properties.length;
+        const propertiesByStatus = [];
+        const statusCounts = {};
+        properties.forEach(function (a) {
+            statusCounts[a.status] = (statusCounts[a.status] || 0) + 1;
         });
-        for (const [estado, count] of Object.entries(estadoCounts)) {
-            activosByEstado.push({ estado: estado, count: count });
+        for (const [status, count] of Object.entries(statusCounts)) {
+            propertiesByStatus.push({ status: status, count: count });
         }
 
         // Financial totals from income invoices only
-        const incomeInvoices = contabilidad.filter(function (c) { return c.tipo === 'ingreso'; });
-        const totalFacturado = incomeInvoices.reduce(function (s, c) { return s + c.total; }, 0);
-        const totalCobrado = incomeInvoices.reduce(function (s, c) { return s + c.pagado; }, 0);
-        const totalPendiente = totalFacturado - totalCobrado;
-        const pendingCount = incomeInvoices.filter(function (c) { return c.estado === 'Sin pagar' || c.estado === 'Parcial'; }).length;
-        const collectionRate = totalFacturado > 0 ? Math.round((totalCobrado / totalFacturado) * 1000) / 10 : 0;
+        const incomeInvoices = invoices.filter(function (c) { return c.type === 'income'; });
+        const totalInvoiced = incomeInvoices.reduce(function (s, c) { return s + c.total; }, 0);
+        const totalCollected = incomeInvoices.reduce(function (s, c) { return s + c.paid; }, 0);
+        const totalOutstanding = totalInvoiced - totalCollected;
+        const pendingCount = incomeInvoices.filter(function (c) { return c.status === 'Unpaid' || c.status === 'Partial'; }).length;
+        const collectionRate = totalInvoiced > 0 ? Math.round((totalCollected / totalInvoiced) * 1000) / 10 : 0;
 
         // Overdue invoices: unpaid or partial income, older than 15 days
         const fifteenDaysAgo = new Date(_now);
         fifteenDaysAgo.setDate(fifteenDaysAgo.getDate() - 15);
-        const overdueInvoices = contabilidad.filter(function (c) {
-            return (c.estado === 'Sin pagar' || c.estado === 'Parcial') &&
-                c.tipo === 'ingreso' &&
-                new Date(c.fecha) < fifteenDaysAgo;
+        const overdueInvoices = invoices.filter(function (c) {
+            return (c.status === 'Unpaid' || c.status === 'Partial') &&
+                c.type === 'income' &&
+                new Date(c.invoice_date) < fifteenDaysAgo;
         });
 
         // Expiring leases: contracts ending within 90 days
         const ninetyDaysFromNow = new Date(_now);
         ninetyDaysFromNow.setDate(ninetyDaysFromNow.getDate() + 90);
-        const expiringLeases = activos.filter(function (a) {
-            return a.fecha_fin && new Date(a.fecha_fin) <= ninetyDaysFromNow && a.estado === 'Alquilado';
+        const expiringLeases = properties.filter(function (a) {
+            return a.end_date && new Date(a.end_date) <= ninetyDaysFromNow && a.status === 'Rented';
         });
 
         // Recent activity from audit
         const recentActivity = auditEntries.slice(0, 5);
 
-        // Financial by receptor
-        const byReceptor = {};
+        // Financial by payee
+        const byPayee = {};
         incomeInvoices.forEach(function (c) {
-            const key = c.receptor;
-            if (!byReceptor[key]) {
-                byReceptor[key] = { receptor: key, total_facturado: 0, total_cobrado: 0, total_pendiente: 0, num_activos: 0, _activos_set: {} };
+            const key = c.payee;
+            if (!byPayee[key]) {
+                byPayee[key] = { payee: key, total_invoiced: 0, total_collected: 0, total_outstanding: 0, num_properties: 0, _properties_set: {} };
             }
-            byReceptor[key].total_facturado += c.total;
-            byReceptor[key].total_cobrado += c.pagado;
-            byReceptor[key].total_pendiente += (c.total - c.pagado);
-            if (c.activo) byReceptor[key]._activos_set[c.activo] = true;
+            byPayee[key].total_invoiced += c.total;
+            byPayee[key].total_collected += c.paid;
+            byPayee[key].total_outstanding += (c.total - c.paid);
+            if (c.property_name) byPayee[key]._properties_set[c.property_name] = true;
         });
-        const financialByReceptor = Object.values(byReceptor).map(function (r) {
-            r.num_activos = Object.keys(r._activos_set).length;
-            delete r._activos_set;
+        const financialByPayee = Object.values(byPayee).map(function (r) {
+            r.num_properties = Object.keys(r._properties_set).length;
+            delete r._properties_set;
             return r;
         });
 
-        // Financial by activo
-        const byActivo = {};
+        // Financial by property
+        const byProperty = {};
         incomeInvoices.forEach(function (c) {
-            const key = c.activo;
-            if (!byActivo[key]) {
-                byActivo[key] = { activo: key, total_facturado: 0, total_cobrado: 0, total_pendiente: 0, num_facturas: 0 };
+            const key = c.property_name;
+            if (!byProperty[key]) {
+                byProperty[key] = { property_name: key, total_invoiced: 0, total_collected: 0, total_outstanding: 0, num_invoices: 0 };
             }
-            byActivo[key].total_facturado += c.total;
-            byActivo[key].total_cobrado += c.pagado;
-            byActivo[key].total_pendiente += (c.total - c.pagado);
-            byActivo[key].num_facturas += 1;
+            byProperty[key].total_invoiced += c.total;
+            byProperty[key].total_collected += c.paid;
+            byProperty[key].total_outstanding += (c.total - c.paid);
+            byProperty[key].num_invoices += 1;
         });
-        const financialByActivo = Object.values(byActivo);
+        const financialByProperty = Object.values(byProperty);
 
         return {
-            total_activos: totalActivos,
-            total_facturado: totalFacturado,
-            total_cobrado: totalCobrado,
-            total_pendiente: totalPendiente,
+            total_properties: totalProperties,
+            total_invoiced: totalInvoiced,
+            total_collected: totalCollected,
+            total_outstanding: totalOutstanding,
             pending_count: pendingCount,
             collection_rate: collectionRate,
-            activos_by_estado: activosByEstado,
+            properties_by_status: propertiesByStatus,
             overdue_invoices: overdueInvoices,
             expiring_leases: expiringLeases,
             recent_activity: recentActivity,
-            financial_by_receptor: financialByReceptor,
-            financial_by_activo: financialByActivo
+            financial_by_payee: financialByPayee,
+            financial_by_property: financialByProperty
         };
     }
 
     // ========================================================================
     // Compute reports
     // ========================================================================
-    function buildMorosidad() {
-        const unpaid = contabilidad.filter(function (c) {
-            return (c.estado === 'Sin pagar' || c.estado === 'Parcial') && c.tipo === 'ingreso';
+    function buildOverdue() {
+        const unpaid = invoices.filter(function (c) {
+            return (c.status === 'Unpaid' || c.status === 'Partial') && c.type === 'income';
         });
         const groups = {};
         unpaid.forEach(function (c) {
-            const key = c.pagador + '||' + c.activo;
+            const key = c.payer + '||' + c.property_name;
             if (!groups[key]) {
                 groups[key] = {
-                    pagador: c.pagador,
-                    activo: c.activo,
+                    payer: c.payer,
+                    property_name: c.property_name,
                     total_owed: 0,
                     num_invoices: 0,
-                    oldest_fecha: c.fecha,
+                    oldest_date: c.invoice_date,
                     days_overdue: 0
                 };
             }
-            groups[key].total_owed += (c.total - c.pagado);
+            groups[key].total_owed += (c.total - c.paid);
             groups[key].num_invoices += 1;
-            if (c.fecha < groups[key].oldest_fecha) {
-                groups[key].oldest_fecha = c.fecha;
+            if (c.invoice_date < groups[key].oldest_date) {
+                groups[key].oldest_date = c.invoice_date;
             }
         });
         return Object.values(groups).map(function (g) {
-            g.days_overdue = Math.floor((_now - new Date(g.oldest_fecha)) / 86400000);
+            g.days_overdue = Math.floor((_now - new Date(g.oldest_date)) / 86400000);
             return g;
         });
     }
 
-    function buildRentabilidad() {
-        const byActivo = {};
-        contabilidad.forEach(function (c) {
-            const key = c.activo;
-            if (!byActivo[key]) {
-                byActivo[key] = { activo: key, total_ingresos: 0, total_gastos: 0, neto: 0, margen_pct: 0 };
+    function buildProfitability() {
+        const byProperty = {};
+        invoices.forEach(function (c) {
+            const key = c.property_name;
+            if (!byProperty[key]) {
+                byProperty[key] = { property_name: key, total_income: 0, total_expenses: 0, net: 0, margin_pct: 0 };
             }
-            if (c.tipo === 'ingreso') {
-                byActivo[key].total_ingresos += c.pagado;
+            if (c.type === 'income') {
+                byProperty[key].total_income += c.paid;
             } else {
-                byActivo[key].total_gastos += c.total;
+                byProperty[key].total_expenses += c.total;
             }
         });
-        return Object.values(byActivo).map(function (r) {
-            r.neto = r.total_ingresos - r.total_gastos;
-            r.margen_pct = r.total_ingresos > 0 ? Math.round((r.neto / r.total_ingresos) * 1000) / 10 : 0;
+        return Object.values(byProperty).map(function (r) {
+            r.net = r.total_income - r.total_expenses;
+            r.margin_pct = r.total_income > 0 ? Math.round((r.net / r.total_income) * 1000) / 10 : 0;
             return r;
         });
     }
 
     // ========================================================================
-    // Build activo detail
+    // Build property detail
     // ========================================================================
-    function buildActivoDetail(id) {
-        const activo = activos.find(function (a) { return a.id === id; });
-        if (!activo) return null;
+    function buildPropertyDetail(id) {
+        const property = properties.find(function (a) { return a.id === id; });
+        if (!property) return null;
 
-        const invoices = contabilidad.filter(function (c) { return c.activo === activo.activo; });
-        const incomeInvoices = invoices.filter(function (c) { return c.tipo === 'ingreso'; });
-        const totalFacturado = incomeInvoices.reduce(function (s, c) { return s + c.total; }, 0);
-        const totalCobrado = incomeInvoices.reduce(function (s, c) { return s + c.pagado; }, 0);
-        const totalPendiente = totalFacturado - totalCobrado;
+        const propInvoices = invoices.filter(function (c) { return c.property_name === property.property_name; });
+        const incomeInvoices = propInvoices.filter(function (c) { return c.type === 'income'; });
+        const totalInvoiced = incomeInvoices.reduce(function (s, c) { return s + c.total; }, 0);
+        const totalCollected = incomeInvoices.reduce(function (s, c) { return s + c.paid; }, 0);
+        const totalOutstanding = totalInvoiced - totalCollected;
 
         return {
-            activo: activo,
+            property: property,
             financial: {
-                total_facturado: totalFacturado,
-                total_cobrado: totalCobrado,
-                total_pendiente: totalPendiente
+                total_invoiced: totalInvoiced,
+                total_collected: totalCollected,
+                total_outstanding: totalOutstanding
             },
-            invoices: invoices,
+            invoices: propInvoices,
             images: [
-                { url: '/files/images/property-placeholder-1.jpg', filename: 'fachada.jpg' },
-                { url: '/files/images/property-placeholder-2.jpg', filename: 'salon.jpg' }
+                { url: '/files/images/property-placeholder-1.jpg', filename: 'exterior.jpg' },
+                { url: '/files/images/property-placeholder-2.jpg', filename: 'lounge.jpg' }
             ]
         };
     }
 
     // ========================================================================
-    // Build contrato detail
+    // Build contract detail
     // ========================================================================
-    function buildContratoDetail(id) {
-        const contrato = contratos.find(function (c) { return c.id === id; });
-        if (!contrato) return null;
+    function buildContractDetail(id) {
+        const contract = contracts.find(function (c) { return c.id === id; });
+        if (!contract) return null;
 
         return {
-            contrato: contrato,
-            documentos: [
+            contract: contract,
+            documents: [
                 {
                     id: uuid(),
-                    nombre: 'Contrato de arrendamiento',
-                    tipo: 'Contrato',
-                    fecha_documento: contrato.fecha_inicio,
-                    archivo_texto: true,
-                    notas: 'Documento firmado por ambas partes'
+                    name: 'Tenancy agreement',
+                    type: 'Contract',
+                    document_date: contract.start_date,
+                    has_text: true,
+                    notes: 'Signed by both parties'
                 }
             ],
-            detalles: [
+            details: [
                 {
-                    categoria: 'price',
-                    etiqueta: 'Renta mensual',
-                    valor: contrato.alquiler + ' EUR/mes',
-                    valor_numerico: contrato.alquiler,
-                    fecha_inicio: contrato.fecha_inicio,
-                    fecha_fin: contrato.fecha_fin
+                    category: 'price',
+                    label: 'Monthly rent',
+                    value: contract.rent + ' GBP/month',
+                    numeric_value: contract.rent,
+                    start_date: contract.start_date,
+                    end_date: contract.end_date
                 },
                 {
-                    categoria: 'ipc',
-                    etiqueta: 'Actualizacion IPC',
-                    valor: 'Anual segun INE',
-                    valor_numerico: null,
-                    fecha_inicio: contrato.fecha_inicio,
-                    fecha_fin: contrato.fecha_fin
+                    category: 'review',
+                    label: 'Rent review',
+                    value: 'Annual per CPI',
+                    numeric_value: null,
+                    start_date: contract.start_date,
+                    end_date: contract.end_date
                 },
                 {
-                    categoria: 'garantia',
-                    etiqueta: 'Fianza',
-                    valor: '2 mensualidades',
-                    valor_numerico: contrato.alquiler * 2,
-                    fecha_inicio: contrato.fecha_inicio,
-                    fecha_fin: contrato.fecha_fin
+                    category: 'deposit',
+                    label: 'Deposit',
+                    value: '2 months rent',
+                    numeric_value: contract.rent * 2,
+                    start_date: contract.start_date,
+                    end_date: contract.end_date
                 }
             ]
         };
+    }
+
+    // ========================================================================
+    // Build invoice PDF HTML
+    // ========================================================================
+    function buildInvoicePdfHtml(invoiceData) {
+        const outstanding = invoiceData.total - invoiceData.paid;
+        const statusClass = invoiceData.status === 'Paid' ? 'paid' : invoiceData.status === 'Partial' ? 'partial' : 'unpaid';
+        return '<!DOCTYPE html><html><head><style>' +
+            'body{font-family:Arial,sans-serif;font-size:13px;color:#333;margin:0;padding:40px}' +
+            '.header{border-bottom:3px solid #2B4C7E;padding-bottom:20px;margin-bottom:30px;overflow:hidden}' +
+            '.header h1{float:right;color:#2B4C7E;font-size:28px;text-transform:uppercase;letter-spacing:2px}' +
+            '.brand{float:left;font-size:24px;font-weight:700;color:#2B4C7E}' +
+            '.ref{color:#666;font-size:14px;float:right;clear:right}' +
+            '.parties{overflow:hidden;margin-bottom:30px}' +
+            '.party{width:48%;float:left}.party.right{float:right}' +
+            '.party-label{font-size:10px;font-weight:700;text-transform:uppercase;color:#2B4C7E;border-bottom:1px solid #eee;padding-bottom:5px;margin-bottom:8px}' +
+            '.party-name{font-size:15px;font-weight:700;margin-bottom:4px}' +
+            'table{width:100%;border-collapse:collapse;margin-bottom:20px}' +
+            'thead th{background:#2B4C7E;color:#fff;padding:10px;text-align:left;font-size:11px;text-transform:uppercase}' +
+            'tbody td{padding:12px 10px;border-bottom:1px solid #eee}' +
+            '.amount{text-align:right;font-weight:600}' +
+            '.totals{float:right;width:280px}' +
+            '.totals td{padding:6px 10px}.totals .total-row td{font-size:18px;font-weight:800;color:#2B4C7E;border-top:3px solid #2B4C7E;padding-top:12px}' +
+            '.status{display:inline-block;padding:3px 10px;border-radius:10px;font-size:11px;font-weight:700;text-transform:uppercase}' +
+            '.status-paid{background:#E8F5E9;color:#2E7D32}' +
+            '.status-partial{background:#FFF3E0;color:#E65100}' +
+            '.status-unpaid{background:#FBE9E7;color:#C62828}' +
+            '.footer{text-align:center;border-top:1px solid #eee;padding-top:20px;margin-top:40px;font-size:10px;color:#999}' +
+            '</style></head><body>' +
+            '<div class="header"><span class="brand">Proplia</span><h1>Invoice</h1><div class="ref">' + invoiceData.reference + '</div></div>' +
+            '<div class="parties">' +
+            '<div class="party"><div class="party-label">From (Issuer)</div><div class="party-name">' + invoiceData.payee + '</div></div>' +
+            '<div class="party right"><div class="party-label">To (Recipient)</div><div class="party-name">' + invoiceData.payer + '</div></div>' +
+            '</div>' +
+            '<table><thead><tr><th>Description</th><th class="amount">Subtotal</th><th class="amount">VAT</th><th class="amount">Amount</th></tr></thead>' +
+            '<tbody><tr><td>' + invoiceData.description + '</td><td class="amount">' + invoiceData.total.toFixed(2) + ' GBP</td><td class="amount">' + invoiceData.vat.toFixed(2) + ' GBP</td><td class="amount">' + invoiceData.total.toFixed(2) + ' GBP</td></tr></tbody></table>' +
+            '<div style="overflow:hidden"><table class="totals">' +
+            '<tr><td>Subtotal</td><td class="amount">' + invoiceData.total.toFixed(2) + ' GBP</td></tr>' +
+            '<tr><td>VAT</td><td class="amount">' + invoiceData.vat.toFixed(2) + ' GBP</td></tr>' +
+            '<tr class="total-row"><td>Total</td><td class="amount">' + invoiceData.total.toFixed(2) + ' GBP</td></tr>' +
+            '</table></div>' +
+            '<div style="margin-top:20px"><strong>Status:</strong> <span class="status status-' + statusClass + '">' + invoiceData.status + '</span>' +
+            ' &nbsp; <strong>Paid:</strong> ' + invoiceData.paid.toFixed(2) + ' GBP' +
+            (outstanding > 0 ? ' &nbsp; <strong style="color:#C62828">Outstanding: ' + outstanding.toFixed(2) + ' GBP</strong>' : '') +
+            '</div>' +
+            '<div class="footer"><strong>Proplia</strong> &mdash; Property Management<br>Document generated automatically</div>' +
+            '</body></html>';
     }
 
     // ========================================================================
@@ -1635,108 +1879,160 @@
             return jsonResponse(buildDashboard());
         }
 
-        // --- Activos ---
-        if (route === '/activos/names') {
-            return jsonResponse(activos.map(function (a) { return a.activo; }));
+        // --- Properties ---
+        if (route === '/properties/names') {
+            return jsonResponse(properties.map(function (a) { return a.property_name; }));
         }
 
-        // Activo images
-        const imagesMatch = route.match(/^\/activos\/images\/(.+)$/);
+        // Property images
+        const imagesMatch = route.match(/^\/properties\/images\/(.+)$/);
         if (imagesMatch) {
             return jsonResponse([
-                { url: '/files/images/property-placeholder-1.jpg', filename: 'fachada.jpg' },
-                { url: '/files/images/property-placeholder-2.jpg', filename: 'salon.jpg' }
+                { url: '/files/images/property-placeholder-1.jpg', filename: 'exterior.jpg' },
+                { url: '/files/images/property-placeholder-2.jpg', filename: 'lounge.jpg' }
             ]);
         }
 
-        // Activo detail
-        const activoDetailMatch = route.match(/^\/activos\/([^/]+)\/detail$/);
-        if (activoDetailMatch) {
-            const detail = buildActivoDetail(activoDetailMatch[1]);
+        // Property detail
+        const propertyDetailMatch = route.match(/^\/properties\/([^/]+)\/detail$/);
+        if (propertyDetailMatch) {
+            const detail = buildPropertyDetail(propertyDetailMatch[1]);
             if (detail) return jsonResponse(detail);
             return jsonResponse({ error: 'Not found' }, 404);
         }
 
-        // Single activo
-        const activoSingleMatch = route.match(/^\/activos\/([^/]+)$/);
-        if (activoSingleMatch && activoSingleMatch[1] !== 'names' && activoSingleMatch[1] !== 'images') {
-            const activo = activos.find(function (a) { return a.id === activoSingleMatch[1]; });
-            if (activo) return jsonResponse(activo);
+        // Single property
+        const propertySingleMatch = route.match(/^\/properties\/([^/]+)$/);
+        if (propertySingleMatch && propertySingleMatch[1] !== 'names' && propertySingleMatch[1] !== 'images') {
+            const property = properties.find(function (a) { return a.id === propertySingleMatch[1]; });
+            if (property) return jsonResponse(property);
             return jsonResponse({ error: 'Not found' }, 404);
         }
 
-        // Activos list
-        if (route === '/activos') {
-            return jsonResponse(filterAndPaginate(activos, params));
+        // Properties list
+        if (route === '/properties') {
+            return jsonResponse(filterAndPaginate(properties, params));
         }
 
-        // --- Contratos ---
-        const contratoDetailMatch = route.match(/^\/contratos\/([^/]+)\/detail$/);
-        if (contratoDetailMatch) {
-            const detail = buildContratoDetail(contratoDetailMatch[1]);
+        // --- Contracts ---
+        const contractDetailMatch = route.match(/^\/contracts\/([^/]+)\/detail$/);
+        if (contractDetailMatch) {
+            const detail = buildContractDetail(contractDetailMatch[1]);
             if (detail) return jsonResponse(detail);
             return jsonResponse({ error: 'Not found' }, 404);
         }
 
-        if (route === '/contratos') {
-            return jsonResponse(filterAndPaginate(contratos, params));
+        if (route === '/contracts') {
+            return jsonResponse(filterAndPaginate(contracts, params));
         }
 
-        // --- Contabilidad ---
-        if (route === '/contabilidad/receptors') {
-            const receptors = [];
+        // --- Invoices ---
+        if (route === '/invoices/payees') {
+            const payees = [];
             const seen = {};
-            contabilidad.forEach(function (c) {
-                if (!seen[c.receptor]) {
-                    seen[c.receptor] = true;
-                    receptors.push(c.receptor);
+            invoices.forEach(function (c) {
+                if (!seen[c.payee]) {
+                    seen[c.payee] = true;
+                    payees.push(c.payee);
                 }
             });
-            return jsonResponse(receptors);
+            return jsonResponse(payees);
         }
 
-        if (route === '/contabilidad') {
-            const result = filterAndPaginate(contabilidad, params);
-            // Add totals for contabilidad
-            const filteredAll = filterContabilidadForTotals(params);
+        // Invoice PDF download
+        const invoicePdfMatch = route.match(/^\/invoices\/([^/]+)\/pdf$/);
+        if (invoicePdfMatch) {
+            const invoiceData = invoices.find(function (c) { return c.id === invoicePdfMatch[1]; });
+            if (invoiceData) {
+                const html = buildInvoicePdfHtml(invoiceData);
+                const blob = new Blob([html], { type: 'text/html' });
+                const blobUrl = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = blobUrl;
+                a.download = invoiceData.reference + '.html';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(blobUrl);
+                return jsonResponse({ success: true, message: 'PDF download triggered' });
+            }
+            return jsonResponse({ error: 'Not found' }, 404);
+        }
+
+        if (route === '/invoices') {
+            const result = filterAndPaginate(invoices, params);
+            // Add totals for invoices
+            const filteredAll = filterInvoicesForTotals(params);
             const totalSum = filteredAll.reduce(function (s, c) { return s + c.total; }, 0);
-            const pagadoSum = filteredAll.reduce(function (s, c) { return s + c.pagado; }, 0);
-            result.totals = { total: totalSum, pagado: pagadoSum };
+            const paidSum = filteredAll.reduce(function (s, c) { return s + c.paid; }, 0);
+            result.totals = { total: totalSum, paid: paidSum };
             return jsonResponse(result);
         }
 
-        // --- Inquilinos ---
-        if (route === '/inquilinos') {
-            return jsonResponse(filterAndPaginate(inquilinos, params));
+        // --- Tenants ---
+        if (route === '/tenants') {
+            return jsonResponse(filterAndPaginate(tenants, params));
         }
 
-        // --- Propietarios ---
-        if (route === '/propietarios') {
-            return jsonResponse(filterAndPaginate(propietarios, params));
+        // --- Owners ---
+        if (route === '/owners') {
+            return jsonResponse(filterAndPaginate(owners, params));
         }
 
-        // --- Depositos ---
-        if (route === '/depositos') {
-            return jsonResponse(filterAndPaginate(depositos, params));
+        // --- Deposits ---
+        if (route === '/deposits') {
+            return jsonResponse(filterAndPaginate(deposits, params));
         }
 
-        // --- Remesas SEPA ---
-        if (route === '/remesas_sepa') {
-            return jsonResponse(filterAndPaginate(remesas_sepa, params));
+        // --- SEPA Batches ---
+        if (route === '/sepa-batches') {
+            return jsonResponse(filterAndPaginate(sepa_batches, params));
         }
 
-        // --- Incidencias ---
-        if (route === '/incidencias') {
-            return jsonResponse(filterAndPaginate(incidencias, params));
+        // --- Issues ---
+        if (route === '/issues') {
+            return jsonResponse(filterAndPaginate(issues, params));
+        }
+
+        // --- Insurance ---
+        if (route === '/insurance') {
+            return jsonResponse(filterAndPaginate(insurance, params));
+        }
+
+        // --- Contacts ---
+        if (route === '/contacts') {
+            return jsonResponse(filterAndPaginate(contacts, params));
+        }
+
+        // --- Leads ---
+        if (route === '/leads') {
+            return jsonResponse(filterAndPaginate(leads, params));
+        }
+
+        // --- Lead Notes (mock) ---
+        if (route.match(/^\/lead-notes/)) {
+            return jsonResponse({ data: [], total: 0 });
+        }
+
+        // --- Alerts (mock) ---
+        if (route === '/alerts') {
+            return jsonResponse({
+                data: [
+                    { id: uuid(), type: 'overdue', message: 'Invoice INV-2024-009 is overdue', severity: 'high', created_at: daysAgo(2) },
+                    { id: uuid(), type: 'expiring', message: 'Contract PALM GROVE 7 - THOMPSON expires in 6 months', severity: 'medium', created_at: daysAgo(1) },
+                    { id: uuid(), type: 'maintenance', message: 'Water leak at 14 King Street requires attention', severity: 'high', created_at: daysAgo(3) }
+                ],
+                total: 3
+            });
         }
 
         // --- Reports ---
-        if (route === '/reports/morosidad') {
-            return jsonResponse(buildMorosidad());
+        if (route === '/reports/overdue') {
+            return jsonResponse(buildOverdue());
         }
 
-        if (route === '/reports/rentabilidad') {
-            return jsonResponse(buildRentabilidad());
+        if (route === '/reports/profitability') {
+            return jsonResponse(buildProfitability());
         }
 
         // --- Audit ---
@@ -1763,13 +2059,13 @@
             });
         }
 
-        // --- Contrato documentos text ---
-        const docTextMatch = route.match(/^\/contrato_documentos\/([^/]+)\/text$/);
+        // --- Contract documents text ---
+        const docTextMatch = route.match(/^\/contract_documents\/([^/]+)\/text$/);
         if (docTextMatch) {
             return jsonResponse({
                 id: docTextMatch[1],
-                nombre: 'Contrato de arrendamiento',
-                content: 'CONTRATO DE ARRENDAMIENTO DE VIVIENDA\n\nEn cumplimiento de la Ley 29/1994 de Arrendamientos Urbanos...\n\n[Contenido del documento de ejemplo para la demo]'
+                name: 'Tenancy agreement',
+                content: 'ASSURED SHORTHOLD TENANCY AGREEMENT\n\nIn accordance with the Housing Act 1988...\n\n[Sample document content for demo purposes]'
             });
         }
 
@@ -1779,14 +2075,17 @@
             const entityName = entitySingleMatch[1];
             const entityId = entitySingleMatch[2];
             const collections = {
-                activos: activos,
-                contratos: contratos,
-                contabilidad: contabilidad,
-                inquilinos: inquilinos,
-                propietarios: propietarios,
-                depositos: depositos,
-                remesas_sepa: remesas_sepa,
-                incidencias: incidencias
+                properties: properties,
+                contracts: contracts,
+                invoices: invoices,
+                tenants: tenants,
+                owners: owners,
+                deposits: deposits,
+                'sepa-batches': sepa_batches,
+                issues: issues,
+                insurance: insurance,
+                contacts: contacts,
+                leads: leads
             };
             const collection = collections[entityName];
             if (collection) {
@@ -1803,5 +2102,5 @@
     // Signal that demo mode is active
     window.__DEMO_MOCK_ACTIVE__ = true;
 
-    console.log('%c[Demo Mode] API mock active \u2014 all data is simulated', 'color: #f59e0b; font-weight: bold;');
+    console.log('%c[Demo Mode] API mock active — all data is simulated', 'color: #f59e0b; font-weight: bold;');
 })();

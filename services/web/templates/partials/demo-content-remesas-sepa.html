@@ -6,30 +6,30 @@
                 const historyPanel = new HistoryPanel();
 
                 const formFields = [
-                    { key: 'fecha_cobro', label: 'Fecha de cobro', type: 'date', required: true },
-                    { key: 'acreedor', label: 'Acreedor', required: true, placeholder: 'Nombre del acreedor' },
-                    { key: 'acreedor_iban', label: 'IBAN acreedor', placeholder: 'ES00 0000 0000 0000 0000 0000' },
-                    { key: 'importe', label: 'Importe', type: 'number', required: true, placeholder: '0.00' },
-                    { key: 'moneda', label: 'Moneda', placeholder: 'EUR' },
-                    { key: 'deudor', label: 'Deudor', required: true, placeholder: 'Nombre del deudor' },
-                    { key: 'deudor_iban', label: 'IBAN deudor', placeholder: 'ES00 0000 0000 0000 0000 0000' },
-                    { key: 'mandato_id', label: 'ID mandato', placeholder: 'Referencia mandato SEPA' },
-                    { key: 'remesa_id', label: 'ID remesa', placeholder: 'Identificador remesa SEPA' },
-                    { key: 'referencia', label: 'Referencia', placeholder: 'Referencia de pago' },
-                    { key: 'archivo', label: 'Archivo origen', placeholder: 'Ruta del archivo XML' },
+                    { key: 'collection_date', label: 'Collection date', type: 'date', required: true },
+                    { key: 'creditor', label: 'Creditor', required: true, placeholder: 'Creditor name' },
+                    { key: 'creditor_iban', label: 'Creditor IBAN', placeholder: 'GB00 0000 0000 0000 0000 00' },
+                    { key: 'amount', label: 'Amount', type: 'number', required: true, placeholder: '0.00' },
+                    { key: 'currency', label: 'Currency', placeholder: 'GBP' },
+                    { key: 'debtor', label: 'Debtor', required: true, placeholder: 'Debtor name' },
+                    { key: 'debtor_iban', label: 'Debtor IBAN', placeholder: 'GB00 0000 0000 0000 0000 00' },
+                    { key: 'mandate_id', label: 'Mandate ID', placeholder: 'SEPA mandate reference' },
+                    { key: 'batch_id', label: 'Batch ID', placeholder: 'SEPA batch identifier' },
+                    { key: 'reference', label: 'Reference', placeholder: 'Payment reference' },
+                    { key: 'file', label: 'Source file', placeholder: 'XML file path' },
                 ];
 
                 const formPanel = new FormPanel({
-                    title: 'Remesa SEPA',
+                    title: 'SEPA Batch',
                     fields: formFields,
                     onSubmit: async (data, isEdit, original) => {
                         try {
                             if (isEdit) {
-                                await api.put(`/remesas_sepa/${original.id}`, data);
-                                Toast.show('Remesa actualizada');
+                                await api.put(`/sepa-batches/${original.id}`, data);
+                                Toast.show('Batch updated');
                             } else {
-                                await api.post('/remesas_sepa', data);
-                                Toast.show('Remesa creada');
+                                await api.post('/sepa-batches', data);
+                                Toast.show('Batch created');
                             }
                             table.load();
                         } catch (e) {
@@ -39,17 +39,17 @@
                 });
 
                 const table = new DataTable('#table-root', {
-                    entity: 'remesa_sepa',
-                    apiPath: '/remesas_sepa',
+                    entity: 'sepa_batch',
+                    apiPath: '/sepa-batches',
                     showPeriodFilter: true,
                     columns: [
-                        { key: 'fecha_cobro', label: 'Fecha cobro', type: 'date' },
-                        { key: 'acreedor', label: 'Acreedor' },
-                        { key: 'deudor', label: 'Deudor' },
-                        { key: 'importe', label: 'Importe', type: 'currency' },
-                        { key: 'moneda', label: 'Moneda' },
-                        { key: 'referencia', label: 'Referencia' },
-                        { key: 'created_at', label: 'Creado', type: 'date' },
+                        { key: 'collection_date', label: 'Collection date', type: 'date' },
+                        { key: 'creditor', label: 'Creditor' },
+                        { key: 'debtor', label: 'Debtor' },
+                        { key: 'amount', label: 'Amount', type: 'currency' },
+                        { key: 'currency', label: 'Currency' },
+                        { key: 'reference', label: 'Reference' },
+                        { key: 'created_at', label: 'Created', type: 'date' },
                     ],
                     onRowClick: (row) => {
                         formPanel.open(row);
@@ -57,13 +57,13 @@
                     onAction: async (action, row) => {
                         if (action === 'create') formPanel.open();
                         if (action === 'edit') formPanel.open(row);
-                        if (action === 'history') historyPanel.open('remesas_sepa', row.id);
+                        if (action === 'history') historyPanel.open('sepa-batches', row.id);
                         if (action === 'delete') {
-                            const ok = await confirmAction('Eliminar remesa', `¿Eliminar remesa de "${row.deudor}"? Esta acción no se puede deshacer.`);
+                            const ok = await confirmAction('Delete batch', `Delete batch for "${row.debtor}"? This action cannot be undone.`);
                             if (ok) {
                                 try {
-                                    await api.del(`/remesas_sepa/${row.id}`);
-                                    Toast.show('Remesa eliminada');
+                                    await api.del(`/sepa-batches/${row.id}`);
+                                    Toast.show('Batch deleted');
                                     table.load();
                                 } catch (e) { Toast.show(e.message, 'error'); }
                             }
@@ -77,7 +77,7 @@
                     const createBtn = toolbar.querySelector('[data-action="create"]');
                     const xmlBtn = document.createElement('button');
                     xmlBtn.className = 'btn btn-secondary';
-                    xmlBtn.textContent = '⤓ Descargar SEPA XML';
+                    xmlBtn.textContent = 'Download SEPA XML';
                     xmlBtn.addEventListener('click', () => {
                         const params = new URLSearchParams();
                         if (table.searchQuery) params.set('search', table.searchQuery);
@@ -85,7 +85,7 @@
                             if (v && k !== '_period') params.set(k, v);
                         });
                         const qs = params.toString();
-                        const url = `${window.ADMIN_API_BASE}/export/remesas_sepa_xml${qs ? '?' + qs : ''}`;
+                        const url = `${window.ADMIN_API_BASE}/export/sepa_batches_xml${qs ? '?' + qs : ''}`;
                         window.open(url, '_blank');
                     });
                     toolbar.insertBefore(xmlBtn, createBtn);

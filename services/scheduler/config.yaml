@@ -29,6 +29,13 @@ scheduler:
       schedule: "0 0 4 * * *"
       enabled: true
 
+    # Admin extension jobs
+    - name: admin_demo_reset
+      extension: admin
+      job: admin_demo_reset
+      schedule: "0 0 * * * *"
+      enabled: true
+
     # Web extension jobs (publishing pipeline)
     - name: publish_pipeline
       extension: web

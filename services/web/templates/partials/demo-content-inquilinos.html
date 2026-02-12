@@ -6,32 +6,32 @@
                 const historyPanel = new HistoryPanel();
 
                 const formFields = [
-                    { key: 'nombre', label: 'Nombre completo', required: true, placeholder: 'Nombre y apellidos' },
-                    { key: 'identificacion', label: 'DNI/NIE', required: true, placeholder: 'Número de documento' },
-                    { key: 'email', label: 'Email', required: true, placeholder: 'email@ejemplo.com' },
-                    { key: 'telefono', label: 'Teléfono', required: true, placeholder: '+34 600 000 000' },
-                    { key: 'direccion', label: 'Dirección', placeholder: 'Dirección actual' },
-                    { key: 'banco', label: 'Cuenta bancaria (IBAN)', placeholder: 'ES00 0000 0000 0000 0000 0000' },
-                    { key: 'activo', label: 'Propiedad', placeholder: 'Propiedad asociada' },
-                    { key: 'direccion_activo', label: 'Dirección propiedad', placeholder: 'Dirección de la propiedad' },
-                    { key: 'es_antiguo', label: 'Inquilino antiguo', type: 'select', options: ['false', 'true'], default: 'false' },
-                    { key: 'fiador_nombre', label: 'Nombre fiador', placeholder: 'Nombre completo del fiador' },
-                    { key: 'fiador_identificacion', label: 'DNI/NIE fiador', placeholder: 'Documento del fiador' },
-                    { key: 'fiador_telefono', label: 'Teléfono fiador', placeholder: '+34 600 000 000' },
-                    { key: 'fiador_email', label: 'Email fiador', placeholder: 'fiador@ejemplo.com' },
+                    { key: 'name', label: 'Full name', required: true, placeholder: 'Full name' },
+                    { key: 'tax_id', label: 'Tax ID / NI Number', required: true, placeholder: 'Tax reference' },
+                    { key: 'email', label: 'Email', required: true, placeholder: 'email@example.co.uk' },
+                    { key: 'phone', label: 'Phone', required: true, placeholder: '+44 7700 900000' },
+                    { key: 'address', label: 'Address', placeholder: 'Current address' },
+                    { key: 'bank_account', label: 'Bank account (IBAN)', placeholder: 'GB00 0000 0000 0000 0000 00' },
+                    { key: 'property_name', label: 'Property', placeholder: 'Associated property' },
+                    { key: 'property_address', label: 'Property address', placeholder: 'Property address' },
+                    { key: 'is_legacy', label: 'Legacy tenant', type: 'select', options: ['false', 'true'], default: 'false' },
+                    { key: 'guarantor_name', label: 'Guarantor name', placeholder: 'Guarantor full name' },
+                    { key: 'guarantor_tax_id', label: 'Guarantor tax ID', placeholder: 'Guarantor reference' },
+                    { key: 'guarantor_phone', label: 'Guarantor phone', placeholder: '+44 7700 900000' },
+                    { key: 'guarantor_email', label: 'Guarantor email', placeholder: 'guarantor@example.co.uk' },
                 ];
 
                 const formPanel = new FormPanel({
-                    title: 'Inquilino',
+                    title: 'Tenant',
                     fields: formFields,
                     onSubmit: async (data, isEdit, original) => {
                         try {
                             if (isEdit) {
-                                await api.put(`/inquilinos/${original.id}`, data);
-                                Toast.show('Inquilino actualizado');
+                                await api.put(`/tenants/${original.id}`, data);
+                                Toast.show('Tenant updated');
                             } else {
-                                await api.post('/inquilinos', data);
-                                Toast.show('Inquilino creado');
+                                await api.post('/tenants', data);
+                                Toast.show('Tenant created');
                             }
                             table.load();
                         } catch (e) {
@@ -41,15 +41,15 @@
                 });
 
                 const table = new DataTable('#table-root', {
-                    entity: 'inquilino',
-                    apiPath: '/inquilinos',
+                    entity: 'tenant',
+                    apiPath: '/tenants',
                     columns: [
-                        { key: 'nombre', label: 'Nombre' },
-                        { key: 'identificacion', label: 'DNI/NIE' },
+                        { key: 'name', label: 'Name' },
+                        { key: 'tax_id', label: 'Tax ID' },
                         { key: 'email', label: 'Email' },
-                        { key: 'telefono', label: 'Teléfono' },
-                        { key: 'activo', label: 'Propiedad' },
-                        { key: 'created_at', label: 'Creado', type: 'date' },
+                        { key: 'phone', label: 'Phone' },
+                        { key: 'property_name', label: 'Property' },
+                        { key: 'created_at', label: 'Created', type: 'date' },
                     ],
                     onRowClick: (row) => {
                         formPanel.open(row);
@@ -57,13 +57,13 @@
                     onAction: async (action, row) => {
                         if (action === 'create') formPanel.open();
                         if (action === 'edit') formPanel.open(row);
-                        if (action === 'history') historyPanel.open('inquilinos', row.id);
+                        if (action === 'history') historyPanel.open('tenants', row.id);
                         if (action === 'delete') {
-                            const ok = await confirmAction('Eliminar inquilino', `¿Eliminar "${row.nombre}"? Esta acción no se puede deshacer.`);
+                            const ok = await confirmAction('Delete tenant', `Delete "${row.name}"? This action cannot be undone.`);
                             if (ok) {
                                 try {
-                                    await api.del(`/inquilinos/${row.id}`);
-                                    Toast.show('Inquilino eliminado');
+                                    await api.del(`/tenants/${row.id}`);
+                                    Toast.show('Tenant deleted');
                                     table.load();
                                 } catch (e) { Toast.show(e.message, 'error'); }
                             }

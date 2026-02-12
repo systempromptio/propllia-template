@@ -1,21 +1,32 @@
-/* ============================================
-   Data Tables — Headers, cells, striping, pagination
-   ============================================ */
-
+@layer components {
 .table-container {
     background: var(--bg-surface);
     border: 1px solid var(--border-subtle);
     border-radius: var(--radius-md);
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
     max-width: 100%;
 }
 
-.data-table {
-    width: 100%;
-    border-collapse: collapse;
-    table-layout: fixed;
+.table-scroll {
+    overflow-x: auto;
+    overflow-y: auto;
+    max-height: calc(100vh - 180px);
+    -webkit-overflow-scrolling: touch;
 }
+
+.data-table {
+    min-width: 100%;
+    border-collapse: collapse;
+    table-layout: auto;
+}
+
+.data-table .col-thumbnail   { width: 56px; min-width: 56px; max-width: 56px; }
+.data-table .col-date        { width: 100px; min-width: 90px; }
+.data-table .col-currency    { width: 110px; min-width: 95px; }
+.data-table .col-status      { width: 110px; min-width: 90px; }
+.data-table .col-boolean     { width: 70px; min-width: 60px; }
+.data-table .col-badge_count { width: 80px; min-width: 70px; }
+.data-table .col-tags        { width: 150px; min-width: 120px; }
+.data-table .col-text        { min-width: 100px; }
 
 .data-table th {
     background: var(--bg-surface-raised);
@@ -32,7 +43,7 @@
     white-space: nowrap;
     position: sticky;
     top: 0;
-    z-index: 1;
+    z-index: var(--z-sticky);
 }
 
 .data-table th:hover {
@@ -68,48 +79,48 @@
     text-overflow: ellipsis;
 }
 
-/* First column emphasis */
 .data-table td:first-child {
     color: var(--text-primary);
     font-weight: 500;
 }
 
-/* Subtle row striping */
 .data-table tbody tr:nth-child(even) td {
-    background: rgba(45, 41, 37, 0.02);
-}
-
-.data-table tbody tr:nth-child(even) td.actions {
-    background: var(--bg-surface);
+    background: color-mix(in srgb, var(--warm-900) 2%, transparent);
 }
 
 .data-table tr:hover td {
-    background: rgba(45, 41, 37, 0.04);
+    background: color-mix(in srgb, var(--warm-900) 4%, transparent);
 }
 
 .data-table tr.selected td {
     background: var(--accent-dim);
 }
 
-.data-table td.actions {
+.data-table tbody tr:nth-child(even) td.col-actions,
+.data-table tr:hover td.col-actions,
+.data-table .clickable-row:hover td.col-actions {
+    background: var(--bg-surface);
+}
+
+.data-table td.col-actions {
     white-space: nowrap;
-    text-align: right;
-    width: 100px;
-    overflow: visible;
+    text-align: center;
+    padding: var(--space-2) var(--space-3) var(--space-2) var(--space-4);
     position: sticky;
     right: 0;
     background: var(--bg-surface);
-    box-shadow: -2px 0 4px rgba(0,0,0,0.05);
+    border-left: 1px solid var(--border-subtle);
     z-index: 2;
 }
 
-.data-table th:last-child {
-    width: 100px;
+.data-table th.col-actions {
+    width: 60px;
+    text-align: center;
     position: sticky;
     right: 0;
     background: var(--bg-surface-raised);
-    box-shadow: -2px 0 4px rgba(0,0,0,0.05);
-    z-index: 3;
+    border-left: 1px solid var(--border-subtle);
+    z-index: var(--z-sticky-header);
 }
 
 .data-table td.numeric {
@@ -138,7 +149,6 @@
     font-size: var(--text-base);
 }
 
-/* Clickable rows */
 .clickable-row {
     cursor: pointer;
     transition: background var(--duration-fast);
@@ -148,7 +158,6 @@
     background: var(--accent-dim);
 }
 
-/* Pagination */
 .pagination {
     display: flex;
     align-items: center;
@@ -184,7 +193,7 @@
 }
 
 .pagination-controls button:hover:not(:disabled) {
-    background: rgba(45, 41, 37, 0.04);
+    background: color-mix(in srgb, var(--warm-900) 4%, transparent);
     border-color: var(--border-strong);
     color: var(--text-primary);
 }
@@ -210,10 +219,20 @@
     font-family: inherit;
 }
 
-/* Summary / totals row */
-.data-table tfoot td {
+.per-page-select:focus-visible,
+.pagination-controls button:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--bg-canvas), 0 0 0 4px var(--accent);
+}
+
+.data-table tfoot tr {
     background: var(--bg-surface-raised);
+}
+
+.data-table tfoot td {
+    background: inherit;
     border-top: 2px solid var(--border-default);
+    border-bottom: none;
     font-weight: 700;
     color: var(--text-primary);
     padding: var(--space-3) var(--space-4);
@@ -221,11 +240,10 @@
     white-space: nowrap;
 }
 
-.data-table tfoot td.actions {
-    background: var(--bg-surface-raised);
+.data-table tfoot td.col-actions {
+    background: inherit;
 }
 
-/* Invoice count link */
 .invoice-link {
     color: var(--accent);
     text-decoration: none;
@@ -237,10 +255,9 @@
     opacity: 0.85;
 }
 
-/* Thumbnail cells */
-.thumbnail-cell {
+.data-table .thumbnail-cell {
     width: 56px;
-    padding: var(--space-1) !important;
+    padding: var(--space-1);
     text-align: center;
 }
 
@@ -258,5 +275,95 @@
     height: 36px;
     line-height: 36px;
     text-align: center;
-    color: var(--text-muted);
+    color: var(--text-tertiary);
+}
+
+.data-table .col-checkbox {
+    width: 40px;
+    min-width: 40px;
+    max-width: 40px;
+    text-align: center;
+    padding: var(--space-2);
+}
+
+.col-checkbox input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+    accent-color: var(--accent);
+}
+
+.data-table .col-multiline {
+    white-space: normal;
+    line-height: 1.4;
+}
+
+.cell-primary {
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+.cell-secondary {
+    font-size: 0.8em;
+    color: var(--text-tertiary);
+    margin-top: 2px;
+}
+
+.selection-bar {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-2) var(--space-4);
+    background: var(--accent-dim);
+    border: 1px solid var(--accent);
+    border-radius: var(--radius-md);
+    margin-bottom: var(--space-3);
+    font-size: var(--text-sm);
+    color: var(--accent);
+    font-weight: 500;
+}
+
+.evolution-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    padding: var(--space-5);
+    margin-bottom: var(--space-5);
+}
+
+.evolution-card h4 {
+    color: var(--text-primary);
+}
+
+.evolution-table {
+    font-size: 0.85rem;
+}
+
+.insurance-badge {
+    font-size: 0.7rem;
+    margin-left: 4px;
+    vertical-align: middle;
+}
+
+.table-preview {
+    max-height: 200px;
+    overflow: auto;
+}
+
+.detail-data-table {
+    width: 100%;
+    font-size: var(--text-sm);
+    border-collapse: collapse;
+}
+.detail-data-table th,
+.detail-data-table td {
+    padding: 6px 4px;
+}
+.detail-data-table thead tr {
+    text-align: left;
+    border-bottom: 2px solid var(--border-default);
+}
+.detail-data-table tbody tr {
+    border-bottom: 1px solid var(--border-default);
+}
 }

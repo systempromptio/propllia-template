@@ -1,12 +1,9 @@
-/* ============================================
-   Feedback — Toast notifications, loading spinner
-   ============================================ */
-
+@layer components {
 .toast-container {
     position: fixed;
     top: var(--space-5);
     right: var(--space-5);
-    z-index: 2000;
+    z-index: var(--z-toast);
     display: flex;
     flex-direction: column;
     gap: var(--space-2);
@@ -28,13 +25,13 @@
 
 .toast-success {
     background: var(--success-strong);
-    border: 1px solid rgba(61, 139, 94, 0.25);
+    border: 1px solid color-mix(in srgb, var(--success) 25%, transparent);
     color: var(--success);
 }
 
 .toast-error {
     background: var(--danger-strong);
-    border: 1px solid rgba(196, 69, 58, 0.25);
+    border: 1px solid color-mix(in srgb, var(--danger) 25%, transparent);
     color: var(--danger);
 }
 
@@ -55,4 +52,10 @@
 
 @keyframes spin {
     to { transform: rotate(360deg); }
+}
+
+.loading-center {
+    text-align: center;
+    padding: var(--space-12);
+}
 }

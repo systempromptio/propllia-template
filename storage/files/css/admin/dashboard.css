@@ -1,14 +1,16 @@
-/* ============================================
-   Dashboard — KPI cards, alerts, activity feed,
-   financial summaries
-   ============================================ */
+@layer components {
 
-/* KPI Cards */
 .dashboard-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
     gap: var(--space-4);
     margin-bottom: var(--space-7);
+}
+.dashboard-grid-2col {
+    grid-template-columns: repeat(2, 1fr);
+}
+.progress-cell {
+    min-width: 120px;
 }
 
 .stat-card {
@@ -75,7 +77,6 @@
     margin-top: var(--space-1);
 }
 
-/* Alerts */
 .alerts-row {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -116,13 +117,13 @@
     justify-content: space-between;
     align-items: center;
     padding: var(--space-2) var(--space-3);
-    background: rgba(45, 41, 37, 0.02);
+    background: color-mix(in srgb, var(--warm-900) 2%, transparent);
     border-radius: var(--radius-sm);
     gap: var(--space-3);
     transition: background var(--duration-fast);
 }
 
-.alert-item:hover { background: rgba(45, 41, 37, 0.04); }
+.alert-item:hover { background: color-mix(in srgb, var(--warm-900) 4%, transparent); }
 
 .alert-item-main {
     display: flex;
@@ -172,7 +173,6 @@
 
 .alert-link:hover { opacity: 0.8; }
 
-/* Two-column layout */
 .dashboard-two-col {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -180,7 +180,6 @@
     margin-bottom: var(--space-6);
 }
 
-/* Activity Feed */
 .activity-feed {
     background: var(--bg-surface);
     border: 1px solid var(--border-subtle);
@@ -229,7 +228,6 @@
     margin-top: 2px;
 }
 
-/* Property cell with avatar */
 .property-cell {
     display: flex;
     align-items: center;
@@ -245,7 +243,7 @@
     justify-content: center;
     font-size: var(--text-sm);
     font-weight: 700;
-    color: #fff;
+    color: var(--text-on-dark);
     flex-shrink: 0;
 }
 
@@ -253,4 +251,5 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+}
 }

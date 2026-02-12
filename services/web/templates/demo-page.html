@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,7 +9,7 @@
 </head>
 <body>
 <div style="background: linear-gradient(90deg, #2B4C7E, #1F3A63); color: white; text-align: center; padding: 8px 16px; font-size: 13px; font-family: 'Inter', system-ui, sans-serif;">
-    Modo demostración — Los datos mostrados son ficticios
+    Demo mode — Data shown is fictional and resets every hour
 </div>
     <div class="admin-layout">
         {{> demo-sidebar}}
@@ -17,21 +17,24 @@
             <div class="admin-header">
                 <h1>{{demo.title}}</h1>
                 <a href="/" style="margin-left:auto; padding:6px 16px; border:1px solid var(--border-color,#e2e8f0); border-radius:6px; background:transparent; color:var(--text-secondary,#718096); text-decoration:none; font-size:13px;">
-    ← Volver al sitio
+    ← Back to site
 </a>
             </div>
             {{#if (eq demo.slug "")}}{{> demo-content-panel}}{{/if}}
-            {{#if (eq demo.slug "activos")}}{{> demo-content-activos}}{{/if}}
-            {{#if (eq demo.slug "contratos")}}{{> demo-content-contratos}}{{/if}}
-            {{#if (eq demo.slug "contabilidad")}}{{> demo-content-contabilidad}}{{/if}}
-            {{#if (eq demo.slug "inquilinos")}}{{> demo-content-inquilinos}}{{/if}}
-            {{#if (eq demo.slug "propietarios")}}{{> demo-content-propietarios}}{{/if}}
-            {{#if (eq demo.slug "depositos")}}{{> demo-content-depositos}}{{/if}}
-            {{#if (eq demo.slug "remesas_sepa")}}{{> demo-content-remesas-sepa}}{{/if}}
-            {{#if (eq demo.slug "incidencias")}}{{> demo-content-incidencias}}{{/if}}
+            {{#if (eq demo.slug "properties")}}{{> demo-content-activos}}{{/if}}
+            {{#if (eq demo.slug "contracts")}}{{> demo-content-contratos}}{{/if}}
+            {{#if (eq demo.slug "invoices")}}{{> demo-content-contabilidad}}{{/if}}
+            {{#if (eq demo.slug "tenants")}}{{> demo-content-inquilinos}}{{/if}}
+            {{#if (eq demo.slug "owners")}}{{> demo-content-propietarios}}{{/if}}
+            {{#if (eq demo.slug "deposits")}}{{> demo-content-depositos}}{{/if}}
+            {{#if (eq demo.slug "sepa-batches")}}{{> demo-content-remesas-sepa}}{{/if}}
+            {{#if (eq demo.slug "issues")}}{{> demo-content-incidencias}}{{/if}}
             {{#if (eq demo.slug "overdue")}}{{> demo-content-overdue}}{{/if}}
             {{#if (eq demo.slug "financial")}}{{> demo-content-financial}}{{/if}}
             {{#if (eq demo.slug "audit")}}{{> demo-content-audit}}{{/if}}
+            {{#if (eq demo.slug "insurance")}}{{> demo-content-insurance}}{{/if}}
+            {{#if (eq demo.slug "leads")}}{{> demo-content-leads}}{{/if}}
+            {{#if (eq demo.slug "contacts")}}{{> demo-content-contacts}}{{/if}}
         </main>
     </div>
     <footer style="text-align:center; padding:16px 0; color:#a0aec0; font-size:13px;">

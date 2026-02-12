@@ -1,0 +1,75 @@
+                <div id="table-root"></div>
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                const { DataTable, FormPanel, HistoryPanel, Toast, api, confirmAction } = AdminApp;
+                Toast.init();
+                const historyPanel = new HistoryPanel();
+
+                const formFields = [
+                    { key: 'name', label: 'Name', required: true, placeholder: 'Lead name' },
+                    { key: 'email', label: 'Email', required: true, placeholder: 'email@example.co.uk' },
+                    { key: 'phone', label: 'Phone', placeholder: '+44 7700 900000' },
+                    { key: 'source', label: 'Source', type: 'select', options: ['Website', 'Referral', 'Portal', 'Phone', 'Walk-in', 'Other'], default: 'Website' },
+                    { key: 'status', label: 'Status', type: 'select', options: ['New', 'Contacted', 'Qualified', 'Viewing', 'Won', 'Lost'], default: 'New' },
+                    { key: 'interest', label: 'Interest', placeholder: 'What they are looking for' },
+                    { key: 'property_name', label: 'Property', placeholder: 'Associated property' },
+                    { key: 'score', label: 'Score', type: 'number', placeholder: '0-100' },
+                ];
+
+                const formPanel = new FormPanel({
+                    title: 'Lead',
+                    fields: formFields,
+                    onSubmit: async (data, isEdit, original) => {
+                        try {
+                            if (isEdit) {
+                                await api.put(`/leads/${original.id}`, data);
+                                Toast.show('Lead updated');
+                            } else {
+                                await api.post('/leads', data);
+                                Toast.show('Lead created');
+                            }
+                            table.load();
+                        } catch (e) {
+                            Toast.show(e.message, 'error');
+                        }
+                    }
+                });
+
+                const table = new DataTable('#table-root', {
+                    entity: 'lead',
+                    apiPath: '/leads',
+                    columns: [
+                        { key: 'name', label: 'Name' },
+                        { key: 'email', label: 'Email' },
+                        { key: 'phone', label: 'Phone' },
+                        { key: 'source', label: 'Source' },
+                        { key: 'status', label: 'Status', type: 'status' },
+                        { key: 'interest', label: 'Interest' },
+                        { key: 'property_name', label: 'Property' },
+                        { key: 'score', label: 'Score' },
+                    ],
+                    filters: [
+                        { key: 'status', label: 'Status', options: ['New', 'Contacted', 'Qualified', 'Viewing', 'Won', 'Lost'] },
+                        { key: 'source', label: 'Source', options: ['Website', 'Referral', 'Portal', 'Phone', 'Walk-in', 'Other'] }
+                    ],
+                    onRowClick: (row) => {
+                        formPanel.open(row);
+                    },
+                    onAction: async (action, row) => {
+                        if (action === 'create') formPanel.open();
+                        if (action === 'edit') formPanel.open(row);
+                        if (action === 'history') historyPanel.open('leads', row.id);
+                        if (action === 'delete') {
+                            const ok = await confirmAction('Delete lead', `Delete lead "${row.name}"? This action cannot be undone.`);
+                            if (ok) {
+                                try {
+                                    await api.del(`/leads/${row.id}`);
+                                    Toast.show('Lead deleted');
+                                    table.load();
+                                } catch (e) { Toast.show(e.message, 'error'); }
+                            }
+                        }
+                    }
+                });
+            });
+        </script>

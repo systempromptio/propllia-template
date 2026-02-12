@@ -1,35 +1,419 @@
-/* ============================================
-   Responsive — Breakpoints and mobile adaptation
-   ============================================ */
+@layer responsive {
+
+@media (max-width: 1024px) {
+    .admin-main {
+        padding: var(--space-4) var(--space-5);
+    }
+}
 
 @media (max-width: 768px) {
-    .admin-sidebar { display: none; }
-    .admin-main { padding: var(--space-4); }
-    .toolbar { flex-direction: column; }
-    .search-input { min-width: 100%; }
-    .form-row { grid-template-columns: 1fr; }
-    .side-panel { width: 100vw; }
-    .dashboard-grid { grid-template-columns: 1fr 1fr; }
-    .alerts-row { grid-template-columns: 1fr; }
-    .dashboard-two-col { grid-template-columns: 1fr; }
-    .detail-grid { grid-template-columns: 1fr; }
-    .financial-cards { grid-template-columns: 1fr; }
 
-    .presentation-content { flex-direction: column; }
-    .presentation-details { min-width: unset; }
-    .gallery-grid { grid-template-columns: repeat(2, 1fr); }
-    .presentation-stats { grid-template-columns: repeat(2, 1fr); }
-    .presentation-financial-cards { grid-template-columns: repeat(2, 1fr); }
-    .presentation-modal { width: 98vw; max-height: 95vh; }
+    /* ── Root fix: block layout on mobile ─────────────── */
+    .admin-layout {
+        display: block;
+    }
 
+    .sidebar-toggle {
+        display: flex;
+    }
+
+    .sidebar-close-btn {
+        display: flex;
+    }
+
+    .admin-sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 280px;
+        height: 100vh;
+        z-index: var(--z-sidebar-drawer);
+        transform: translateX(-100%);
+        transition: transform var(--duration-slow) var(--ease-out);
+        box-shadow: none;
+        padding-bottom: env(safe-area-inset-bottom);
+    }
+
+    .admin-sidebar.open {
+        transform: translateX(0);
+        box-shadow: var(--shadow-xl);
+    }
+
+    .admin-sidebar nav a {
+        padding: 12px var(--space-5);
+        min-height: 44px;
+    }
+
+    /* ── Tighter main padding ─────────────────────────── */
+    .admin-main {
+        padding: var(--space-3);
+        padding-bottom: max(var(--space-3), env(safe-area-inset-bottom));
+    }
+
+    /* ── Header full-bleed ────────────────────────────── */
+    .admin-header {
+        position: sticky;
+        top: 0;
+        z-index: var(--z-sticky-header);
+        background: var(--bg-canvas);
+        gap: var(--space-2);
+        margin-left: calc(-1 * var(--space-3));
+        margin-right: calc(-1 * var(--space-3));
+        padding: var(--space-2) var(--space-3);
+        margin-bottom: var(--space-3);
+        border-bottom: 1px solid var(--border-subtle);
+        box-shadow: 0 1px 3px rgba(45, 41, 37, 0.06);
+    }
+
+    .admin-header h1 {
+        font-size: var(--text-lg);
+    }
+
+    .user-name,
+    .btn-logout {
+        display: none;
+    }
+
+    /* ── Toolbar & filters ────────────────────────────── */
+    .toolbar {
+        flex-direction: column;
+    }
+
+    .search-input {
+        min-width: 100%;
+    }
+
+    .filter-toggle {
+        display: inline-flex;
+        align-self: flex-start;
+    }
+
+    .filter-row {
+        display: none;
+        flex-direction: column;
+    }
+
+    .filter-row:not(.filter-row--collapsed) {
+        display: flex;
+    }
+
+    .filter-row .filter-group {
+        width: 100%;
+    }
+
+    .filter-row .filter-select,
+    .filter-row .period-select,
+    .filter-row .filter-input {
+        width: 100%;
+    }
+
+    .filter-chips {
+        gap: var(--space-1);
+    }
+
+    .chip-remove {
+        min-width: 44px;
+        min-height: 44px;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+
+    .side-panel {
+        width: 100vw;
+    }
+
+    /* ── Dashboard grid full-bleed ────────────────────── */
+    .dashboard-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: var(--space-2);
+        margin-bottom: var(--space-3);
+    }
+
+    .alerts-row,
+    .dashboard-two-col,
+    .detail-grid,
+    .financial-cards {
+        grid-template-columns: 1fr;
+    }
+
+    .alerts-row {
+        gap: var(--space-2);
+    }
+
+    .dashboard-two-col {
+        gap: var(--space-3);
+    }
+
+    /* ── Compact stat cards ───────────────────────────── */
+    .stat-card {
+        padding: var(--space-3) var(--space-4);
+    }
+
+    .stat-card .value {
+        font-size: var(--text-lg);
+    }
+
+    .stat-card .label {
+        margin-bottom: var(--space-1);
+    }
+
+    .kpi-subtitle {
+        font-size: var(--text-xs);
+    }
+
+    /* ── Compact alerts ───────────────────────────────── */
+    .alert-section {
+        padding: var(--space-3);
+    }
+
+    .alert-section h3 {
+        margin-bottom: var(--space-2);
+        font-size: var(--text-xs);
+    }
+
+    .alert-list {
+        max-height: 200px;
+    }
+
+    .alert-item {
+        padding: var(--space-1) var(--space-2);
+    }
+
+    /* ── Compact activity feed ────────────────────────── */
+    .activity-feed {
+        padding: var(--space-3);
+        max-height: 280px;
+    }
+
+    .activity-item {
+        gap: var(--space-2);
+        padding: var(--space-2) 0;
+    }
+
+    .activity-icon {
+        width: 24px;
+        height: 24px;
+        font-size: var(--text-xs);
+    }
+
+    /* ── Section titles compact ───────────────────────── */
+    .section-title {
+        font-size: var(--text-sm);
+        margin: var(--space-4) 0 var(--space-2);
+    }
+
+    /* ── Gallery & presentation ───────────────────────── */
+    .presentation-content {
+        flex-direction: column;
+    }
+
+    .presentation-details {
+        min-width: unset;
+    }
+
+    .gallery-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .presentation-stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .presentation-financial-cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .presentation-modal {
+        width: 98vw;
+        max-height: 95vh;
+    }
+
+    /* ── Tables full-bleed + compact ──────────────────── */
     .table-container {
-        margin: 0 calc(-1 * var(--space-4));
+        margin-left: calc(-1 * var(--space-3));
+        margin-right: calc(-1 * var(--space-3));
         border-radius: 0;
         border-left: none;
         border-right: none;
     }
+
+    .table-scroll {
+        max-height: 60vh;
+    }
+
+    .data-table th {
+        padding: var(--space-2);
+        font-size: 0.6rem;
+    }
+
+    .data-table td {
+        padding: var(--space-2);
+        font-size: var(--text-xs);
+    }
+
+    .data-table td.col-actions {
+        padding: var(--space-1) var(--space-2);
+    }
+
+    .data-table tfoot td {
+        padding: var(--space-2);
+    }
+
+    /* ── Pagination compact ───────────────────────────── */
+    .pagination {
+        flex-direction: column;
+        gap: var(--space-2);
+        padding: var(--space-2) var(--space-3);
+        font-size: var(--text-xs);
+    }
+
+    .pagination-controls button {
+        min-width: 44px;
+        min-height: 44px;
+    }
+
+    /* ── Tabs ─────────────────────────────────────────── */
+    .tab-bar {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        flex-wrap: nowrap;
+    }
+
+    .tab-bar .tab {
+        flex-shrink: 0;
+        min-height: 44px;
+    }
+
+    .tab-bar::after {
+        content: '';
+        position: sticky;
+        right: 0;
+        flex-shrink: 0;
+        width: 24px;
+        margin-left: -24px;
+        background: linear-gradient(to left, var(--bg-canvas), transparent);
+        pointer-events: none;
+        align-self: stretch;
+    }
+
+    /* ── Toast ────────────────────────────────────────── */
+    .toast-container {
+        left: var(--space-3);
+        right: var(--space-3);
+        top: var(--space-3);
+    }
+
+    .toast {
+        max-width: none;
+    }
+
+    /* ── Detail pages ─────────────────────────────────── */
+    .summary-grid {
+        grid-template-columns: 1fr;
+    }
+    .detail-info-grid {
+        grid-template-columns: 1fr;
+    }
+    .detail-page-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--space-3);
+    }
+    .detail-image-strip {
+        height: 120px;
+    }
+    .image-manage-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    }
+    .image-upload-zone {
+        padding: var(--space-5) var(--space-4);
+    }
+}
+
+@media (max-width: 1024px) {
+    .split-layout {
+        flex-direction: column;
+        height: auto;
+    }
+    .split-right {
+        width: 100%;
+        max-height: 400px;
+    }
 }
 
 @media (max-width: 480px) {
-    .dashboard-grid { grid-template-columns: 1fr; }
+    /* ── Extra-tight on small phones ──────────────────── */
+    .admin-main {
+        padding: var(--space-2);
+        padding-bottom: max(var(--space-2), env(safe-area-inset-bottom));
+    }
+
+    .admin-header {
+        margin-left: calc(-1 * var(--space-2));
+        margin-right: calc(-1 * var(--space-2));
+        padding: var(--space-2);
+    }
+
+    .dashboard-grid,
+    .dashboard-grid.dashboard-grid-2col,
+    .gallery-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .stat-card {
+        padding: var(--space-2) var(--space-3);
+    }
+
+    .table-container {
+        margin-left: calc(-1 * var(--space-2));
+        margin-right: calc(-1 * var(--space-2));
+    }
+
+    .admin-sidebar {
+        width: 100vw;
+    }
+}
+
+@media (hover: none) {
+    .data-table tr:hover td {
+        background: inherit;
+    }
+    .btn-actions-trigger:hover {
+        background: transparent;
+        border-color: var(--border-default);
+        color: var(--text-secondary);
+    }
+    .admin-sidebar nav a:hover {
+        background: transparent;
+        color: var(--text-secondary);
+    }
+    .stat-card:hover {
+        transform: none;
+        box-shadow: none;
+    }
+}
+
+@media print {
+    .admin-sidebar,
+    .sidebar-toggle,
+    .sidebar-overlay,
+    .toolbar .btn-primary,
+    .pagination,
+    .actions-popup,
+    .col-actions {
+        display: none !important;
+    }
+
+    .admin-main {
+        padding: 0;
+    }
+
+    .table-container {
+        border: none;
+        margin: 0;
+    }
+}
+
 }

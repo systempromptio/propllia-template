@@ -1,15 +1,21 @@
 /* ============================================
-   Marcbo Admin Dashboard — Entry Point
-   Modular CSS architecture with @import
+   Proplia Admin Dashboard — Entry Point
+   Modular CSS with cascade layers
    ============================================ */
 
-@import url('admin/tokens.css');      /* Design tokens: colors, typography, spacing */
-@import url('admin/base.css');        /* Reset, layout, header, focus styles */
-@import url('admin/sidebar.css');     /* Sidebar navigation + section colors */
-@import url('admin/controls.css');    /* Buttons, toolbar, badges, progress bars */
-@import url('admin/tables.css');      /* Data tables, pagination, clickable rows */
-@import url('admin/panels.css');      /* Side panels, forms, detail views, timeline */
-@import url('admin/dashboard.css');   /* KPI cards, alerts, activity feed */
-@import url('admin/gallery.css');     /* Presentation modal, lightbox, images */
-@import url('admin/feedback.css');    /* Toast notifications, loading spinner */
-@import url('admin/responsive.css');  /* Media queries, mobile adaptation */
+/* Layer order: higher layers override lower layers
+   regardless of selector specificity or source order */
+@layer tokens, reset, base, components, utilities, responsive;
+
+@import url('admin/tokens.css');      /* @layer tokens: design tokens */
+@import url('admin/base.css');        /* @layer reset + base + utilities */
+@import url('admin/sidebar.css');     /* @layer components: sidebar nav */
+@import url('admin/controls.css');    /* @layer components: buttons, badges */
+@import url('admin/tables.css');      /* @layer components: data tables */
+@import url('admin/panels.css');      /* @layer components: side panels */
+@import url('admin/dashboard.css');   /* @layer components: KPI cards */
+@import url('admin/gallery.css');     /* @layer components: image gallery */
+@import url('admin/feedback.css');    /* @layer components: notifications */
+@import url('admin/detail-page.css'); /* @layer components: detail views */
+@import url('admin/split-layout.css');/* @layer components: split layouts */
+@import url('admin/responsive.css');  /* @layer responsive: media queries */

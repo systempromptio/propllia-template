@@ -6,27 +6,27 @@
                 const historyPanel = new HistoryPanel();
 
                 const formFields = [
-                    { key: 'nombre', label: 'Nombre completo', required: true, placeholder: 'Nombre y apellidos' },
-                    { key: 'identificacion', label: 'Identificación (DNI/NIF)', required: true, placeholder: 'DNI/NIF/NIE' },
-                    { key: 'email', label: 'Email', placeholder: 'email@ejemplo.com' },
-                    { key: 'telefono', label: 'Teléfono', placeholder: '+34 600 000 000' },
-                    { key: 'direccion', label: 'Dirección', placeholder: 'Dirección actual' },
-                    { key: 'banco', label: 'Cuenta bancaria', placeholder: 'Nombre del banco o IBAN' },
-                    { key: 'activo', label: 'Activo', placeholder: 'Activo asociado' },
-                    { key: 'direccion_activo', label: 'Dirección del activo', placeholder: 'Dirección del activo' },
+                    { key: 'name', label: 'Full name', required: true, placeholder: 'Full name or company' },
+                    { key: 'tax_id', label: 'Tax ID', required: true, placeholder: 'Company or personal tax reference' },
+                    { key: 'email', label: 'Email', placeholder: 'email@example.co.uk' },
+                    { key: 'phone', label: 'Phone', placeholder: '+44 7700 900000' },
+                    { key: 'address', label: 'Address', placeholder: 'Current address' },
+                    { key: 'bank_account', label: 'Bank account', placeholder: 'Bank name or IBAN' },
+                    { key: 'property_name', label: 'Property', placeholder: 'Associated property' },
+                    { key: 'property_address', label: 'Property address', placeholder: 'Property address' },
                 ];
 
                 const formPanel = new FormPanel({
-                    title: 'Propietario',
+                    title: 'Owner',
                     fields: formFields,
                     onSubmit: async (data, isEdit, original) => {
                         try {
                             if (isEdit) {
-                                await api.put(`/propietarios/${original.id}`, data);
-                                Toast.show('Propietario actualizado');
+                                await api.put(`/owners/${original.id}`, data);
+                                Toast.show('Owner updated');
                             } else {
-                                await api.post('/propietarios', data);
-                                Toast.show('Propietario creado');
+                                await api.post('/owners', data);
+                                Toast.show('Owner created');
                             }
                             table.load();
                         } catch (e) {
@@ -36,15 +36,15 @@
                 });
 
                 const table = new DataTable('#table-root', {
-                    entity: 'propietario',
-                    apiPath: '/propietarios',
+                    entity: 'owner',
+                    apiPath: '/owners',
                     columns: [
-                        { key: 'nombre', label: 'Nombre' },
-                        { key: 'identificacion', label: 'Identificación' },
+                        { key: 'name', label: 'Name' },
+                        { key: 'tax_id', label: 'Tax ID' },
                         { key: 'email', label: 'Email' },
-                        { key: 'telefono', label: 'Teléfono' },
-                        { key: 'activo', label: 'Activo' },
-                        { key: 'created_at', label: 'Creado', type: 'date' },
+                        { key: 'phone', label: 'Phone' },
+                        { key: 'property_name', label: 'Property' },
+                        { key: 'created_at', label: 'Created', type: 'date' },
                     ],
                     onRowClick: (row) => {
                         formPanel.open(row);
@@ -52,13 +52,13 @@
                     onAction: async (action, row) => {
                         if (action === 'create') formPanel.open();
                         if (action === 'edit') formPanel.open(row);
-                        if (action === 'history') historyPanel.open('propietarios', row.id);
+                        if (action === 'history') historyPanel.open('owners', row.id);
                         if (action === 'delete') {
-                            const ok = await confirmAction('Eliminar propietario', `¿Eliminar "${row.nombre}"? Esta acción no se puede deshacer.`);
+                            const ok = await confirmAction('Delete owner', `Delete "${row.name}"? This action cannot be undone.`);
                             if (ok) {
                                 try {
-                                    await api.del(`/propietarios/${row.id}`);
-                                    Toast.show('Propietario eliminado');
+                                    await api.del(`/owners/${row.id}`);
+                                    Toast.show('Owner deleted');
                                     table.load();
                                 } catch (e) { Toast.show(e.message, 'error'); }
                             }

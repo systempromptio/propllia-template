@@ -21,12 +21,14 @@ use crate::navigation::{NavigationConfig, NavigationPageDataProvider};
 use crate::partials::{
     AgenticMeshAnimationPartialRenderer, CliRemoteAnimationPartialRenderer,
     DemoContentActivosPartialRenderer, DemoContentAuditPartialRenderer,
-    DemoContentContabilidadPartialRenderer, DemoContentContratosPartialRenderer,
-    DemoContentDepositosPartialRenderer, DemoContentFinancialPartialRenderer,
-    DemoContentIncidenciasPartialRenderer, DemoContentInquilinosPartialRenderer,
-    DemoContentOverduePartialRenderer, DemoContentPanelPartialRenderer,
-    DemoContentPropietariosPartialRenderer, DemoContentRemesasSepaPartialRenderer,
-    DemoSidebarPartialRenderer, FooterPartialRenderer, HeadAssetsPartialRenderer,
+    DemoContentContabilidadPartialRenderer, DemoContentContactsPartialRenderer,
+    DemoContentContratosPartialRenderer, DemoContentDepositosPartialRenderer,
+    DemoContentFinancialPartialRenderer, DemoContentIncidenciasPartialRenderer,
+    DemoContentInquilinosPartialRenderer, DemoContentInsurancePartialRenderer,
+    DemoContentLeadsPartialRenderer, DemoContentOverduePartialRenderer,
+    DemoContentPanelPartialRenderer, DemoContentPropietariosPartialRenderer,
+    DemoContentRemesasSepaPartialRenderer, DemoSidebarPartialRenderer,
+    FooterPartialRenderer, HeadAssetsPartialRenderer,
     HeaderPartialRenderer, MemoryLoopAnimationPartialRenderer, RustMeshAnimationPartialRenderer,
     ScriptsPartialRenderer,
 };
@@ -231,6 +233,9 @@ impl Extension for WebExtension {
             Arc::new(DemoContentOverduePartialRenderer),
             Arc::new(DemoContentFinancialPartialRenderer),
             Arc::new(DemoContentAuditPartialRenderer),
+            Arc::new(DemoContentInsurancePartialRenderer),
+            Arc::new(DemoContentLeadsPartialRenderer),
+            Arc::new(DemoContentContactsPartialRenderer),
         ]
     }
 

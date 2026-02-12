@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <title>Admin - Sign In</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0a0a0f;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #e8e8ed;
+            padding: 20px;
+        }
+        .container {
+            background: #12121a;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.06);
+            padding: 48px 40px;
+            max-width: 420px;
+            width: 100%;
+            text-align: center;
+        }
+        h1 { font-size: 24px; margin-bottom: 8px; }
+        .subtitle { color: #9898a6; margin-bottom: 32px; font-size: 15px; }
+        .error {
+            background: rgba(255,59,48,0.15);
+            color: #FF3B30;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 4px solid #FF3B30;
+            display: none;
+        }
+        .loading {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+        .spinner {
+            border: 2px solid #252530;
+            border-top: 2px solid #f97316;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        .retry { display: none; margin-top: 20px; }
+        .retry a {
+            color: #f97316;
+            text-decoration: none;
+            padding: 10px 20px;
+            border: 1px solid #f97316;
+            border-radius: 8px;
+            display: inline-block;
+        }
+        .retry a:hover { background: rgba(249,115,22,0.1); }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Property Management</h1>
+        <p class="subtitle">Redirecting to sign in...</p>
+        <div id="error" class="error"></div>
+        <div id="loading" class="loading">
+            <div class="spinner"></div>
+            <p>Processing...</p>
+        </div>
+        <div id="retry" class="retry">
+            <a href="/admin/login">Try again</a>
+        </div>
+    </div>
+
+    <script>
+    (function() {
+        'use strict';
+
+        const CLIENT_ID = 'property-admin';
+        const OAUTH_BASE = '/api/v1/core/oauth';
+        const LOGIN_PATH = '/admin/login';
+        const DEFAULT_REDIRECT = '/admin/';
+
+        const errorDiv = document.getElementById('error');
+        const loadingSection = document.getElementById('loading');
+        const retrySection = document.getElementById('retry');
+
+        function generateRandomString(length) {
+            const array = new Uint8Array(length);
+            crypto.getRandomValues(array);
+            return Array.from(array, b => b.toString(36).padStart(2, '0')).join('').slice(0, length);
+        }
+
+        async function generateCodeChallenge(verifier) {
+            const encoder = new TextEncoder();
+            const data = encoder.encode(verifier);
+            const digest = await crypto.subtle.digest('SHA-256', data);
+            return btoa(String.fromCharCode(...new Uint8Array(digest)))
+                .replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+        }
+
+        async function clearAccessToken() {
+            try { await fetch('/admin/api/auth/session', { method: 'DELETE' }); } catch {}
+            document.cookie = 'access_token=; path=/; max-age=0; SameSite=Lax' +
+                (window.location.protocol === 'https:' ? '; Secure' : '');
+        }
+
+        async function showError(msg) {
+            await clearAccessToken();
+            errorDiv.textContent = msg;
+            errorDiv.style.display = 'block';
+            loadingSection.style.display = 'none';
+            retrySection.style.display = 'block';
+        }
+
+        async function handleCallback() {
+            const params = new URLSearchParams(window.location.search);
+            const code = params.get('code');
+            const error = params.get('error');
+            const errorDesc = params.get('error_description');
+
+            if (error) {
+                showError(errorDesc || error);
+                return true;
+            }
+
+            if (!code) return false;
+
+            const codeVerifier = localStorage.getItem('pkce_code_verifier');
+            const redirectAfterLogin = localStorage.getItem('login_redirect') || DEFAULT_REDIRECT;
+
+            if (!codeVerifier) {
+                window.history.replaceState({}, '', LOGIN_PATH);
+                startOAuthFlow();
+                return true;
+            }
+
+            try {
+                const tokenResponse = await fetch(OAUTH_BASE + '/token', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: new URLSearchParams({
+                        grant_type: 'authorization_code',
+                        code: code,
+                        redirect_uri: window.location.origin + LOGIN_PATH,
+                        code_verifier: codeVerifier,
+                        client_id: CLIENT_ID
+                    })
+                });
+
+                const tokenData = await tokenResponse.json();
+
+                if (!tokenResponse.ok) {
+                    throw new Error(tokenData.error_description || tokenData.error || 'Token exchange failed');
+                }
+
+                await fetch('/admin/api/auth/session', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        access_token: tokenData.access_token,
+                        expires_in: tokenData.expires_in || 3600
+                    })
+                });
+
+                if (tokenData.refresh_token) {
+                    localStorage.setItem('refresh_token', tokenData.refresh_token);
+                }
+
+                localStorage.removeItem('pkce_code_verifier');
+                localStorage.removeItem('pkce_csrf_state');
+                localStorage.removeItem('login_redirect');
+
+                window.location.href = redirectAfterLogin;
+            } catch (err) {
+                showError(err.message);
+                window.history.replaceState({}, '', LOGIN_PATH);
+            }
+
+            return true;
+        }
+
+        function clearStaleState() {
+            localStorage.removeItem('pkce_code_verifier');
+            localStorage.removeItem('pkce_csrf_state');
+            localStorage.removeItem('login_redirect');
+        }
+
+        async function startOAuthFlow() {
+            await clearAccessToken();
+            clearStaleState();
+            const codeVerifier = generateRandomString(64);
+            const codeChallenge = await generateCodeChallenge(codeVerifier);
+            const csrfState = generateRandomString(32);
+
+            localStorage.setItem('pkce_code_verifier', codeVerifier);
+            localStorage.setItem('pkce_csrf_state', csrfState);
+
+            const params = new URLSearchParams(window.location.search);
+            const redirectTo = params.get('redirect') || DEFAULT_REDIRECT;
+            localStorage.setItem('login_redirect', redirectTo);
+
+            const authParams = new URLSearchParams({
+                response_type: 'code',
+                client_id: CLIENT_ID,
+                redirect_uri: window.location.origin + LOGIN_PATH,
+                state: csrfState,
+                code_challenge: codeChallenge,
+                code_challenge_method: 'S256',
+                scope: 'admin'
+            });
+
+            window.location.href = OAUTH_BASE + '/authorize?' + authParams.toString();
+        }
+
+        function hasValidAdminToken() {
+            try {
+                const cookie = document.cookie.split('; ').find(c => c.startsWith('access_token='));
+                if (!cookie) return false;
+                const token = cookie.split('=').slice(1).join('=');
+                const payload = JSON.parse(atob(token.split('.')[1]));
+                const scopes = (payload.scope || '').split(' ');
+                if (!scopes.includes('admin')) return false;
+                if (payload.exp && payload.exp * 1000 < Date.now()) return false;
+                return true;
+            } catch { return false; }
+        }
+
+        handleCallback().then(async function(wasCallback) {
+            if (wasCallback) return;
+
+            if (hasValidAdminToken()) {
+                const params = new URLSearchParams(window.location.search);
+                window.location.href = params.get('redirect') || DEFAULT_REDIRECT;
+                return;
+            }
+
+            await clearAccessToken();
+            startOAuthFlow();
+        });
+    })();
+    </script>
+</body>
+</html>

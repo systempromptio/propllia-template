@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        @font-face {
+            font-family: 'Nunito';
+            src: url('file://{{fonts_dir}}/Nunito-Regular.ttf') format('truetype');
+            font-weight: 400;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'Nunito';
+            src: url('file://{{fonts_dir}}/Nunito-Medium.ttf') format('truetype');
+            font-weight: 500;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'Nunito';
+            src: url('file://{{fonts_dir}}/Nunito-SemiBold.ttf') format('truetype');
+            font-weight: 600;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'Nunito';
+            src: url('file://{{fonts_dir}}/Nunito-Bold.ttf') format('truetype');
+            font-weight: 700;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'Nunito';
+            src: url('file://{{fonts_dir}}/Nunito-ExtraBold.ttf') format('truetype');
+            font-weight: 800;
+            font-style: normal;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Nunito', 'Helvetica Neue', Arial, sans-serif;
+            font-size: 13px;
+            color: #2D2925;
+            line-height: 1.55;
+            background: #ffffff;
+        }
+
+        .page {
+            padding: 48px 56px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* ===== HEADER ===== */
+        .header {
+            overflow: hidden;
+            padding-bottom: 28px;
+            border-bottom: 3px solid #2B4C7E;
+            margin-bottom: 36px;
+        }
+        .header-logo {
+            float: left;
+            width: 200px;
+            padding-top: 4px;
+        }
+        .header-logo img {
+            max-width: 180px;
+            max-height: 64px;
+        }
+        .header-logo .fallback-name {
+            font-size: 28px;
+            font-weight: 800;
+            color: #2B4C7E;
+            letter-spacing: -0.5px;
+        }
+        .header-title {
+            float: right;
+            text-align: right;
+        }
+        .header-title h1 {
+            font-size: 32px;
+            font-weight: 800;
+            color: #2B4C7E;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+        }
+        .header-title .ref {
+            font-size: 15px;
+            font-weight: 600;
+            color: #5C544D;
+        }
+        .header-title .date {
+            font-size: 13px;
+            color: #918780;
+            margin-top: 4px;
+        }
+
+        /* ===== PARTIES ===== */
+        .parties {
+            overflow: hidden;
+            margin-bottom: 36px;
+        }
+        .party {
+            width: 48%;
+            float: left;
+        }
+        .party.right {
+            float: right;
+        }
+        .party-label {
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: #2B4C7E;
+            margin-bottom: 10px;
+            padding-bottom: 6px;
+            border-bottom: 1px solid #EDE9E3;
+        }
+        .party-name {
+            font-size: 16px;
+            font-weight: 700;
+            color: #2D2925;
+            margin-bottom: 6px;
+        }
+        .party-detail {
+            font-size: 12px;
+            color: #5C544D;
+            line-height: 1.8;
+        }
+        .party-detail .iban {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 11px;
+            color: #2D2925;
+            letter-spacing: 0.5px;
+        }
+
+        /* ===== PROPERTY BAR ===== */
+        .property-bar {
+            background: #F0F4FA;
+            border-left: 4px solid #2B4C7E;
+            padding: 16px 24px;
+            margin-bottom: 36px;
+            overflow: hidden;
+        }
+        .property-item {
+            float: left;
+            margin-right: 48px;
+        }
+        .property-item .label {
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #918780;
+            margin-bottom: 2px;
+        }
+        .property-item .value {
+            font-size: 14px;
+            font-weight: 600;
+            color: #2D2925;
+        }
+
+        /* ===== LINE ITEMS TABLE ===== */
+        .items-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 28px;
+        }
+        .items-table thead th {
+            background: #2D2925;
+            color: #FFFFFF;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 13px 18px;
+            text-align: left;
+        }
+        .items-table thead th.amount {
+            text-align: right;
+        }
+        .items-table tbody td {
+            padding: 15px 18px;
+            font-size: 13px;
+            border-bottom: 1px solid #EDE9E3;
+            color: #2D2925;
+        }
+        .items-table tbody td.amount {
+            text-align: right;
+            font-weight: 600;
+            font-variant-numeric: tabular-nums;
+        }
+        .items-table tbody tr:last-child td {
+            border-bottom: 2px solid #D5CFC7;
+        }
+
+        /* ===== TOTALS ===== */
+        .totals-wrapper {
+            overflow: hidden;
+            margin-bottom: 36px;
+        }
+        .totals-table {
+            float: right;
+            width: 320px;
+            border-collapse: collapse;
+        }
+        .totals-table td {
+            padding: 9px 18px;
+            font-size: 13px;
+        }
+        .totals-table td:first-child {
+            color: #5C544D;
+            text-align: left;
+        }
+        .totals-table td:last-child {
+            text-align: right;
+            font-weight: 600;
+            font-variant-numeric: tabular-nums;
+        }
+        .totals-table .discount-row td {
+            color: #3D8B5E;
+        }
+        .totals-table .retention-row td {
+            color: #C4453A;
+        }
+        .totals-table .total-row td {
+            font-size: 20px;
+            font-weight: 800;
+            color: #2B4C7E;
+            border-top: 3px solid #2B4C7E;
+            padding-top: 16px;
+        }
+
+        /* ===== PAYMENT INFO ===== */
+        .payment-info {
+            background: #FAFAF8;
+            border: 1px solid #EDE9E3;
+            border-radius: 6px;
+            padding: 24px 28px;
+            margin-bottom: 36px;
+            overflow: hidden;
+        }
+        .payment-info h3 {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: #2B4C7E;
+            margin-bottom: 18px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #EDE9E3;
+        }
+        .payment-col {
+            float: left;
+            width: 48%;
+        }
+        .payment-col.right {
+            float: right;
+        }
+        .payment-field {
+            margin-bottom: 14px;
+        }
+        .payment-field .label {
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #918780;
+            margin-bottom: 2px;
+        }
+        .payment-field .value {
+            font-size: 13px;
+            color: #2D2925;
+            font-weight: 500;
+        }
+
+        /* ===== STATUS BADGE ===== */
+        .status-badge {
+            display: inline-block;
+            padding: 4px 14px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .status-paid { background: #E8F5E9; color: #2E7D32; }
+        .status-partial { background: #FFF3E0; color: #E65100; }
+        .status-unpaid { background: #FBE9E7; color: #C62828; }
+        .status-overdue { background: #FBE9E7; color: #C62828; }
+        .status-issued { background: #E3F2FD; color: #1565C0; }
+        .status-sent { background: #E3F2FD; color: #1565C0; }
+
+        .outstanding-value {
+            color: #C4453A;
+            font-weight: 700;
+        }
+
+        /* ===== NOTES ===== */
+        .notes {
+            border-top: 1px solid #EDE9E3;
+            padding-top: 24px;
+            margin-bottom: 36px;
+        }
+        .notes h3 {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: #918780;
+            margin-bottom: 10px;
+        }
+        .notes p {
+            font-size: 12px;
+            color: #5C544D;
+            line-height: 1.7;
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            text-align: center;
+            padding-top: 28px;
+            border-top: 1px solid #EDE9E3;
+        }
+        .footer p {
+            font-size: 10px;
+            color: #B5ADA2;
+            line-height: 1.8;
+        }
+        .footer .company-name {
+            font-weight: 700;
+            color: #918780;
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+
+        <!-- HEADER -->
+        <div class="header">
+            <div class="header-logo">
+                {{#if logo_base64}}
+                <img src="data:image/png;base64,{{logo_base64}}" alt="Proplia" />
+                {{else}}
+                <span class="fallback-name">Proplia</span>
+                {{/if}}
+            </div>
+            <div class="header-title">
+                <h1>Invoice</h1>
+                <div class="ref">{{reference}}</div>
+                <div class="date">{{invoice_date_formatted}}</div>
+            </div>
+        </div>
+
+        <!-- PARTIES -->
+        <div class="parties">
+            <div class="party">
+                <div class="party-label">From (Issuer)</div>
+                <div class="party-name">{{payee}}</div>
+                <div class="party-detail">
+                    {{#if payee_tax_id}}Tax ID: {{payee_tax_id}}<br>{{/if}}
+                    {{#if payee_address}}{{payee_address}}<br>{{/if}}
+                    {{#if payee_email}}{{payee_email}}<br>{{/if}}
+                    {{#if payee_phone}}Tel: {{payee_phone}}<br>{{/if}}
+                    {{#if payee_account}}<span class="iban">{{payee_account}}</span>{{/if}}
+                </div>
+            </div>
+            <div class="party right">
+                <div class="party-label">To (Recipient)</div>
+                <div class="party-name">{{payer}}</div>
+                <div class="party-detail">
+                    {{#if payer_tax_id}}Tax ID: {{payer_tax_id}}<br>{{/if}}
+                    {{#if payer_address}}{{payer_address}}<br>{{/if}}
+                    {{#if payer_email}}{{payer_email}}<br>{{/if}}
+                    {{#if payer_phone}}Tel: {{payer_phone}}<br>{{/if}}
+                    {{#if payer_account}}<span class="iban">{{payer_account}}</span>{{/if}}
+                </div>
+            </div>
+        </div>
+
+        <!-- PROPERTY BAR -->
+        <div class="property-bar">
+            <div class="property-item">
+                <div class="label">Property</div>
+                <div class="value">{{property_name}}</div>
+            </div>
+            {{#if property_address}}
+            <div class="property-item">
+                <div class="label">Address</div>
+                <div class="value">{{property_address}}</div>
+            </div>
+            {{/if}}
+            {{#if contract_ref}}
+            <div class="property-item">
+                <div class="label">Contract</div>
+                <div class="value">{{contract_ref}}</div>
+            </div>
+            {{/if}}
+        </div>
+
+        <!-- LINE ITEMS -->
+        <table class="items-table">
+            <thead>
+                <tr>
+                    <th>Description</th>
+                    <th class="amount">Subtotal</th>
+                    <th class="amount">VAT</th>
+                    <th class="amount">Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{description}}</td>
+                    <td class="amount">{{subtotal}} {{currency_symbol}}</td>
+                    <td class="amount">{{vat}} {{currency_symbol}}</td>
+                    <td class="amount">{{total}} {{currency_symbol}}</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- TOTALS -->
+        <div class="totals-wrapper">
+            <table class="totals-table">
+                <tr>
+                    <td>Subtotal</td>
+                    <td>{{subtotal}} {{currency_symbol}}</td>
+                </tr>
+                <tr>
+                    <td>VAT</td>
+                    <td>{{vat}} {{currency_symbol}}</td>
+                </tr>
+                {{#if has_withholding}}
+                <tr class="retention-row">
+                    <td>Tax Withholding</td>
+                    <td>-{{withholding}} {{currency_symbol}}</td>
+                </tr>
+                {{/if}}
+                {{#if has_discount}}
+                <tr class="discount-row">
+                    <td>Discount ({{discount_pct}}%)</td>
+                    <td>-{{discount}} {{currency_symbol}}</td>
+                </tr>
+                {{/if}}
+                <tr class="total-row">
+                    <td>Total</td>
+                    <td>{{net_total}} {{currency_symbol}}</td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- PAYMENT INFO -->
+        <div class="payment-info">
+            <h3>Payment Information</h3>
+            <div class="payment-col">
+                {{#if payment_method}}
+                <div class="payment-field">
+                    <div class="label">Payment Method</div>
+                    <div class="value">{{payment_method}}</div>
+                </div>
+                {{/if}}
+                {{#if collection_method}}
+                <div class="payment-field">
+                    <div class="label">Collection Method</div>
+                    <div class="value">{{collection_method}}</div>
+                </div>
+                {{/if}}
+                <div class="payment-field">
+                    <div class="label">Status</div>
+                    <div class="value">
+                        <span class="status-badge status-{{status_class}}">{{status}}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="payment-col right">
+                <div class="payment-field">
+                    <div class="label">Paid</div>
+                    <div class="value">{{paid}} {{currency_symbol}}</div>
+                </div>
+                {{#if has_outstanding}}
+                <div class="payment-field">
+                    <div class="label">Outstanding</div>
+                    <div class="value outstanding-value">{{outstanding}} {{currency_symbol}}</div>
+                </div>
+                {{/if}}
+                {{#if payment_date_formatted}}
+                <div class="payment-field">
+                    <div class="label">Payment Date</div>
+                    <div class="value">{{payment_date_formatted}}</div>
+                </div>
+                {{/if}}
+                {{#if collection_date_formatted}}
+                <div class="payment-field">
+                    <div class="label">Collection Date</div>
+                    <div class="value">{{collection_date_formatted}}</div>
+                </div>
+                {{/if}}
+            </div>
+        </div>
+
+        <!-- NOTES -->
+        {{#if notes}}
+        <div class="notes">
+            <h3>Notes</h3>
+            <p>{{notes}}</p>
+        </div>
+        {{/if}}
+
+        <!-- FOOTER -->
+        <div class="footer">
+            <p><span class="company-name">Proplia</span> &mdash; Property Management</p>
+            <p>Document generated automatically on {{generated_at}}</p>
+        </div>
+
+    </div>
+</body>
+</html>

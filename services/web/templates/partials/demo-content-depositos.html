@@ -6,31 +6,31 @@
                 const historyPanel = new HistoryPanel();
 
                 const formFields = [
-                    { key: 'fecha', label: 'Fecha', type: 'date', required: true },
-                    { key: 'propiedad', label: 'Activo', required: true, placeholder: 'Nombre del activo' },
-                    { key: 'pagador', label: 'Pagador', required: true, placeholder: 'Quién paga' },
-                    { key: 'receptor', label: 'Receptor', required: true, placeholder: 'Quién recibe' },
-                    { key: 'tipo', label: 'Tipo', required: true, placeholder: 'ej. Fianza' },
-                    { key: 'estado', label: 'Estado', type: 'select', required: true, options: ['Depositado', 'Pendiente', 'Pagado', 'Devuelto', 'Organo oficial'] },
-                    { key: 'total', label: 'Importe', type: 'number', required: true, placeholder: '0.00' },
-                    { key: 'fecha_pago', label: 'Fecha de pago', type: 'date' },
-                    { key: 'fecha_devolucion', label: 'Fecha devolución', type: 'date' },
-                    { key: 'contrato', label: 'Ref. contrato', placeholder: 'Referencia del contrato' },
-                    { key: 'pagado', label: 'Importe pagado', type: 'number', placeholder: '0.00' },
-                    { key: 'devuelto', label: 'Importe devuelto', type: 'number', placeholder: '0.00' },
+                    { key: 'invoice_date', label: 'Date', type: 'date', required: true },
+                    { key: 'property_name', label: 'Property', required: true, placeholder: 'Property name' },
+                    { key: 'payer', label: 'Payer', required: true, placeholder: 'Who pays' },
+                    { key: 'payee', label: 'Payee', required: true, placeholder: 'Who receives' },
+                    { key: 'type', label: 'Type', required: true, placeholder: 'e.g. Deposit' },
+                    { key: 'status', label: 'Status', type: 'select', required: true, options: ['Deposited', 'Pending', 'Paid', 'Returned', 'Deposit Protection'] },
+                    { key: 'total', label: 'Amount', type: 'number', required: true, placeholder: '0.00' },
+                    { key: 'payment_date', label: 'Payment date', type: 'date' },
+                    { key: 'return_date', label: 'Return date', type: 'date' },
+                    { key: 'contract_ref', label: 'Contract ref', placeholder: 'Contract reference' },
+                    { key: 'paid', label: 'Amount paid', type: 'number', placeholder: '0.00' },
+                    { key: 'refunded', label: 'Amount refunded', type: 'number', placeholder: '0.00' },
                 ];
 
                 const formPanel = new FormPanel({
-                    title: 'Depósito',
+                    title: 'Deposit',
                     fields: formFields,
                     onSubmit: async (data, isEdit, original) => {
                         try {
                             if (isEdit) {
-                                await api.put(`/depositos/${original.id}`, data);
-                                Toast.show('Depósito actualizado');
+                                await api.put(`/deposits/${original.id}`, data);
+                                Toast.show('Deposit updated');
                             } else {
-                                await api.post('/depositos', data);
-                                Toast.show('Depósito creado');
+                                await api.post('/deposits', data);
+                                Toast.show('Deposit created');
                             }
                             table.load();
                         } catch (e) {
@@ -40,20 +40,20 @@
                 });
 
                 const table = new DataTable('#table-root', {
-                    entity: 'deposito',
-                    apiPath: '/depositos',
+                    entity: 'deposit',
+                    apiPath: '/deposits',
                     columns: [
-                        { key: 'fecha', label: 'Fecha', type: 'date' },
-                        { key: 'propiedad', label: 'Activo' },
-                        { key: 'pagador', label: 'Pagador' },
-                        { key: 'receptor', label: 'Receptor' },
-                        { key: 'estado', label: 'Estado', type: 'status' },
-                        { key: 'total', label: 'Importe', type: 'currency' },
-                        { key: 'created_at', label: 'Creado', type: 'date' },
+                        { key: 'invoice_date', label: 'Date', type: 'date' },
+                        { key: 'property_name', label: 'Property' },
+                        { key: 'payer', label: 'Payer' },
+                        { key: 'payee', label: 'Payee' },
+                        { key: 'status', label: 'Status', type: 'status' },
+                        { key: 'total', label: 'Amount', type: 'currency' },
+                        { key: 'created_at', label: 'Created', type: 'date' },
                     ],
                     filters: [
-                        { key: 'estado', label: 'Estado', options: ['Depositado', 'Pendiente', 'Pagado', 'Devuelto', 'Organo oficial'] },
-                        { key: 'propiedad', label: 'Activo', asyncOptions: '/activos/names' }
+                        { key: 'status', label: 'Status', options: ['Deposited', 'Pending', 'Paid', 'Returned', 'Deposit Protection'] },
+                        { key: 'property_name', label: 'Property', asyncOptions: '/properties/names' }
                     ],
                     onRowClick: (row) => {
                         formPanel.open(row);
@@ -61,13 +61,13 @@
                     onAction: async (action, row) => {
                         if (action === 'create') formPanel.open();
                         if (action === 'edit') formPanel.open(row);
-                        if (action === 'history') historyPanel.open('depositos', row.id);
+                        if (action === 'history') historyPanel.open('deposits', row.id);
                         if (action === 'delete') {
-                            const ok = await confirmAction('Eliminar depósito', `¿Eliminar depósito de "${row.propiedad}"? Esta acción no se puede deshacer.`);
+                            const ok = await confirmAction('Delete deposit', `Delete deposit for "${row.property_name}"? This action cannot be undone.`);
                             if (ok) {
                                 try {
-                                    await api.del(`/depositos/${row.id}`);
-                                    Toast.show('Depósito eliminado');
+                                    await api.del(`/deposits/${row.id}`);
+                                    Toast.show('Deposit deleted');
                                     table.load();
                                 } catch (e) { Toast.show(e.message, 'error'); }
                             }

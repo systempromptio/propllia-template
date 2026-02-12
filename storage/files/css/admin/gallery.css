@@ -1,15 +1,11 @@
-/* ============================================
-   Gallery — Presentation modal, lightbox,
-   image strips, thumbnails
-   ============================================ */
+@layer components {
 
-/* Presentation Modal */
 .presentation-overlay {
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.85);
+    background: var(--overlay-heavy);
     backdrop-filter: blur(8px);
-    z-index: 1500;
+    z-index: var(--z-modal);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -93,7 +89,6 @@
 .presentation-gallery { flex: 3; min-width: 0; }
 .presentation-details { flex: 2; min-width: 280px; }
 
-/* Gallery Grid */
 .gallery-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -113,7 +108,7 @@
 .gallery-thumbnail:hover {
     transform: scale(1.03);
     border-color: var(--accent);
-    box-shadow: 0 4px 12px rgba(183, 96, 74, 0.20);
+    box-shadow: 0 4px 12px color-mix(in srgb, var(--accent) 20%, transparent);
 }
 
 .gallery-count {
@@ -133,7 +128,6 @@
     font-size: var(--text-base);
 }
 
-/* Detail Panel Image Strip */
 .detail-image-strip {
     display: flex;
     gap: var(--space-1);
@@ -161,7 +155,7 @@
     padding: var(--space-2) var(--space-4);
     background: var(--accent-dim);
     color: var(--accent);
-    border: 1px solid rgba(183, 96, 74, 0.25);
+    border: 1px solid color-mix(in srgb, var(--accent) 25%, transparent);
     border-radius: var(--radius-sm);
     cursor: pointer;
     font-size: var(--text-sm);
@@ -173,7 +167,6 @@
 
 .detail-view-gallery-btn:hover { background: var(--accent-strong); }
 
-/* Presentation Details */
 .presentation-stats {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -268,17 +261,16 @@
     font-size: var(--text-sm);
 }
 
-/* Lightbox */
 .lightbox-overlay {
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.95);
-    z-index: 2000;
+    background: var(--overlay-opaque);
+    z-index: var(--z-lightbox);
     display: flex;
     align-items: center;
     justify-content: center;
     opacity: 0;
-    transition: opacity 250ms;
+    transition: opacity var(--duration-normal);
 }
 
 .lightbox-overlay.active { opacity: 1; }
@@ -341,7 +333,8 @@
     color: rgba(255, 255, 255, 0.7);
     font-size: var(--text-sm);
     font-weight: 500;
-    background: rgba(0, 0, 0, 0.5);
+    background: var(--overlay-light);
     padding: var(--space-1) var(--space-3);
     border-radius: var(--radius-full);
+}
 }

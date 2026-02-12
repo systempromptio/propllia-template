@@ -6,25 +6,25 @@
                 const historyPanel = new HistoryPanel();
 
                 const formFields = [
-                    { key: 'activo', label: 'Activo', required: true, placeholder: 'Nombre del activo' },
-                    { key: 'titulo', label: 'Título', required: true, placeholder: 'Breve descripción del problema' },
-                    { key: 'descripcion', label: 'Descripción', type: 'textarea', placeholder: 'Descripción detallada...' },
-                    { key: 'prioridad', label: 'Prioridad', type: 'select', options: ['Alta', 'Media', 'Baja'], default: 'Media' },
-                    { key: 'estado', label: 'Estado', type: 'select', options: ['Abierta', 'En progreso', 'Resuelta', 'Cerrada'], default: 'Abierta' },
-                    { key: 'coste', label: 'Coste (€)', type: 'number', placeholder: '0.00' },
+                    { key: 'property_name', label: 'Property', required: true, placeholder: 'Property name' },
+                    { key: 'title', label: 'Title', required: true, placeholder: 'Brief description of the issue' },
+                    { key: 'description', label: 'Description', type: 'textarea', placeholder: 'Detailed description...' },
+                    { key: 'priority', label: 'Priority', type: 'select', options: ['High', 'Medium', 'Low'], default: 'Medium' },
+                    { key: 'status', label: 'Status', type: 'select', options: ['Open', 'In Progress', 'Resolved', 'Closed'], default: 'Open' },
+                    { key: 'cost', label: 'Cost', type: 'number', placeholder: '0.00' },
                 ];
 
                 const formPanel = new FormPanel({
-                    title: 'Incidencia',
+                    title: 'Issue',
                     fields: formFields,
                     onSubmit: async (data, isEdit, original) => {
                         try {
                             if (isEdit) {
-                                await api.put(`/incidencias/${original.id}`, data);
-                                Toast.show('Incidencia actualizada');
+                                await api.put(`/issues/${original.id}`, data);
+                                Toast.show('Issue updated');
                             } else {
-                                await api.post('/incidencias', data);
-                                Toast.show('Incidencia creada');
+                                await api.post('/issues', data);
+                                Toast.show('Issue created');
                             }
                             table.load();
                         } catch (e) {
@@ -34,21 +34,21 @@
                 });
 
                 const table = new DataTable('#table-root', {
-                    entity: 'incidencia',
-                    apiPath: '/incidencias',
-                    exportPath: '/export/incidencias',
+                    entity: 'issue',
+                    apiPath: '/issues',
+                    exportPath: '/export/issues',
                     columns: [
-                        { key: 'activo', label: 'Activo' },
-                        { key: 'titulo', label: 'Título' },
-                        { key: 'prioridad', label: 'Prioridad', type: 'status' },
-                        { key: 'estado', label: 'Estado', type: 'status' },
-                        { key: 'coste', label: 'Coste', type: 'currency' },
-                        { key: 'created_at', label: 'Creado', type: 'date' },
+                        { key: 'property_name', label: 'Property' },
+                        { key: 'title', label: 'Title' },
+                        { key: 'priority', label: 'Priority', type: 'status' },
+                        { key: 'status', label: 'Status', type: 'status' },
+                        { key: 'cost', label: 'Cost', type: 'currency' },
+                        { key: 'created_at', label: 'Created', type: 'date' },
                     ],
                     filters: [
-                        { key: 'estado', label: 'Estado', options: ['Abierta', 'En progreso', 'Resuelta', 'Cerrada'] },
-                        { key: 'prioridad', label: 'Prioridad', options: ['Alta', 'Media', 'Baja'] },
-                        { key: 'activo', label: 'Activo', asyncOptions: '/activos/names' }
+                        { key: 'status', label: 'Status', options: ['Open', 'In Progress', 'Resolved', 'Closed'] },
+                        { key: 'priority', label: 'Priority', options: ['High', 'Medium', 'Low'] },
+                        { key: 'property_name', label: 'Property', asyncOptions: '/properties/names' }
                     ],
                     onRowClick: (row) => {
                         formPanel.open(row);
@@ -56,13 +56,13 @@
                     onAction: async (action, row) => {
                         if (action === 'create') formPanel.open();
                         if (action === 'edit') formPanel.open(row);
-                        if (action === 'history') historyPanel.open('incidencias', row.id);
+                        if (action === 'history') historyPanel.open('issues', row.id);
                         if (action === 'delete') {
-                            const ok = await confirmAction('Eliminar incidencia', `¿Eliminar "${row.titulo}"? Esta acción no se puede deshacer.`);
+                            const ok = await confirmAction('Delete issue', `Delete "${row.title}"? This action cannot be undone.`);
                             if (ok) {
                                 try {
-                                    await api.del(`/incidencias/${row.id}`);
-                                    Toast.show('Incidencia eliminada');
+                                    await api.del(`/issues/${row.id}`);
+                                    Toast.show('Issue deleted');
                                     table.load();
                                 } catch (e) { Toast.show(e.message, 'error'); }
                             }
