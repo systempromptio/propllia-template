@@ -20,8 +20,7 @@ category: build
 - [ ] Read [MCP Checklist](build_mcp-checklist)
 
 **Reference Implementations:**
-- `extensions/mcp/content-manager/src/tools/` — Full production example
-- `extensions/mcp/systemprompt/src/tools.rs` — Simpler example
+- `extensions/mcp/systemprompt/src/tools.rs` — Production example
 
 ---
 

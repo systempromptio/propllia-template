@@ -31,7 +31,6 @@ Manage extensions and MCP servers.
 ```json
 { "command": "plugins show <name>" }
 { "command": "plugins show blog" }
-{ "command": "plugins show content-manager" }
 ```
 
 ### Extension Config

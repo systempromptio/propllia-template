@@ -27,7 +27,7 @@ The blog mesh is a coordinated system of specialised agents:
 │  - Discord notifications                                         │
 │  - Memory management                                             │
 │  - Cross-agent communications                                    │
-│  MCP: systemprompt, soul                                         │
+│  MCP: systemprompt                                               │
 └──────────────────────────────┬──────────────────────────────────┘
                                │
               summaries        │        updates
@@ -58,8 +58,8 @@ The blog mesh is a coordinated system of specialised agents:
 │   - research_blog   │                   │   - blog_image_     │
 │   - blog_image_     │                   │     generation      │
 │     generation      │                   │                     │
-│                     │                   │   MCP: soul         │
-│   MCP: soul         │                   │                     │
+│                     │                   │                     │
+│                     │                   │                     │
 │                     │                   │   Content:          │
 │   Content:          │                   │   - Personal        │
 │   - Contrarian      │                   │     stories         │
@@ -73,7 +73,6 @@ The blog mesh is a coordinated system of specialised agents:
                                ▼
 ┌─────────────────────────────────────────────────────────────────┐
 │                    SHARED INFRASTRUCTURE                         │
-│  - soul MCP (memory + blog tools)                                │
 │  - systemprompt MCP (CLI access)                                 │
 │  - Skills (loaded into agent context)                            │
 └─────────────────────────────────────────────────────────────────┘
@@ -95,7 +94,6 @@ The blog mesh is a coordinated system of specialised agents:
 
 **MCP Servers:**
 - `systemprompt` - CLI access for Discord, playbooks
-- `soul` - Memory storage and retrieval
 
 **Message Types:**
 - `WORKFLOW_START: <description>` - Blog creation started
@@ -128,7 +126,7 @@ The blog mesh is a coordinated system of specialised agents:
 **Purpose:** Contrarian technical deep-dives.
 
 **Responsibilities:**
-- Research topics using soul MCP
+- Research topics
 - Write 4000-6000 word technical posts
 - Challenge conventional wisdom with evidence
 - Generate featured images
@@ -138,9 +136,6 @@ The blog mesh is a coordinated system of specialised agents:
 - `technical_content_writing` - Contrarian structure
 - `research_blog` - Topic research
 - `blog_image_generation` - Featured images
-
-**MCP Servers:**
-- `soul` - Blog tools, memory
 
 **Content Structure:**
 ```
@@ -158,7 +153,7 @@ The blog mesh is a coordinated system of specialised agents:
 **Purpose:** Personal narratives and tutorials.
 
 **Responsibilities:**
-- Research topics using soul MCP
+- Research topics
 - Write 3500-5000 word narrative posts
 - Balance 60% story, 40% technical
 - Generate featured images
@@ -168,9 +163,6 @@ The blog mesh is a coordinated system of specialised agents:
 - `blog_writing` - Narrative structure
 - `research_blog` - Topic research
 - `blog_image_generation` - Featured images
-
-**MCP Servers:**
-- `soul` - Blog tools, memory
 
 **Content Structure:**
 ```
@@ -242,23 +234,6 @@ Provides CLI access to the SystemPrompt platform:
 - `core playbooks show <id>` - Read playbooks
 - `plugins run discord send "<msg>"` - Discord notifications
 
-### soul MCP
-
-Provides memory and blog creation tools:
-
-**Used by:** Hub, Blog Technical, Blog Narrative
-
-**Memory Tools:**
-- `memory_get_context` - Retrieve formatted memory
-- `memory_store` - Store new memory
-- `memory_search` - Search memories
-- `memory_forget` - Soft-delete memory
-
-**Blog Tools:**
-- `research_blog` - Research a topic
-- `create_blog_post` - Create and publish post
-- `update_blog_post` - Update existing post
-
 ---
 
 ## Context Management
@@ -329,7 +304,6 @@ systemprompt core skills sync --direction to-db -y
 | Port | Agent | Purpose |
 |------|-------|---------|
 | 9000 | welcome | Default assistant |
-| 9010 | soul | Memory agent |
 | 9020 | systemprompt_hub | Central hub |
 | 9030 | blog_orchestrator | Workflow coordinator |
 | 9040 | blog_technical | Technical content |

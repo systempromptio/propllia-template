@@ -107,7 +107,7 @@ Agent names must be lowercase alphanumeric with underscores only (no hyphens). U
 { "command": "admin agents create --name <name> --port <port>" }
 { "command": "admin agents create --name <name> --port <port> --display-name \"My Agent\" --description \"Agent description\"" }
 { "command": "admin agents create --name <name> --port <port> --provider anthropic --model claude-3-5-sonnet-20241022" }
-{ "command": "admin agents create --name <name> --port <port> --mcp-server content-manager --skill research --enabled" }
+{ "command": "admin agents create --name <name> --port <port> --skill research --enabled" }
 ```
 
 ---

@@ -4281,7 +4281,7 @@ async function renderAudit(container) {
 
         renderTimeline(entries);
     } catch (e) {
-        Toast.show('Error loading audit datage, 'error');
+        Toast.show('Error loading audit data', 'error');
         el.innerHTML = '<div class="empty-center">Error loading audit data.</div>';
     }
 }

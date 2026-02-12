@@ -8,8 +8,6 @@ includes:
   - ../web/config.yaml
   - ../scheduler/config.yaml
   - ../mcp/systemprompt.yaml
-  - ../mcp/soul.yaml
-  - ../mcp/content-manager.yaml
 
 agents: {}
 mcp_servers: {}

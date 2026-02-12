@@ -258,17 +258,9 @@ Resolution is automatically selected based on provider capabilities.
 
 4. **Restart API service** to reload configuration
 
-5. **Test text generation (announcement doesn't need research):**
-   ```bash
-   systemprompt plugins mcp call content-manager create_blog_post --args '{
-     "skill_id": "announcement_writing",
-     "artifact_id": "",
-     "slug": "test-provider",
-     "description": "Test",
-     "keywords": ["test"],
-     "instructions": "Write a 2 sentence test announcement.",
-     "category": "announcement"
-   }'
+5. **Test text generation:**
+   ```json
+   { "command": "admin agents message welcome -m 'Hello, test message' --blocking" }
    ```
 
 ### Verified Test Results (2026-02-02)

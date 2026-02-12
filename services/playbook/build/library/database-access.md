@@ -188,14 +188,12 @@ Extensions export their repositories. Add the extension as a dependency.
 ```toml
 [dependencies]
 systemprompt-web-extension = { path = "../../web" }
-systemprompt-soul-extension = { path = "../../soul" }
 ```
 
 ### Usage
 
 ```rust
 use systemprompt_web_extension::{ContentRepository, CreateContentParams, ContentKind};
-use systemprompt_soul_extension::{MemoryService, CreateMemoryParams};
 
 // Content repository (web extension)
 let content_repo = ContentRepository::new(pg_pool.clone());
@@ -207,15 +205,6 @@ let content = content_repo.create(&CreateContentParams::new(
     author,
     Utc::now(),
     SourceId::new("blog".to_string()),
-)).await?;
-
-// Memory service (soul extension)
-let memory_service = MemoryService::new(pg_pool);
-let memory = memory_service.store(&CreateMemoryParams::new(
-    memory_type,
-    category,
-    subject,
-    content,
 )).await?;
 ```
 

@@ -176,14 +176,12 @@ The SystemPrompt Hub sends Discord notifications for:
 ### blog_technical
 
 - **Skills:** edwards_voice, technical_content_writing, research_blog, blog_image_generation
-- **MCP:** soul (memory, blog tools)
 - **Output:** 4000-6000 words
 - **Structure:** Orthodoxy -> Cracks -> Deeper Truth -> Implications
 
 ### blog_narrative
 
 - **Skills:** edwards_voice, blog_writing, research_blog, blog_image_generation
-- **MCP:** soul (memory, blog tools)
 - **Output:** 3500-5000 words
 - **Structure:** Prelude -> Problem -> Journey -> Lesson -> Conclusion
 

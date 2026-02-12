@@ -26,7 +26,7 @@ SystemPrompt runs three types of services:
 |--------------|------|-------------|
 | API | `--api` | HTTP API server for CLI and web requests |
 | Agents | `--agents` | AI agent processes (blog, linkedin, twitter, etc.) |
-| MCP | `--mcp` | Model Context Protocol servers (systemprompt, content-manager) |
+| MCP | `--mcp` | Model Context Protocol servers (systemprompt) |
 
 Use `infra services status` to see running services.
 
@@ -73,8 +73,6 @@ This runs `systemprompt infra services start --skip-web`.
 { "command": "infra services restart agent blog" }
 { "command": "infra services restart agent linkedin" }
 { "command": "infra services restart agent twitter" }
-{ "command": "infra services restart mcp content-manager" }
-{ "command": "infra services restart mcp content-manager --build" }
 { "command": "infra services restart --agents" }
 { "command": "infra services restart --failed" }
 ```
@@ -109,7 +107,7 @@ Then run `just start` again.
 **MCP server not responding:**
 ```json
 { "command": "plugins mcp status" }
-{ "command": "infra services restart mcp content-manager --build" }
+{ "command": "infra services restart --mcp" }
 ```
 
 ---

@@ -118,6 +118,11 @@ docker-build TAG="local":
 docker-run TAG="local":
     docker run -p 8080:8080 --env-file .env systemprompt-template:{{TAG}}
 
+# Static assets: copy CSS/JS and pre-render HTML pages
+publish:
+    {{CLI}} infra jobs run copy_extension_assets
+    {{CLI}} infra jobs run publish_pipeline
+
 # Admin commands
 webauthn-admin EMAIL:
     {{CLI}} admin users webauthn generate-setup-token --email "{{EMAIL}}"

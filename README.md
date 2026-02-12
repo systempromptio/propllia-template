@@ -161,8 +161,7 @@ propllia-template/
 │
 ├── extensions/                 # Rust code — advanced customization
 │   ├── web/                    # Web rendering engine
-│   ├── soul/                   # Memory system
-│   └── mcp/                    # MCP servers (4 included)
+│   └── mcp/                    # MCP servers
 │
 ├── storage/files/              # Static assets (images, fonts, CSS)
 ├── Cargo.toml                  # Rust workspace (systemprompt-core dependency)

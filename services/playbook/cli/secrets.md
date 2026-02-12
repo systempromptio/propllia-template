@@ -62,14 +62,12 @@ Secrets are stored in profile-specific `secrets.json` files:
   "anthropic": "sk-ant-...",
   "openai": "sk-...",
   "gemini": "AIza...",
-  "moltbook_builder": "moltbook_sk_...",
   "custom_api_key": "your-key-here"
 }
 ```
 
 **Key naming conventions:**
 - Use snake_case for all keys
-- Agent-specific keys: `{agent_name}` (e.g., `moltbook_builder`)
 - Service keys: `{service_name}` (e.g., `anthropic`, `openai`)
 
 ---
@@ -117,7 +115,6 @@ Set secrets directly without editing files:
 
 ```json
 { "command": "cloud secrets set ANTHROPIC_API_KEY=sk-ant-..." }
-{ "command": "cloud secrets set MOLTBOOK_BUILDER=moltbook_sk_..." }
 { "command": "cloud secrets set KEY1=value1 KEY2=value2" }
 ```
 
@@ -162,22 +159,6 @@ openssl rand -base64 48
 
 ---
 
-## Agent-Specific Secrets
-
-For agents that need their own API keys (like Moltbook agents):
-
-```json
-{
-  "moltbook_builder": "moltbook_sk_...",
-  "moltbook_community": "moltbook_sk_...",
-  "moltbook_devrel": "moltbook_sk_..."
-}
-```
-
-Agents access their secrets via the secrets service, keyed by agent name.
-
----
-
 ## Environment Variables
 
 Secrets can also be set via environment variables for local development:
@@ -185,7 +166,6 @@ Secrets can also be set via environment variables for local development:
 ```bash
 # In .env file
 ANTHROPIC_API_KEY=sk-ant-...
-MOLTBOOK_API_KEY=moltbook_sk_...
 
 # Or export directly
 export ANTHROPIC_API_KEY=sk-ant-...

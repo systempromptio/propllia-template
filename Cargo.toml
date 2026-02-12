@@ -2,14 +2,9 @@
 members = [
     # Local extensions
     "extensions/web",
-    "extensions/soul",
-    "extensions/moltbook",
     "extensions/admin",
     # MCP servers
     "extensions/mcp/systemprompt",
-    "extensions/mcp/soul",
-    "extensions/mcp/content-manager",
-    "extensions/mcp/moltbook",
 ]
 resolver = "2"
 
@@ -34,7 +29,6 @@ systemprompt = { version = "0.1.13", features = ["full"] }
 # LOCAL EXTENSIONS
 # ============================================
 systemprompt-web-extension = { path = "extensions/web" }
-systemprompt-soul-extension = { path = "extensions/soul" }
 systemprompt-admin-extension = { path = "extensions/admin" }
 
 # ============================================
@@ -182,7 +176,6 @@ systemprompt = { workspace = true }
 
 # Local extensions
 systemprompt-web-extension = { workspace = true }
-systemprompt-soul-extension = { workspace = true }
 systemprompt-admin-extension = { workspace = true }
 
 # Runtime

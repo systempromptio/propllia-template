@@ -266,15 +266,6 @@ Guides skip Socratic dialogue but need clear scope:
 
 ---
 
-## MCP Tools Used by Agents
-
-| Tool | MCP Server | Purpose |
-|------|------------|---------|
-| `research_blog` | content-manager | Research topic using Google Search |
-| `create_blog_post` | content-manager | Create blog post with category |
-| `memory_search` | soul-mcp | Search past content |
-| `memory_store` | soul-mcp | Store completed posts |
-
 ---
 
 ## CRITICAL: Agent Capabilities
@@ -431,20 +422,9 @@ To make these permanent, also update the disk file.
 
 See [Images Playbook](./images.md) for full documentation.
 
-## Step 4.1: Generate Image with MCP
+## Step 4.1: Generate Image
 
-```bash
-systemprompt plugins mcp call content-manager generate_featured_image -a '{
-  "skill_id": "blog_image_generation",
-  "topic": "Your Topic",
-  "title": "Your Blog Title",
-  "summary": "Brief description for image generation"
-}' --timeout 120
-```
-
-**Save from response:**
-- `Image ID` (file UUID)
-- `Public URL` (e.g., `/files/images/generated/2026/02/02/abc123.png`)
+See [Images Playbook](./images.md) for full documentation on generating and linking images.
 
 ## Step 4.2: Find Content ID
 

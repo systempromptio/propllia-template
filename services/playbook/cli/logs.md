@@ -208,7 +208,6 @@ MCP servers and agents write to log files in the `logs/` directory:
 ls -la logs/
 
 # View MCP server logs
-tail -100 logs/mcp-content-manager.log
 tail -100 logs/mcp-systemprompt.log
 
 # View agent logs
@@ -216,8 +215,7 @@ tail -100 logs/agent-linkedin.log
 tail -100 logs/agent-blog.log
 
 # Search for specific errors in log files
-grep -i "error\|failed" logs/mcp-content-manager.log | tail -50
-grep "research_content\|gemini" logs/mcp-content-manager.log | tail -20
+grep -i "error\|failed" logs/mcp-systemprompt.log | tail -50
 ```
 
 **Note**: Local log files only contain logs from locally-running services. When using a remote profile (e.g., production), use `plugins mcp logs` to fetch logs from the remote database.

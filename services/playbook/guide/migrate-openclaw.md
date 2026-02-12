@@ -82,19 +82,12 @@ systemprompt admin agents show assistant
 
 ## Step 3: Run Database Migrations
 
-Ensure the soul extension schema is ready:
+Ensure the database schema is ready:
 
 ```bash
 # Run all pending migrations
 systemprompt infra db migrate
-
-# Verify soul extension tables exist
-systemprompt infra db query "SELECT table_name FROM information_schema.tables WHERE table_name LIKE 'memory%'"
 ```
-
-Expected output should include:
-- `memory_entities`
-- `proactive_updates`
 
 ---
 
@@ -122,33 +115,7 @@ systemprompt infra db query "SELECT entity_type, content FROM memory_entities LI
 
 ---
 
-## Step 5: Configure Soul Extension
-
-Enable the soul extension for your agent:
-
-```bash
-# View current soul configuration
-systemprompt plugins show soul
-
-# Edit agent configuration
-systemprompt admin config edit
-```
-
-Add the following configuration:
-
-```yaml
-soul:
-  memory:
-    enabled: true
-    retention_days: 90
-  proactive:
-    enabled: true
-    channel: discord
-```
-
----
-
-## Step 6: Set Discord Secrets
+## Step 5: Set Discord Secrets
 
 If using Discord (most OpenClaw users), set the bot token:
 
@@ -162,17 +129,7 @@ systemprompt cloud secrets list
 
 ---
 
-## Step 7: Test Memory Extraction
-
-Run the memory extraction job to verify setup:
-
-```bash
-# Run memory extraction
-systemprompt infra jobs run soul_memory_extraction
-
-# Check job result
-systemprompt infra jobs history --job soul_memory_extraction --limit 1
-```
+## Step 6: Test Setup
 
 ---
 
@@ -213,7 +170,7 @@ Run through this checklist to confirm successful migration:
 | Agent exists | `systemprompt admin agents show assistant` | Shows agent config |
 | Agent running | `systemprompt admin agents status assistant` | Status: running |
 | Memories imported | `systemprompt infra db query "SELECT COUNT(*) FROM memory_entities"` | > 0 |
-| Soul jobs active | `systemprompt infra jobs list --extension soul` | 2 jobs listed |
+| Jobs active | `systemprompt infra jobs list` | Jobs listed |
 | Discord connected | `systemprompt discord test` | Status: Connected |
 
 ---
@@ -259,7 +216,7 @@ Check job status:
 
 ```bash
 systemprompt infra jobs list
-systemprompt infra logs stream --filter soul
+systemprompt infra logs view --level error --since 1h
 ```
 
 ---
@@ -272,9 +229,7 @@ systemprompt infra logs stream --filter soul
 | Create agent | `systemprompt admin agents create --name assistant --port 9020` |
 | Run migrations | `systemprompt infra db migrate` |
 | Import memories | `cat openclaw_memories.sql \| systemprompt infra db execute` |
-| View soul extension | `systemprompt plugins show soul` |
 | Set Discord token | `systemprompt cloud secrets set DISCORD_BOT_TOKEN <token>` |
-| Run memory job | `systemprompt infra jobs run soul_memory_extraction` |
 | Enable agent | `systemprompt admin agents edit assistant --enable` |
 | Test Discord | `systemprompt discord test --channel general` |
 
@@ -298,7 +253,6 @@ Key differences from OpenClaw:
 
 After migration:
 
-1. **Review soul configuration**: `systemprompt core playbooks show cli_config`
-2. **Set up scheduled updates**: `systemprompt core playbooks show cli_jobs`
+1. **Set up scheduled updates**: `systemprompt core playbooks show cli_jobs`
 3. **Explore other extensions**: `systemprompt plugins list`
 4. **Deploy to production**: `systemprompt core playbooks show cli_deploy`

@@ -39,8 +39,7 @@ All notable changes to systemprompt-template will be documented in this file.
 ### Added
 - Initial public release of systemprompt-template
 - Web extension with blog, documentation, homepage, and playbook providers
-- Soul extension with memory service and Discord integration
-- MCP servers: systemprompt CLI, soul memory, content-manager
+- MCP servers: systemprompt CLI
 - Discord CLI binary for gateway management
 - Comprehensive playbook system for operational guidance
 - Agent configurations (welcome, assistant)

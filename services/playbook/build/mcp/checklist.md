@@ -502,7 +502,7 @@ async fn call_tool(&self, request: CallToolRequestParams, ctx: RequestContext<Ro
 
 ### Reference Implementation
 
-See `extensions/mcp/content-manager/src/server/mod.rs` for a working example.
+See `extensions/mcp/systemprompt/src/server.rs` for a working example.
 
 ---
 
@@ -750,7 +750,7 @@ cargo fmt -p systemprompt-mcp-my-server -- --check
 systemprompt plugins mcp tools
 
 # Call a tool directly (positional args: server tool)
-systemprompt plugins mcp call moltbook moltbook_read --args '{"limit": 5}'
+systemprompt plugins mcp call systemprompt <tool_name> --args '{"key": "value"}'
 ```
 
 ---
@@ -982,7 +982,6 @@ When porting code from systemprompt-blog (individual crates) to systemprompt-web
 | Concept | Location |
 |---------|----------|
 | MCP server | `extensions/mcp/systemprompt/` |
-| MCP with AI | `extensions/mcp/content-manager/` |
 | Tools | `extensions/mcp/systemprompt/src/tools/` |
 | Server constructor | `extensions/mcp/systemprompt/src/server/` |
 

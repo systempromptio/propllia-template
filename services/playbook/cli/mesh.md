@@ -227,7 +227,7 @@ admin agents message blog_technical -m "Create blog..." --context-id "blog-xyz" 
 │  - Discord notifications                                        │
 │  - Memory management                                            │
 │  - Cross-agent coordination                                     │
-│  MCP: systemprompt, soul                                        │
+│  MCP: systemprompt                                              │
 └──────────────────────────────┬──────────────────────────────────┘
                                │
               summaries        │        updates
@@ -255,7 +255,7 @@ admin agents message blog_technical -m "Create blog..." --context-id "blog-xyz" 
 │ - research_blog     │                   │ - research_blog     │
 │ - blog_image_gen    │                   │ - blog_image_gen    │
 │                     │                   │                     │
-│ MCP: soul           │                   │ MCP: soul           │
+│                     │                   │                     │
 │                     │                   │                     │
 │ Content:            │                   │ Content:            │
 │ - Contrarian takes  │                   │ - Personal stories  │

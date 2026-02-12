@@ -27,7 +27,7 @@ SystemPrompt supports two Discord integration modes:
 | Mode | Direction | Component | Use Case |
 |------|-----------|-----------|----------|
 | **CLI** | Outbound | `extensions/cli/discord/` | Send notifications, alerts, status updates |
-| **Gateway** | Inbound | `extensions/soul/src/discord/` | Receive messages, trigger agent workflows |
+| **Gateway** | Inbound | Discord gateway extension | Receive messages, trigger agent workflows |
 
 ```
 +------------------------------------------------------------------+
@@ -202,11 +202,7 @@ Discord Gateway (WebSocket)
 
 | File | Purpose |
 |------|---------|
-| `extensions/soul/src/discord/mod.rs` | Module exports |
-| `extensions/soul/src/discord/config.rs` | Configuration types |
-| `extensions/soul/src/discord/handler.rs` | Serenity event handler |
-| `extensions/soul/src/discord/service.rs` | Outbound HTTP service |
-| `extensions/soul/src/jobs/discord_gateway.rs` | Gateway job |
+| Discord gateway extension | Gateway implementation |
 
 ### Path Resolution
 
@@ -245,7 +241,7 @@ DISCORD_MESSAGE: channel=1234567890 (general) author=ejb503 content=Hello Claude
 **Manual Start (Development):**
 ```bash
 # Run as a job (blocks forever)
-systemprompt infra jobs run soul_discord_gateway
+systemprompt infra jobs run discord_gateway
 
 # Check job status
 systemprompt infra jobs list | grep discord
@@ -368,7 +364,7 @@ instructions: |
 |------|---------|
 | Test CLI connection | `systemprompt plugins run discord test` |
 | Send message | `systemprompt plugins run discord send "msg"` |
-| Run gateway | `systemprompt infra jobs run soul_discord_gateway` |
+| Run gateway | `systemprompt infra jobs run discord_gateway` |
 | List jobs | `systemprompt infra jobs list` |
 | View logs | `systemprompt infra logs view --limit 50` |
 
@@ -377,7 +373,6 @@ instructions: |
 | Path | Purpose |
 |------|---------|
 | `services/config/discord.yaml` | Configuration |
-| `extensions/soul/src/discord/` | Gateway implementation |
 | `extensions/cli/discord/` | CLI extension |
 | `services/agents/*.yaml` | Agent configurations |
 

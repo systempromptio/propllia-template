@@ -47,7 +47,7 @@ Missing either step will result in placeholder images showing on the page.
 
 | Task | Command |
 |------|---------|
-| Generate image | `plugins mcp call content-manager generate_featured_image -a '{...}'` |
+| Generate image | Use AI image generation provider |
 | List files | `core files list` |
 | Link to content | `core content files link <file_id> --content <content_id> --role featured` |
 | Set image field | `core content edit <content_id> --set image="<public_url>"` |
@@ -61,14 +61,7 @@ Follow these steps in order. Do not skip any step.
 
 ## Step 1: Generate the Image
 
-```bash
-systemprompt plugins mcp call content-manager generate_featured_image -a '{
-  "skill_id": "blog_image_generation",
-  "topic": "Your Topic Here",
-  "title": "Your Blog Title",
-  "summary": "Brief description for image generation"
-}' --timeout 120
-```
+Use your AI image generation provider to create a featured image for the blog post.
 
 **Save from the response:**
 - `Image ID` (e.g., `27e47153-3acb-4685-88d9-b690d5200ba5`)
@@ -274,17 +267,8 @@ See [Sync Playbook](../cli/sync.md) for more sync options.
 # Full Example: New Blog Post with Image
 
 ```bash
-# 1. Generate the image
-systemprompt plugins mcp call content-manager generate_featured_image -a '{
-  "skill_id": "blog_image_generation",
-  "topic": "AI Agent Architecture",
-  "title": "Building Multi-Agent Systems",
-  "summary": "Complex orchestration of AI agents working together"
-}' --timeout 120
-
-# Response:
-# Image ID: abc12345-def6-7890-abcd-ef1234567890
-# Public URL: /files/images/generated/2026/02/02/abc12345-def6.png
+# 1. Generate the image using your AI image generation provider
+# Save the Image ID and Public URL from the response
 
 # 2. Find content ID
 systemprompt core content list --source blog

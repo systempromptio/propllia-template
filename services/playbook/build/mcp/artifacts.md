@@ -26,7 +26,6 @@ playbook_references:
 - [ ] Read [MCP Tool Patterns](build_mcp-tools)
 
 **Reference Implementations:**
-- `extensions/mcp/content-manager/src/tools/research_blog/` — Artifact creation
 - `extensions/mcp/systemprompt/src/server.rs` — UI resources
 - `extensions/mcp/systemprompt/src/artifacts.rs` — Artifact rendering
 - `systemprompt-core/crates/domain/mcp/src/services/ui_renderer/` — MCP UI renderers
@@ -86,7 +85,7 @@ Artifacts are exposed as MCP resources via URI:
 ui://{server_name}/{artifact_id}
 ```
 
-Example: `ui://content-manager/550e8400-e29b-41d4-a716-446655440000`
+Example: `ui://systemprompt/550e8400-e29b-41d4-a716-446655440000`
 
 ### UiMetadata in Tool Responses
 

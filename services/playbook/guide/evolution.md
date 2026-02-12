@@ -74,7 +74,7 @@ Structured outputs, but you still orchestrate every step.
 ### Step 2.2: Call an MCP Tool Directly
 
 ```json
-{ "command": "plugins mcp call content-manager create_blog_post --args '{\"skill_id\": \"announcement_writing\", \"slug\": \"test-announcement\", \"description\": \"Test post\", \"keywords\": [\"test\"], \"instructions\": \"Write a brief test announcement.\"}'" }
+{ "command": "plugins mcp tools" }
 ```
 
 **Characteristics:**
