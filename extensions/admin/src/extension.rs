@@ -78,7 +78,7 @@ ON CONFLICT (client_id, scope) DO NOTHING;
         Some(SiteAuthConfig {
             login_path: "/admin/login",
             protected_prefixes: &["/admin"],
-            public_prefixes: &["/admin/login", "/admin/api/auth"],
+            public_prefixes: &["/admin/login", "/admin/api/auth", "/admin/api"],
             required_scope: "admin",
         })
     }

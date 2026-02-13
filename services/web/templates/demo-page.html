@@ -21,14 +21,14 @@
 </a>
             </div>
             {{#if (eq demo.slug "")}}{{> demo-content-panel}}{{/if}}
-            {{#if (eq demo.slug "properties")}}{{> demo-content-activos}}{{/if}}
-            {{#if (eq demo.slug "contracts")}}{{> demo-content-contratos}}{{/if}}
-            {{#if (eq demo.slug "invoices")}}{{> demo-content-contabilidad}}{{/if}}
-            {{#if (eq demo.slug "tenants")}}{{> demo-content-inquilinos}}{{/if}}
-            {{#if (eq demo.slug "owners")}}{{> demo-content-propietarios}}{{/if}}
-            {{#if (eq demo.slug "deposits")}}{{> demo-content-depositos}}{{/if}}
-            {{#if (eq demo.slug "sepa-batches")}}{{> demo-content-remesas-sepa}}{{/if}}
-            {{#if (eq demo.slug "issues")}}{{> demo-content-incidencias}}{{/if}}
+            {{#if (eq demo.slug "properties")}}{{> demo-content-properties}}{{/if}}
+            {{#if (eq demo.slug "contracts")}}{{> demo-content-contracts}}{{/if}}
+            {{#if (eq demo.slug "invoices")}}{{> demo-content-billing}}{{/if}}
+            {{#if (eq demo.slug "tenants")}}{{> demo-content-tenants}}{{/if}}
+            {{#if (eq demo.slug "owners")}}{{> demo-content-owners}}{{/if}}
+            {{#if (eq demo.slug "deposits")}}{{> demo-content-deposits}}{{/if}}
+            {{#if (eq demo.slug "sepa-batches")}}{{> demo-content-sepa-batches}}{{/if}}
+            {{#if (eq demo.slug "issues")}}{{> demo-content-issues}}{{/if}}
             {{#if (eq demo.slug "overdue")}}{{> demo-content-overdue}}{{/if}}
             {{#if (eq demo.slug "financial")}}{{> demo-content-financial}}{{/if}}
             {{#if (eq demo.slug "audit")}}{{> demo-content-audit}}{{/if}}
@@ -40,7 +40,6 @@
     <footer style="text-align:center; padding:16px 0; color:#a0aec0; font-size:13px;">
         powered by <a href="/" style="color:#a0aec0; text-decoration:underline;">Proplia</a> — <a href="https://systemprompt.io" target="_blank" rel="noopener" style="color:#a0aec0; text-decoration:underline;">systemprompt.io</a>
     </footer>
-    <script src="/js/demo-mock.js"></script>
     <script src="/js/admin.js"></script>
 </body>
 </html>

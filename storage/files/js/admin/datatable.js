@@ -1,5 +1,5 @@
 (function(AdminApp) {
-const { api, Toast, escapeHtml, formatCurrency, formatDate, statusBadge, computeEstado } = AdminApp;
+const { api, Toast, escapeHtml, formatCurrency, formatDate, statusBadge, computeStatus } = AdminApp;
 class DataTable {
     constructor(container, config) {
         this.container = typeof container === 'string' ? document.querySelector(container) : container;
@@ -184,12 +184,12 @@ class DataTable {
         if (col.type === 'currency') { val = formatCurrency(val); cls = 'numeric'; }
         else if (col.type === 'date') { val = formatDate(val); cls = 'date'; }
         else if (col.type === 'status') {
-            if ((this.config.entity === 'contabilidad' || this.config.entity === 'facturacion' || this.config.entity === 'alquileres' || this.config.entity === 'costes') && col.key === 'estado') val = computeEstado(row);
+            if (col.key === 'status' && typeof computeStatus === 'function') val = computeStatus(row);
             val = statusBadge(val, this.config.entity);
         }
         else if (col.type === 'tags' && Array.isArray(val)) { val = val.map(t => `<span class="badge badge-blue">${escapeHtml(t)}</span>`).join(' '); }
         else if (col.type === 'badge_count') { val = val > 0 ? `<span class="badge badge-green">${val} ${col.suffix || ''}</span>` : '-'; }
-        else if (col.type === 'boolean') { val = val ? `<span class="badge badge-blue">${col.trueLabel || 'Si'}</span>` : ''; }
+        else if (col.type === 'boolean') { val = val ? `<span class="badge badge-blue">${col.trueLabel || 'Yes'}</span>` : ''; }
         else if (col.type === 'thumbnail') { val = val ? `<img class="table-thumbnail" src="${escapeHtml(val)}" alt="" loading="lazy">` : '<span class="table-thumbnail-empty">-</span>'; cls = 'thumbnail-cell'; }
         else { val = escapeHtml(val); }
         const colTypeCls = col.type ? `col-${col.type}` : 'col-text';

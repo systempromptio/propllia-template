@@ -61,7 +61,26 @@ pub fn router(pool: Arc<PgPool>) -> Router {
             "/contract-documents/{id}/text",
             post(handlers::contracts::contract_doc_text_handler),
         )
-        // ── Invoices (custom list + payees + PDF) ────────────
+        // ── Tenants (specific) ─────────────────────────────
+        .route(
+            "/tenants/names",
+            get(handlers::tenants::tenants_names_handler),
+        )
+        // ── Contacts (specific) ───────────────────────────
+        .route(
+            "/contacts/names",
+            get(handlers::contacts::contacts_names_handler),
+        )
+        // ── SEPA Batches (specific) ───────────────────────
+        .route(
+            "/sepa-batches/creditors",
+            get(handlers::sepa_batches::sepa_batches_creditors_handler),
+        )
+        // ── Invoices (custom list + payees + owners + PDF) ─
+        .route(
+            "/invoices/owners",
+            get(handlers::invoices::invoices_owners_handler),
+        )
         .route(
             "/invoices/payees",
             get(handlers::invoices::invoices_payees_handler),

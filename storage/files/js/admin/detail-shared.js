@@ -102,9 +102,7 @@ Object.assign(AdminApp, {
     initTabs,
     loadAuditTrail,
     formatFileSize,
-    renderCertificadoCard: renderCertificateCard,
     renderCertificateCard,
-    uploadCertificado: uploadCertificate,
     uploadCertificate,
     entityDetailUrl: AdminApp.detailUrl,
 });

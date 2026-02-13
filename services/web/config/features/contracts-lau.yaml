@@ -1,0 +1,122 @@
+# Feature: Contratos LAU (Contract Management)
+
+slug: "contracts-lau"
+title: "Contratos LAU - Cumplimiento automático"
+icon: "file-contract"
+headline: "Contratos con"
+headline_highlight: "cumplimiento LAU automático"
+subtitle: "3 tipos de contrato con versionado automático de la Ley de Arrendamientos Urbanos. Ingesta de documentos PDF y alertas de vencimiento."
+
+highlights:
+  - id: "tipos"
+    text: "3 tipos de contrato"
+  - id: "lau"
+    text: "Versionado LAU automático"
+  - id: "pdf"
+    text: "Ingesta de documentos PDF"
+  - id: "alertas"
+    text: "Alertas de vencimiento"
+
+sections:
+  - id: "tipos"
+    title: "3 tipos de contrato"
+    visual_position: "right"
+    visual_svg: |
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <!-- Main document -->
+        <rect x="100" y="60" width="120" height="160" rx="6"/>
+        <!-- Lines on document -->
+        <line x1="120" y1="100" x2="200" y2="100"/>
+        <line x1="120" y1="125" x2="190" y2="125"/>
+        <line x1="120" y1="150" x2="195" y2="150"/>
+        <line x1="120" y1="175" x2="180" y2="175"/>
+        <!-- Three branching tabs/labels -->
+        <line x1="220" y1="100" x2="270" y2="80"/>
+        <rect x="270" y="68" width="80" height="24" rx="4"/>
+        <line x1="220" y1="140" x2="270" y2="140"/>
+        <rect x="270" y="128" width="80" height="24" rx="4"/>
+        <line x1="220" y1="180" x2="270" y2="200"/>
+        <rect x="270" y="188" width="80" height="24" rx="4"/>
+      </svg>
+    content: |
+      <p>Proplia soporta los tres tipos de contrato definidos por la legislación española, cada uno con sus reglas específicas de duración, prórroga y actualización de renta.</p>
+    items:
+      - title: "Vivienda habitual"
+        description: "Residencia permanente del inquilino. Duración mínima 5 años (7 si el arrendador es persona jurídica)"
+      - title: "Temporada"
+        description: "Uso temporal para estudios, trabajo o vacaciones. Sin duración mínima legal"
+      - title: "Comercial"
+        description: "Locales comerciales y oficinas con regulación diferenciada"
+
+  - id: "lau"
+    title: "Versionado LAU automático"
+    visual_position: "left"
+    visual_svg: |
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <!-- Balance/scales base -->
+        <line x1="200" y1="60" x2="200" y2="220"/>
+        <rect x="170" y="220" width="60" height="12" rx="3"/>
+        <!-- Balance beam -->
+        <line x1="100" y1="100" x2="300" y2="100"/>
+        <!-- Fulcrum triangle -->
+        <polygon points="200,80 190,100 210,100"/>
+        <!-- Left pan -->
+        <path d="M80 100 L80 140 Q80 160 120 160 Q160 160 160 140 L160 100"/>
+        <line x1="80" y1="100" x2="100" y2="100"/>
+        <line x1="140" y1="100" x2="160" y2="100"/>
+        <!-- Right pan -->
+        <path d="M240 100 L240 140 Q240 160 280 160 Q320 160 320 140 L320 100"/>
+        <line x1="240" y1="100" x2="260" y2="100"/>
+        <line x1="300" y1="100" x2="320" y2="100"/>
+        <!-- Small lines representing text/law on left pan -->
+        <line x1="100" y1="130" x2="140" y2="130"/>
+        <line x1="105" y1="142" x2="135" y2="142"/>
+      </svg>
+    content: |
+      <p>El campo <code>version_lau</code> se asigna automáticamente según la fecha de inicio del contrato, asegurando que cada contrato aplica la legislación vigente en el momento de su firma.</p>
+      <p>Las principales diferencias entre versiones de la LAU afectan a:</p>
+      <ul>
+        <li><strong>Duración mínima</strong> — 5 años para personas físicas, 7 para jurídicas</li>
+        <li><strong>Actualización de renta</strong> — IPC vs índice de referencia según versión</li>
+        <li><strong>Derechos de prórroga</strong> — Prórrogas automáticas y tácitas</li>
+        <li><strong>Límites de fianza</strong> — Máximos legales según tipo de contrato</li>
+      </ul>
+      <p>Proplia aplica automáticamente las reglas correctas según la versión de la LAU vigente en la fecha de inicio de cada contrato.</p>
+
+  - id: "pdf"
+    title: "Ingesta de documentos PDF"
+    content: |
+      <p>Sube tus contratos en PDF y Proplia extrae automáticamente los datos clave. El sistema almacena tanto el documento original como el texto extraído y los datos estructurados.</p>
+      <p>La tabla <code>contrato_documentos</code> guarda el archivo original, texto extraído, tipo y fecha del documento. La tabla <code>contrato_detalles</code> almacena los datos extraídos por categoría:</p>
+      <ul>
+        <li><strong>price</strong> — Precio del alquiler</li>
+        <li><strong>ipc</strong> — Cláusulas de actualización por IPC</li>
+        <li><strong>garantia</strong> — Fianzas y depósitos</li>
+        <li><strong>descuento</strong> — Descuentos aplicables</li>
+        <li><strong>incremento_pct</strong> — Incrementos porcentuales pactados</li>
+        <li><strong>fin_contrato</strong> — Fecha de finalización</li>
+        <li><strong>ibi</strong> — Repercusión del IBI al inquilino</li>
+        <li><strong>extras</strong> — Otros datos relevantes</li>
+      </ul>
+
+  - id: "alertas"
+    title: "Alertas de vencimiento"
+    content: |
+      <p>El job diario <code>contrato_expiry_alert</code> se ejecuta cada día a las 9:00 y genera alertas automáticas para contratos próximos a vencer. Las alertas se crean con prioridad según la proximidad del vencimiento:</p>
+      <ul>
+        <li><strong>30 días</strong> — Prioridad alta, acción inmediata recomendada</li>
+        <li><strong>60 días</strong> — Prioridad media, tiempo para negociar renovación</li>
+        <li><strong>90 días</strong> — Prioridad baja, aviso anticipado</li>
+      </ul>
+      <p>Las alertas se almacenan en la tabla <code>alertas</code> con estados <em>nueva</em>, <em>leida</em> y <em>resuelta</em>, y son consultables con el agente IA.</p>
+
+related:
+  - title: "Inquilinos"
+    description: "Gestiona las fichas de los arrendatarios vinculados a cada contrato."
+    url: "/features/tenants"
+  - title: "Facturación"
+    description: "Genera facturas automáticas basadas en los contratos activos."
+    url: "/features/billing"
+  - title: "Banca y SEPA"
+    description: "Cobra las rentas por domiciliación SEPA directa."
+    url: "/features/banking-sepa"

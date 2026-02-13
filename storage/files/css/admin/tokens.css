@@ -76,7 +76,7 @@
     --section-contracts: #8E5570;
     --section-invoices: #B88B2E;
     --section-tenants: #5A8A83;
-    --section-facturacion: #B88B2E;
+    --section-billing: #B88B2E;
     --section-costes: #9E4F3B;
     --section-incidents: #B84C3A;
     --section-tools: #7A7168;
@@ -86,7 +86,7 @@
     --section-contracts-dim: color-mix(in srgb, var(--section-contracts) 10%, transparent);
     --section-invoices-dim: color-mix(in srgb, var(--section-invoices) 10%, transparent);
     --section-tenants-dim: color-mix(in srgb, var(--section-tenants) 10%, transparent);
-    --section-facturacion-dim: color-mix(in srgb, var(--section-facturacion) 10%, transparent);
+    --section-billing-dim: color-mix(in srgb, var(--section-billing) 10%, transparent);
     --section-costes-dim: color-mix(in srgb, var(--section-costes) 10%, transparent);
     --section-incidents-dim: color-mix(in srgb, var(--section-incidents) 10%, transparent);
     --section-tools-dim: color-mix(in srgb, var(--section-tools) 10%, transparent);

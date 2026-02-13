@@ -25,6 +25,14 @@ content_sources:
     enabled: true
     override_existing: true
 
+  - source_id: "legal"
+    category_id: "pages"
+    path: "../content/legal"
+    allowed_content_types:
+      - legal
+    enabled: true
+    override_existing: true
+
 # Base URL for generated links
 base_url: "http://localhost:8080"
 

@@ -1,0 +1,118 @@
+                <div id="table-root"></div>
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                const { DataTable, DetailPanel, FormPanel, HistoryPanel, Toast, api, confirmAction } = AdminApp;
+                Toast.init();
+                const historyPanel = new HistoryPanel();
+                const detailPanel = new DetailPanel();
+
+                const formFields = [
+                    { key: 'reference', label: 'Reference', required: true, placeholder: 'INV-2026-001' },
+                    { key: 'description', label: 'Description', required: true, placeholder: 'Invoice description' },
+                    { key: 'contract_ref', label: 'Contract', required: true, placeholder: 'Contract reference' },
+                    { key: 'property_name', label: 'Property', required: true, placeholder: 'Property name' },
+                    { key: 'payer', label: 'Payer', required: true, placeholder: 'Payer name' },
+                    { key: 'payee', label: 'Payee', required: true, placeholder: 'Payee name' },
+                    { key: 'status', label: 'Status', type: 'select', options: ['Auto', 'Unpaid', 'Partial', 'Paid'], default: 'Auto' },
+                    { key: 'type', label: 'Type', type: 'select', options: ['income', 'expense'], default: 'income' },
+                    { key: 'expense_category', label: 'Expense category', type: 'select', options: ['', 'Council Tax', 'Service Charge', 'Insurance', 'Maintenance', 'Utilities', 'Mortgage', 'Tax', 'Other'] },
+                    { key: 'total', label: 'Total', type: 'number', required: true, placeholder: '0.00' },
+                    { key: 'paid', label: 'Paid', type: 'number', placeholder: '0.00' },
+                    { key: 'vat', label: 'VAT', type: 'number', placeholder: '0.00' },
+                    { key: 'invoice_date', label: 'Invoice date', required: true, placeholder: 'YYYY-MM-DD' },
+                    { key: 'payment_date', label: 'Payment date', type: 'date' },
+                    { key: 'payment_method', label: 'Payment method', type: 'select', options: ['', 'bank transfer', 'direct debit', 'cash', 'card'] },
+                    { key: 'notes', label: 'Notes', type: 'textarea', placeholder: 'Additional notes...' },
+                    { key: 'discount', label: 'Discount', type: 'number', placeholder: '0.00' },
+                    { key: 'discount_pct', label: 'Discount %', type: 'number', placeholder: '0.00' },
+                    { key: 'payer_account', label: 'Payer account', placeholder: 'IBAN' },
+                ];
+
+                const formPanel = new FormPanel({
+                    title: 'Invoice',
+                    fields: formFields,
+                    onSubmit: async (data, isEdit, original) => {
+                        try {
+                            if (data.status === 'Auto') delete data.status;
+                            if (isEdit) {
+                                await api.put(`/invoices/${original.id}`, data);
+                                Toast.show('Invoice updated');
+                            } else {
+                                await api.post('/invoices', data);
+                                Toast.show('Invoice created');
+                            }
+                            table.load();
+                        } catch (e) {
+                            Toast.show(e.message, 'error');
+                        }
+                    }
+                });
+
+                const table = new DataTable('#table-root', {
+                    entity: 'invoice',
+                    apiPath: '/invoices',
+                    exportPath: '/export/invoices',
+                    showPeriodFilter: true,
+                    hasPdf: true,
+                    columns: [
+                        { key: 'reference', label: 'Ref' },
+                        { key: 'description', label: 'Description' },
+                        { key: 'property_name', label: 'Property' },
+                        { key: 'payer', label: 'Payer' },
+                        { key: 'payee', label: 'Payee' },
+                        { key: 'status', label: 'Status', type: 'status' },
+                        { key: 'total', label: 'Total', type: 'currency' },
+                        { key: 'paid', label: 'Paid', type: 'currency' },
+                        { key: 'type', label: 'Type', type: 'status' },
+                        { key: 'expense_category', label: 'Category' },
+                        { key: 'invoice_date', label: 'Date' },
+                    ],
+                    filters: [
+                        { key: 'status', label: 'Status', options: ['Unpaid', 'Partial', 'Paid'] },
+                        { key: 'type', label: 'Type', options: ['income', 'expense'] },
+                        { key: 'expense_category', label: 'Category', options: ['Council Tax', 'Service Charge', 'Insurance', 'Maintenance', 'Utilities', 'Mortgage', 'Tax', 'Other'] },
+                        { key: 'payee', label: 'Payee', asyncOptions: '/invoices/payees' },
+                        { key: 'property_name', label: 'Property', asyncOptions: '/properties/names' }
+                    ],
+                    onRowClick: (row) => {
+                        detailPanel.openBilling(row);
+                    },
+                    onAction: async (action, row) => {
+                        if (action === 'create') formPanel.open();
+                        if (action === 'edit') formPanel.open(row);
+                        if (action === 'pdf') {
+                            fetch(`${AdminApp.API_BASE}/invoices/${row.id}/pdf`)
+                                .then(res => {
+                                    if (!res.ok) throw new Error('PDF download failed');
+                                    const ct = res.headers.get('content-type') || '';
+                                    if (ct.includes('application/pdf')) return res.blob();
+                                    return null;
+                                })
+                                .then(blob => {
+                                    if (!blob) return;
+                                    const url = URL.createObjectURL(blob);
+                                    const a = document.createElement('a');
+                                    a.href = url;
+                                    a.download = `invoice-${row.reference}.pdf`;
+                                    document.body.appendChild(a);
+                                    a.click();
+                                    document.body.removeChild(a);
+                                    URL.revokeObjectURL(url);
+                                })
+                                .catch(e => Toast.show(e.message, 'error'));
+                        }
+                        if (action === 'history') historyPanel.open('invoices', row.id);
+                        if (action === 'delete') {
+                            const ok = await confirmAction('Delete invoice', `Delete "${row.reference}"? This action cannot be undone.`);
+                            if (ok) {
+                                try {
+                                    await api.del(`/invoices/${row.id}`);
+                                    Toast.show('Invoice deleted');
+                                    table.load();
+                                } catch (e) { Toast.show(e.message, 'error'); }
+                            }
+                        }
+                    }
+                });
+            });
+        </script>

@@ -3,7 +3,7 @@
 function formatCurrency(val) {
     if (val == null) return '-';
     const num = typeof val === 'string' ? parseFloat(val) : val;
-    return new Intl.NumberFormat('en-GB', { style: 'currency', currency: 'GBP' }).format(num);
+    return new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' }).format(num);
 }
 
 function formatCurrencyValue(val) {
@@ -136,7 +136,7 @@ function detailSection(title, items) {
 
 Object.assign(AdminApp, {
     formatCurrency, formatCurrencyValue, formatDate, timeAgo, daysUntil,
-    escapeHtml, statusBadge, computeStatus, computeEstado: computeStatus, progressBar, stringToColor,
+    escapeHtml, statusBadge, computeStatus, progressBar, stringToColor,
     rateColor, getPeriodMonths, detailSection
 });
 

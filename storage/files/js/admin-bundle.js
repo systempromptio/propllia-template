@@ -159,6 +159,7 @@ const ScrollLock = {
 
 const user = getUserInfo();
 window.AdminApp = { API_BASE, Toast, api, confirmAction, user, getUserInitials, initSidebar, ScrollLock };
+
 (function(AdminApp) {
 
 const ADMIN_BASE = '/admin';
@@ -251,12 +252,13 @@ Object.assign(AdminApp, {
 });
 
 })(window.AdminApp);
+
 (function(AdminApp) {
 
 function formatCurrency(val) {
     if (val == null) return '-';
     const num = typeof val === 'string' ? parseFloat(val) : val;
-    return new Intl.NumberFormat('en-GB', { style: 'currency', currency: 'GBP' }).format(num);
+    return new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' }).format(num);
 }
 
 function formatCurrencyValue(val) {
@@ -389,11 +391,12 @@ function detailSection(title, items) {
 
 Object.assign(AdminApp, {
     formatCurrency, formatCurrencyValue, formatDate, timeAgo, daysUntil,
-    escapeHtml, statusBadge, computeStatus, computeEstado: computeStatus, progressBar, stringToColor,
+    escapeHtml, statusBadge, computeStatus, progressBar, stringToColor,
     rateColor, getPeriodMonths, detailSection
 });
 
 })(window.AdminApp);
+
 (function(AdminApp) {
 
 function openPanel(instance, title) {
@@ -456,6 +459,7 @@ function closePanel(instance) {
 Object.assign(AdminApp, { openPanel, closePanel });
 
 })(window.AdminApp);
+
 (function(AdminApp) {
 
 const { escapeHtml } = AdminApp;
@@ -596,6 +600,7 @@ Object.assign(AdminApp, {
 });
 
 })(window.AdminApp);
+
 (function(AdminApp) {
 
 const { escapeHtml, getPeriodMonths } = AdminApp;
@@ -800,6 +805,7 @@ function bindFilterEvents(container, dt) {
 Object.assign(AdminApp, { renderFilterBar, bindFilterEvents });
 
 })(window.AdminApp);
+
 (function(AdminApp) {
 
 const { escapeHtml } = AdminApp;
@@ -943,8 +949,9 @@ function renderChips(dt) {
 Object.assign(AdminApp, { loadAsyncFilters, clearAllFilters, removeFilter, renderChips });
 
 })(window.AdminApp);
+
 (function(AdminApp) {
-const { api, Toast, escapeHtml, formatCurrency, formatDate, statusBadge, computeEstado } = AdminApp;
+const { api, Toast, escapeHtml, formatCurrency, formatDate, statusBadge, computeStatus } = AdminApp;
 class DataTable {
     constructor(container, config) {
         this.container = typeof container === 'string' ? document.querySelector(container) : container;
@@ -1129,12 +1136,12 @@ class DataTable {
         if (col.type === 'currency') { val = formatCurrency(val); cls = 'numeric'; }
         else if (col.type === 'date') { val = formatDate(val); cls = 'date'; }
         else if (col.type === 'status') {
-            if ((this.config.entity === 'contabilidad' || this.config.entity === 'facturacion' || this.config.entity === 'alquileres' || this.config.entity === 'costes') && col.key === 'estado') val = computeEstado(row);
+            if (col.key === 'status' && typeof computeStatus === 'function') val = computeStatus(row);
             val = statusBadge(val, this.config.entity);
         }
         else if (col.type === 'tags' && Array.isArray(val)) { val = val.map(t => `<span class="badge badge-blue">${escapeHtml(t)}</span>`).join(' '); }
         else if (col.type === 'badge_count') { val = val > 0 ? `<span class="badge badge-green">${val} ${col.suffix || ''}</span>` : '-'; }
-        else if (col.type === 'boolean') { val = val ? `<span class="badge badge-blue">${col.trueLabel || 'Si'}</span>` : ''; }
+        else if (col.type === 'boolean') { val = val ? `<span class="badge badge-blue">${col.trueLabel || 'Yes'}</span>` : ''; }
         else if (col.type === 'thumbnail') { val = val ? `<img class="table-thumbnail" src="${escapeHtml(val)}" alt="" loading="lazy">` : '<span class="table-thumbnail-empty">-</span>'; cls = 'thumbnail-cell'; }
         else { val = escapeHtml(val); }
         const colTypeCls = col.type ? `col-${col.type}` : 'col-text';
@@ -1242,6 +1249,7 @@ class DataTable {
 Object.assign(AdminApp, { DataTable });
 
 })(window.AdminApp);
+
 (function(AdminApp) {
 
 const { api, escapeHtml } = AdminApp;
@@ -1450,6 +1458,7 @@ class FormPanel {
 Object.assign(AdminApp, { FormPanel });
 
 })(window.AdminApp);
+
 (function(AdminApp) {
 
 const { openPanel, closePanel, api, timeAgo, escapeHtml } = AdminApp;
@@ -1523,6 +1532,7 @@ class HistoryPanel {
 Object.assign(AdminApp, { HistoryPanel });
 
 })(window.AdminApp);
+
 (function(AdminApp) {
 
 const GRACE_DAYS = 30;
@@ -2106,8 +2116,8 @@ const ENTITY_CONFIGS = {
             { key: 'status', label: 'Status', type: 'select', options: LEAD_STATUS_OPTIONS, default: 'New' },
             { key: 'interest_type', label: 'Interest', type: 'select', options: LEAD_INTEREST_OPTIONS, default: 'rental' },
             { key: 'property_name', label: 'Property of interest', type: 'asyncSelect', asyncOptions: '/properties/names' },
-            { key: 'budget_min', label: 'Min budget (GBP)', type: 'number', placeholder: '0' },
-            { key: 'budget_max', label: 'Max budget (GBP)', type: 'number', placeholder: '0' },
+            { key: 'budget_min', label: 'Min budget (€)', type: 'number', placeholder: '0' },
+            { key: 'budget_max', label: 'Max budget (€)', type: 'number', placeholder: '0' },
             { key: 'min_bedrooms', label: 'Min bedrooms', type: 'number', placeholder: '0' },
             { key: 'min_sqm', label: 'Min sq ft', type: 'number', placeholder: '0' },
             { key: 'preferred_area', label: 'Preferred area', placeholder: 'Area, city...' },
@@ -2157,6 +2167,7 @@ const ENTITY_CONFIGS = {
 Object.assign(AdminApp, { ENTITY_CONFIGS });
 
 })(window.AdminApp);
+
 (function(AdminApp) {
 
 function initEntityPage(configKey, container, overrides) {
@@ -2183,10 +2194,10 @@ function initEntityPage(configKey, container, overrides) {
                     }
                     if (isEdit) {
                         await AdminApp.api.put(`${config.apiPath}/${original.id}`, data);
-                        AdminApp.Toast.show(`${config.title} actualizado`);
+                        AdminApp.Toast.show(`${config.title} updated`);
                     } else {
                         await AdminApp.api.post(config.apiPath, data);
-                        AdminApp.Toast.show(`${config.title} creado`);
+                        AdminApp.Toast.show(`${config.title} created`);
                     }
                     table.load();
                 } catch (e) {
@@ -2216,7 +2227,25 @@ function initEntityPage(configKey, container, overrides) {
                 AdminApp.PropertyPresentation.open(row.id);
             }
             if (action === 'pdf') {
-                window.open(`${AdminApp.API_BASE}/contabilidad/${row.id}/pdf`, '_blank');
+                fetch(`${AdminApp.API_BASE}/invoices/${row.id}/pdf`)
+                    .then(res => {
+                        if (!res.ok) throw new Error('PDF download failed');
+                        const ct = res.headers.get('content-type') || '';
+                        if (ct.includes('application/pdf')) return res.blob();
+                        return null;
+                    })
+                    .then(blob => {
+                        if (!blob) return;
+                        const url = URL.createObjectURL(blob);
+                        const a = document.createElement('a');
+                        a.href = url;
+                        a.download = `invoice-${row.reference || row.id}.pdf`;
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
+                        URL.revokeObjectURL(url);
+                    })
+                    .catch(e => AdminApp.Toast.show(e.message, 'error'));
             }
             if (action === 'delete') {
                 const msg = config.deleteConfirm
@@ -2226,7 +2255,7 @@ function initEntityPage(configKey, container, overrides) {
                 if (ok) {
                     try {
                         await AdminApp.api.del(`${config.apiPath}/${row.id}`);
-                        AdminApp.Toast.show(`${config.title} eliminado`);
+                        AdminApp.Toast.show(`${config.title} deleted`);
                         table.load();
                     } catch (e) { AdminApp.Toast.show(e.message, 'error'); }
                 }
@@ -2254,13 +2283,14 @@ function initEntityPage(configKey, container, overrides) {
 Object.assign(AdminApp, { initEntityPage });
 
 })(window.AdminApp);
+
 (function(AdminApp) {
 
 const {
     openPanel, closePanel,
     api, escapeHtml,
     formatCurrency, formatDate,
-    statusBadge, computeEstado,
+    statusBadge, computeStatus,
     progressBar, daysUntil,
 } = AdminApp;
 
@@ -2288,17 +2318,17 @@ async function openDocumentModal(docId) {
     }
 }
 
-function renderActivoFinancialDetail(f) {
+function renderPropertyFinancialDetail(f) {
     if (!f) return '';
-    const facturado = parseFloat(f.total_invoiced || 0);
+    const invoiced = parseFloat(f.total_invoiced || 0);
     const collected = parseFloat(f.total_collected || 0);
     const outstanding = parseFloat(f.total_outstanding || 0);
-    const rate = facturado > 0 ? (collected / facturado * 100) : 0;
+    const rate = invoiced > 0 ? (collected / invoiced * 100) : 0;
     return `
         <div class="detail-section">
             <h4>Financial summary</h4>
             <div class="financial-cards">
-                <div class="mini-card"><span class="mini-label">Invoiced</span><span class="mini-value">${formatCurrency(facturado)}</span></div>
+                <div class="mini-card"><span class="mini-label">Invoiced</span><span class="mini-value">${formatCurrency(invoiced)}</span></div>
                 <div class="mini-card success"><span class="mini-label">Collected</span><span class="mini-value">${formatCurrency(collected)}</span></div>
                 <div class="mini-card ${outstanding > 0 ? 'error' : ''}"><span class="mini-label">Outstanding</span><span class="mini-value">${formatCurrency(outstanding)}</span></div>
             </div>
@@ -2309,7 +2339,7 @@ function renderActivoFinancialDetail(f) {
         </div>`;
 }
 
-function renderActivoInvoices(invoices) {
+function renderPropertyInvoices(invoices) {
     if (invoices.length === 0) return '';
     return `
         <div class="detail-section">
@@ -2334,7 +2364,7 @@ function renderActivoInvoices(invoices) {
         </div>`;
 }
 
-function renderContratoBasicInfo(row) {
+function renderContractBasicInfo(row) {
     const fields = [['Contract ref', row.contract_ref], ['Property', row.property_name], ['Address', row.address], ['Tenant', row.tenant_name]];
     const financial = [['Monthly rent', formatCurrency(row.rent)], ['Contract value', formatCurrency(row.total)]];
     const dates = [['Start date', formatDate(row.start_date)], ['End date', formatDate(row.end_date)]];
@@ -2356,7 +2386,7 @@ function renderContratoBasicInfo(row) {
         ${row.tags && row.tags.length ? `<div class="detail-section"><h4>Tags</h4><div>${row.tags.map(t => `<span class="badge badge-blue">${escapeHtml(t)}</span>`).join(' ')}</div></div>` : ''}`;
 }
 
-function renderContratoDocuments(detail) {
+function renderContractDocuments(detail) {
     if (!detail.documents || detail.documents.length === 0) return '';
     let html = `<div class="detail-section"><h4>Documents (${detail.documents.length})</h4>`;
     detail.documents.forEach(doc => {
@@ -2376,7 +2406,7 @@ function renderContratoDocuments(detail) {
     return html;
 }
 
-function renderContratoDetalles(detail) {
+function renderContractDetails(detail) {
     if (!detail.extracted_data || detail.extracted_data.length === 0) return '';
     const catLabels = {
         price: 'Price', ipc: 'CPI', garantia: 'Guarantee',
@@ -2406,7 +2436,7 @@ class DetailPanel {
         this._closing = false;
     }
 
-    async openActivo(id) {
+    async openProperty(id) {
         openPanel(this, 'Property details');
         try {
             const data = await api.get(`/properties/${id}/detail`);
@@ -2431,8 +2461,8 @@ class DetailPanel {
                         ${a.tags && a.tags.length ? `<div class="detail-field"><span class="detail-label">Tags</span><span class="detail-value">${a.tags.map(t => `<span class="badge badge-blue">${escapeHtml(t)}</span>`).join(' ')}</span></div>` : ''}
                     </div>
                 </div>`;
-            html += renderActivoFinancialDetail(data.financial);
-            html += renderActivoInvoices(data.invoices || []);
+            html += renderPropertyFinancialDetail(data.financial);
+            html += renderPropertyInvoices(data.invoices || []);
             this.panel.querySelector('.panel-body').innerHTML = html;
         } catch (e) {
             if (this.panel) {
@@ -2442,14 +2472,14 @@ class DetailPanel {
         }
     }
 
-    async openContrato(row) {
+    async openContract(row) {
         openPanel(this, 'Contract details');
         if (!this.panel) return;
-        let html = renderContratoBasicInfo(row);
+        let html = renderContractBasicInfo(row);
         try {
             const detail = await api.get(`/contracts/${row.id}/detail`);
-            html += renderContratoDocuments(detail);
-            html += renderContratoDetalles(detail);
+            html += renderContractDocuments(detail);
+            html += renderContractDetails(detail);
         } catch (_) {
         }
         this.panel.querySelector('.panel-body').innerHTML = html;
@@ -2461,7 +2491,7 @@ class DetailPanel {
         });
     }
 
-    async openContabilidad(row) {
+    async openBilling(row) {
         openPanel(this, 'Invoice details');
         if (!this.panel) return;
         const fields = [['Reference', row.reference], ['Description', row.description], ['Contract', row.contract_ref], ['Property', row.property_name], ['Payer', row.payer], ['Payee', row.payee]];
@@ -2472,7 +2502,7 @@ class DetailPanel {
             <div class="detail-section">
                 <div class="flex items-center gap-3 mb-4">
                     <h3 class="m-0">${escapeHtml(row.reference)}</h3>
-                    ${statusBadge(computeEstado(row), 'invoice')}
+                    ${statusBadge(computeStatus(row), 'invoice')}
                 </div>
             </div>
             ${AdminApp.detailSection('Identification', fields)}
@@ -2489,6 +2519,7 @@ class DetailPanel {
 Object.assign(AdminApp, { DetailPanel, openDocumentModal });
 
 })(window.AdminApp);
+
 (function(AdminApp) {
 
 const { api, Toast, escapeHtml, formatDate, timeAgo, API_BASE } = AdminApp;
@@ -2593,30 +2624,29 @@ Object.assign(AdminApp, {
     initTabs,
     loadAuditTrail,
     formatFileSize,
-    renderCertificadoCard: renderCertificateCard,
     renderCertificateCard,
-    uploadCertificado: uploadCertificate,
     uploadCertificate,
     entityDetailUrl: AdminApp.detailUrl,
 });
 
 })(window.AdminApp);
+
 (function(AdminApp) {
 
 const {
     api, Toast, FormPanel,
     formatCurrency, formatCurrencyValue, formatDate,
-    escapeHtml, statusBadge, computeEstado,
+    escapeHtml, statusBadge, computeStatus,
 } = AdminApp;
 
-async function renderContabilidadDetail(container) {
+async function renderBillingDetail(container) {
     const el = typeof container === 'string' ? document.querySelector(container) : container;
     const id = AdminApp.getIdFromUrl();
     if (!id) { el.innerHTML = '<div class="empty-state">No invoice specified.</div>'; return; }
 
     try {
         const row = await api.get(`/invoices/${id}`);
-        const estado = computeEstado(row);
+        const estado = computeStatus(row);
         const outstanding = (parseFloat(row.total) || 0) - (parseFloat(row.paid) || 0);
 
         let html = '';
@@ -2632,18 +2662,18 @@ async function renderContabilidadDetail(container) {
                 ${row.type ? statusBadge(row.type, 'invoice') : ''}
             </div>
             <div class="header-actions">
-                <button class="btn btn-secondary" id="btn-edit-factura">Edit</button>
+                <button class="btn btn-secondary" id="btn-edit-invoice">Edit</button>
                 <a href="${AdminApp.API_BASE}/invoices/${id}/pdf" target="_blank" class="btn btn-secondary">PDF</a>
             </div>
         </div>`;
 
         html += `<div class="tab-bar">
-            <button class="tab active" data-tab="resumen">Summary</button>
-            <button class="tab" data-tab="historial">History</button>
+            <button class="tab active" data-tab="summary">Summary</button>
+            <button class="tab" data-tab="history">History</button>
         </div>`;
 
         html += '<div class="tab-content">';
-        html += '<div class="tab-panel active" data-panel="resumen">';
+        html += '<div class="tab-panel active" data-panel="summary">';
 
         html += `<div class="summary-grid">
             <div class="stat-card">
@@ -2708,18 +2738,18 @@ async function renderContabilidadDetail(container) {
 
         html += '</div>';
 
-        html += '<div class="tab-panel" data-panel="historial"><div id="contabilidad-audit"></div></div>';
+        html += '<div class="tab-panel" data-panel="history"><div id="billing-audit"></div></div>';
         html += '</div>';
 
         el.innerHTML = html;
 
         AdminApp.initTabs(el, (tabName, tabContainer) => {
-            if (tabName === 'historial') {
+            if (tabName === 'history') {
                 AdminApp.loadAuditTrail('invoice', id, tabContainer);
             }
         }, row);
 
-        el.querySelector('#btn-edit-factura')?.addEventListener('click', () => {
+        el.querySelector('#btn-edit-invoice')?.addEventListener('click', () => {
             const fp = new FormPanel({
                 title: row.type === 'expense' ? 'Expense' : 'Invoice',
                 fields: [
@@ -2743,7 +2773,7 @@ async function renderContabilidadDetail(container) {
                     if (data.status === 'Auto') delete data.status;
                     await api.put(`/invoices/${id}`, data);
                     Toast.show('Invoice updated');
-                    renderContabilidadDetail(container);
+                    renderBillingDetail(container);
                 }
             });
             fp.open(row);
@@ -2753,9 +2783,10 @@ async function renderContabilidadDetail(container) {
     }
 }
 
-AdminApp.renderContabilidadDetail = renderContabilidadDetail;
+AdminApp.renderBillingDetail = renderBillingDetail;
 
 })(window.AdminApp);
+
 (function(AdminApp) {
 
 const {
@@ -2764,7 +2795,7 @@ const {
     escapeHtml, statusBadge, progressBar, rateColor,
 } = AdminApp;
 
-async function renderInquilinoDetail(container) {
+async function renderTenantDetail(container) {
     const el = typeof container === 'string' ? document.querySelector(container) : container;
     const id = AdminApp.getIdFromUrl();
     if (!id) { el.innerHTML = '<div class="empty-state">No tenant specified.</div>'; return; }
@@ -2778,16 +2809,16 @@ async function renderInquilinoDetail(container) {
         html += AdminApp.breadcrumb('tenants', 'Tenants', t.name);
 
         const payments = data.payments || [];
-        const facturado = payments.reduce((s, p) => s + parseFloat(p.total || 0), 0);
+        const invoiced = payments.reduce((s, p) => s + parseFloat(p.total || 0), 0);
         const collected = payments.reduce((s, p) => s + parseFloat(p.paid || 0), 0);
         const outstanding = pagos.reduce((s, p) => s + parseFloat(p.outstanding || 0), 0);
-        const rate = facturado > 0 ? (collected / facturado * 100) : 0;
+        const rate = invoiced > 0 ? (collected / invoiced * 100) : 0;
         const rc = rateColor(rate);
 
         html += `<div class="detail-page-header">
             <div class="header-title"><h1>${escapeHtml(t.name)}</h1></div>
             <div class="header-actions">
-                <button class="btn btn-secondary" id="btn-edit-inquilino">Edit</button>
+                <button class="btn btn-secondary" id="btn-edit-tenant">Edit</button>
             </div>
         </div>`;
 
@@ -2798,7 +2829,7 @@ async function renderInquilinoDetail(container) {
             </div>
             <div class="stat-card">
                 <div class="label">Total invoiced</div>
-                <div class="value currency">${formatCurrencyValue(facturado)}</div>
+                <div class="value currency">${formatCurrencyValue(invoiced)}</div>
             </div>
             <div class="stat-card success">
                 <div class="label">Collected</div>
@@ -2813,15 +2844,15 @@ async function renderInquilinoDetail(container) {
         </div>`;
 
         html += `<div class="tab-bar">
-            <button class="tab active" data-tab="resumen">Summary</button>
-            <button class="tab" data-tab="contratos">Contracts</button>
+            <button class="tab active" data-tab="summary">Summary</button>
+            <button class="tab" data-tab="contracts">Contracts</button>
             <button class="tab" data-tab="invoices">Invoices</button>
-            <button class="tab" data-tab="depositos">Deposits</button>
+            <button class="tab" data-tab="deposits">Deposits</button>
         </div>`;
 
         html += '<div class="tab-content">';
 
-        html += '<div class="tab-panel active" data-panel="resumen">';
+        html += '<div class="tab-panel active" data-panel="summary">';
         html += `<div class="detail-info-grid">
             <div class="detail-info-section">
                 <h3>Personal details</h3>
@@ -2853,16 +2884,16 @@ async function renderInquilinoDetail(container) {
         </div>`;
         html += '</div>';
 
-        html += '<div class="tab-panel" data-panel="contratos"><div class="tab-table-root"></div></div>';
+        html += '<div class="tab-panel" data-panel="contracts"><div class="tab-table-root"></div></div>';
         html += '<div class="tab-panel" data-panel="invoices"><div class="tab-table-root"></div></div>';
-        html += '<div class="tab-panel" data-panel="depositos"><div class="tab-table-root"></div></div>';
+        html += '<div class="tab-panel" data-panel="deposits"><div class="tab-table-root"></div></div>';
         html += '</div>';
 
         el.innerHTML = html;
 
         AdminApp.initTabs(el, (tabName, tabContainer) => {
             switch (tabName) {
-                case 'contratos':
+                case 'contracts':
                     return new DataTable(tabContainer, {
                         entity: 'contract', apiPath: '/contracts',
                         defaultFilters: { tenant_name: t.name },
@@ -2890,7 +2921,7 @@ async function renderInquilinoDetail(container) {
                         ],
                         onRowClick: (row) => { AdminApp.navigateTo('invoice', row.id); }
                     });
-                case 'depositos':
+                case 'deposits':
                     return new DataTable(tabContainer, {
                         entity: 'deposit', apiPath: '/deposits',
                         defaultFilters: { payer: t.name },
@@ -2907,7 +2938,7 @@ async function renderInquilinoDetail(container) {
             }
         }, t);
 
-        el.querySelector('#btn-edit-inquilino')?.addEventListener('click', () => {
+        el.querySelector('#btn-edit-tenant')?.addEventListener('click', () => {
             const fp = new FormPanel({
                 title: 'Tenant',
                 fields: [
@@ -2928,7 +2959,7 @@ async function renderInquilinoDetail(container) {
                 onSubmit: async (formData) => {
                     await api.put(`/tenants/${id}`, formData);
                     Toast.show('Tenant updated');
-                    renderInquilinoDetail(container);
+                    renderTenantDetail(container);
                 }
             });
             fp.open(t);
@@ -2938,9 +2969,10 @@ async function renderInquilinoDetail(container) {
     }
 }
 
-AdminApp.renderInquilinoDetail = renderInquilinoDetail;
+AdminApp.renderTenantDetail = renderTenantDetail;
 
 })(window.AdminApp);
+
 (function(AdminApp) {
 
 const {
@@ -2969,14 +3001,14 @@ async function renderOwnerDetail(container) {
         html += `<div class="detail-page-header">
             <div class="header-title"><h1>${escapeHtml(p.name)}</h1></div>
             <div class="header-actions">
-                <button class="btn btn-secondary" id="btn-edit-propietario">Edit</button>
+                <button class="btn btn-secondary" id="btn-edit-owner">Edit</button>
             </div>
         </div>`;
 
-        const facturado = parseFloat(totals.total_invoiced || 0);
+        const invoiced = parseFloat(totals.total_invoiced || 0);
         const collected = parseFloat(totals.total_collected || 0);
         const outstanding = parseFloat(totals.total_outstanding || 0);
-        const rate = facturado > 0 ? (collected / facturado * 100) : 0;
+        const rate = invoiced > 0 ? (collected / invoiced * 100) : 0;
         const rc = rateColor(rate);
 
         html += `<div class="dashboard-grid">
@@ -2987,7 +3019,7 @@ async function renderOwnerDetail(container) {
             </div>
             <div class="stat-card">
                 <div class="label">Total invoiced</div>
-                <div class="value currency">${formatCurrencyValue(facturado)}</div>
+                <div class="value currency">${formatCurrencyValue(invoiced)}</div>
             </div>
             <div class="stat-card success">
                 <div class="label">Collected</div>
@@ -3002,15 +3034,15 @@ async function renderOwnerDetail(container) {
         </div>`;
 
         html += `<div class="tab-bar">
-            <button class="tab active" data-tab="resumen">Summary</button>
-            <button class="tab" data-tab="activos">Properties</button>
-            <button class="tab" data-tab="ingresos">Income</button>
-            <button class="tab" data-tab="gastos">Expenses</button>
+            <button class="tab active" data-tab="summary">Summary</button>
+            <button class="tab" data-tab="properties">Properties</button>
+            <button class="tab" data-tab="income">Income</button>
+            <button class="tab" data-tab="expenses">Expenses</button>
         </div>`;
 
         html += '<div class="tab-content">';
 
-        html += '<div class="tab-panel active" data-panel="resumen">';
+        html += '<div class="tab-panel active" data-panel="summary">';
         html += `<div class="detail-info-grid">
             <div class="detail-info-section">
                 <h3>Personal details</h3>
@@ -3075,16 +3107,16 @@ async function renderOwnerDetail(container) {
 
         html += '</div>';
 
-        html += '<div class="tab-panel" data-panel="activos"><div class="tab-table-root"></div></div>';
-        html += '<div class="tab-panel" data-panel="ingresos"><div class="tab-table-root"></div></div>';
-        html += '<div class="tab-panel" data-panel="gastos"><div class="tab-table-root"></div></div>';
+        html += '<div class="tab-panel" data-panel="properties"><div class="tab-table-root"></div></div>';
+        html += '<div class="tab-panel" data-panel="income"><div class="tab-table-root"></div></div>';
+        html += '<div class="tab-panel" data-panel="expenses"><div class="tab-table-root"></div></div>';
         html += '</div>';
 
         el.innerHTML = html;
 
         AdminApp.initTabs(el, (tabName, tabContainer) => {
             switch (tabName) {
-                case 'activos':
+                case 'properties':
                     return new DataTable(tabContainer, {
                         entity: 'property', apiPath: '/properties',
                         defaultFilters: { owner_id: p.id },
@@ -3096,7 +3128,7 @@ async function renderOwnerDetail(container) {
                         ],
                         onRowClick: (row) => { AdminApp.navigateTo('property', row.id); }
                     });
-                case 'ingresos':
+                case 'income':
                     return new DataTable(tabContainer, {
                         entity: 'billing', apiPath: '/invoices',
                         defaultFilters: { owner_id: p.id, type: 'income' }, showPeriodFilter: true,
@@ -3111,7 +3143,7 @@ async function renderOwnerDetail(container) {
                         ],
                         onRowClick: (row) => { AdminApp.navigateTo('invoice', row.id); }
                     });
-                case 'gastos':
+                case 'expenses':
                     return new DataTable(tabContainer, {
                         entity: 'expenses', apiPath: '/invoices',
                         defaultFilters: { owner_id: p.id, type: 'expense' }, showPeriodFilter: true,
@@ -3129,7 +3161,7 @@ async function renderOwnerDetail(container) {
             }
         }, p);
 
-        el.querySelector('#btn-edit-propietario')?.addEventListener('click', () => {
+        el.querySelector('#btn-edit-owner')?.addEventListener('click', () => {
             const fp = new FormPanel({
                 title: 'Owner',
                 fields: [
@@ -3156,6 +3188,7 @@ async function renderOwnerDetail(container) {
 AdminApp.renderOwnerDetail = renderOwnerDetail;
 
 })(window.AdminApp);
+
 (function(AdminApp) {
 
 const {
@@ -3164,7 +3197,7 @@ const {
     escapeHtml, statusBadge,
 } = AdminApp;
 
-async function renderDepositoDetail(container) {
+async function renderDepositDetail(container) {
     const el = typeof container === 'string' ? document.querySelector(container) : container;
     const id = AdminApp.getIdFromUrl();
     if (!id) { el.innerHTML = '<div class="empty-state">No deposit specified.</div>'; return; }
@@ -3183,7 +3216,7 @@ async function renderDepositoDetail(container) {
                 ${statusBadge(d.estado, 'deposito')}
             </div>
             <div class="header-actions">
-                <button class="btn btn-secondary" id="btn-edit-deposito">Edit</button>
+                <button class="btn btn-secondary" id="btn-edit-deposit">Edit</button>
             </div>
         </div>`;
 
@@ -3238,7 +3271,7 @@ async function renderDepositoDetail(container) {
             </div>
             <div id="cert-list" class="cert-list">
                 ${certs.length === 0 ? '<p class="text-tertiary text-sm">No certificates attached</p>' : ''}
-                ${certs.map(c => AdminApp.renderCertificadoCard(c)).join('')}
+                ${certs.map(c => AdminApp.renderCertificateCard(c)).join('')}
             </div>
         </div>`;
 
@@ -3246,9 +3279,9 @@ async function renderDepositoDetail(container) {
 
         el.querySelector('#cert-file-input')?.addEventListener('change', async (e) => {
             for (const file of e.target.files) {
-                await AdminApp.uploadCertificado(id, file);
+                await AdminApp.uploadCertificate(id, file);
             }
-            renderDepositoDetail(container);
+            renderDepositDetail(container);
         });
 
         const dropZone = el.querySelector('#cert-drop-zone');
@@ -3259,9 +3292,9 @@ async function renderDepositoDetail(container) {
                 e.preventDefault();
                 dropZone.classList.remove('drag-over');
                 for (const file of e.dataTransfer.files) {
-                    await AdminApp.uploadCertificado(id, file);
+                    await AdminApp.uploadCertificate(id, file);
                 }
-                renderDepositoDetail(container);
+                renderDepositDetail(container);
             });
         }
 
@@ -3273,12 +3306,12 @@ async function renderDepositoDetail(container) {
                 if (ok) {
                     await api.del(`/deposit_certificates/${certId}`);
                     Toast.show('Certificate deleted');
-                    renderDepositoDetail(container);
+                    renderDepositDetail(container);
                 }
             });
         });
 
-        el.querySelector('#btn-edit-deposito')?.addEventListener('click', () => {
+        el.querySelector('#btn-edit-deposit')?.addEventListener('click', () => {
             const fp = new FormPanel({
                 title: 'Deposit',
                 fields: [
@@ -3299,7 +3332,7 @@ async function renderDepositoDetail(container) {
                 onSubmit: async (formData) => {
                     await api.put(`/deposits/${id}`, formData);
                     Toast.show('Deposit updated');
-                    renderDepositoDetail(container);
+                    renderDepositDetail(container);
                 }
             });
             fp.open(d);
@@ -3309,9 +3342,10 @@ async function renderDepositoDetail(container) {
     }
 }
 
-AdminApp.renderDepositoDetail = renderDepositoDetail;
+AdminApp.renderDepositDetail = renderDepositDetail;
 
 })(window.AdminApp);
+
 (function(AdminApp) {
 
 const {
@@ -3320,7 +3354,7 @@ const {
     escapeHtml, statusBadge,
 } = AdminApp;
 
-async function renderIncidenciaDetail(container) {
+async function renderIssueDetail(container) {
     const el = typeof container === 'string' ? document.querySelector(container) : container;
     const id = AdminApp.getIdFromUrl();
     if (!id) { el.innerHTML = '<div class="empty-state">No issue specified.</div>'; return; }
@@ -3339,7 +3373,7 @@ async function renderIncidenciaDetail(container) {
                 ${statusBadge(d.estado, 'incidencia')}
             </div>
             <div class="header-actions">
-                <button class="btn btn-secondary" id="btn-edit-incidencia">Edit</button>
+                <button class="btn btn-secondary" id="btn-edit-issue">Edit</button>
             </div>
         </div>`;
 
@@ -3361,7 +3395,7 @@ async function renderIncidenciaDetail(container) {
 
         el.innerHTML = html;
 
-        el.querySelector('#btn-edit-incidencia')?.addEventListener('click', () => {
+        el.querySelector('#btn-edit-issue')?.addEventListener('click', () => {
             const fp = new FormPanel({
                 title: 'Issue',
                 fields: [
@@ -3375,7 +3409,7 @@ async function renderIncidenciaDetail(container) {
                 onSubmit: async (formData) => {
                     await api.put(`/issues/${id}`, formData);
                     Toast.show('Issue updated');
-                    renderIncidenciaDetail(container);
+                    renderIssueDetail(container);
                 }
             });
             fp.open(d);
@@ -3385,9 +3419,10 @@ async function renderIncidenciaDetail(container) {
     }
 }
 
-AdminApp.renderIncidenciaDetail = renderIncidenciaDetail;
+AdminApp.renderIssueDetail = renderIssueDetail;
 
 })(window.AdminApp);
+
 (function(AdminApp) {
 
 const {
@@ -3396,7 +3431,7 @@ const {
     escapeHtml, statusBadge,
 } = AdminApp;
 
-async function renderRemesaDetail(container) {
+async function renderSepaBatchDetail(container) {
     const el = typeof container === 'string' ? document.querySelector(container) : container;
     const id = AdminApp.getIdFromUrl();
     if (!id) { el.innerHTML = '<div class="empty-state">No SEPA batch specified.</div>'; return; }
@@ -3404,7 +3439,7 @@ async function renderRemesaDetail(container) {
     try {
         const data = await api.get(`/sepa-batches/${id}/detail`);
         const r = data.remesa;
-        const alquileres = data.alquileres || [];
+        const rentals = data.rentals || [];
 
         let html = '';
 
@@ -3416,12 +3451,12 @@ async function renderRemesaDetail(container) {
                 ${statusBadge(r.estado, 'remesa')}
             </div>
             <div class="header-actions">
-                <select id="remesa-estado-select" class="inline-select">
+                <select id="sepa-batch-status-select" class="inline-select">
                     ${['Pending','Sent','Completed','Returned'].map(e =>
                         `<option value="${e}" ${r.estado === e ? 'selected' : ''}>${e}</option>`
                     ).join('')}
                 </select>
-                <button class="btn btn-secondary" id="btn-edit-remesa">Edit</button>
+                <button class="btn btn-secondary" id="btn-edit-sepa-batch">Edit</button>
             </div>
         </div>`;
 
@@ -3461,10 +3496,10 @@ async function renderRemesaDetail(container) {
 
         html += `<div class="detail-info-section mt-4">
             <div class="flex justify-between items-center mb-3">
-                <h3 class="m-0">Rentals (${alquileres.length})</h3>
+                <h3 class="m-0">Rentals (${rentals.length})</h3>
             </div>`;
 
-        if (alquileres.length > 0) {
+        if (rentals.length > 0) {
             html += `<div class="overflow-x-auto">
             <table class="data-table detail-data-table">
                 <thead>
@@ -3478,7 +3513,7 @@ async function renderRemesaDetail(container) {
                     </tr>
                 </thead>
                 <tbody>
-                    ${alquileres.map(item => `
+                    ${rentals.map(item => `
                         <tr class="clickable-row" data-href="${AdminApp.detailUrl('invoice', item.id)}">
                             <td>${escapeHtml(item.concepto || item.referencia)}</td>
                             <td>${escapeHtml(item.activo)}</td>
@@ -3495,8 +3530,8 @@ async function renderRemesaDetail(container) {
             html += `<p class="text-tertiary text-14">No rentals linked to this batch.</p>`;
         }
 
-        const totalRegistros = r.total_registros || alquileres.length;
-        const totalCantidad = r.total_cantidad || alquileres.reduce((s, a) => s + (parseFloat(a.total) || 0), 0);
+        const totalRegistros = r.total_registros || rentals.length;
+        const totalCantidad = r.total_cantidad || rentals.reduce((s, a) => s + (parseFloat(a.total) || 0), 0);
         html += `<div class="summary-row">
             <div><strong>Total records:</strong> ${totalRegistros}</div>
             <div><strong>Total amount:</strong> ${formatCurrency(totalCantidad)}</div>
@@ -3510,17 +3545,17 @@ async function renderRemesaDetail(container) {
 
         el.innerHTML = html;
 
-        el.querySelector('#remesa-estado-select')?.addEventListener('change', async (e) => {
+        el.querySelector('#sepa-batch-status-select')?.addEventListener('change', async (e) => {
             try {
                 await api.put(`/sepa-batches/${id}`, { estado: e.target.value });
                 Toast.show('Status updated');
-                renderRemesaDetail(container);
+                renderSepaBatchDetail(container);
             } catch (err) {
                 Toast.show('Error: ' + err.message, 'error');
             }
         });
 
-        el.querySelector('#btn-edit-remesa')?.addEventListener('click', () => {
+        el.querySelector('#btn-edit-sepa-batch')?.addEventListener('click', () => {
             const fp = new FormPanel({
                 title: 'SEPA Batch',
                 fields: [
@@ -3538,7 +3573,7 @@ async function renderRemesaDetail(container) {
                 onSubmit: async (formData) => {
                     await api.put(`/sepa-batches/${id}`, formData);
                     Toast.show('Batch updated');
-                    renderRemesaDetail(container);
+                    renderSepaBatchDetail(container);
                 }
             });
             fp.open(r);
@@ -3548,9 +3583,10 @@ async function renderRemesaDetail(container) {
     }
 }
 
-AdminApp.renderRemesaDetail = renderRemesaDetail;
+AdminApp.renderSepaBatchDetail = renderSepaBatchDetail;
 
 })(window.AdminApp);
+
 (function(AdminApp) {
 
 const {
@@ -3709,6 +3745,7 @@ async function renderLeadDetail(container) {
 AdminApp.renderLeadDetail = renderLeadDetail;
 
 })(window.AdminApp);
+
 (function(AdminApp) {
 
 const {
@@ -3777,7 +3814,7 @@ function renderPropertyFinancialTable(properties, totals) {
                 </tbody>
                 <tfoot>
                     <tr class="summary-row clickable-row" data-href="${AdminApp.listUrl('billing')}">
-                        <td><strong>All properties (${properties.length})</strong></td>
+                        <td><div class="property-cell"><div class="property-avatar" style="background:var(--bg-surface-raised);color:var(--text-primary);font-size:12px">&Sigma;</div><span class="property-name"><strong>All properties (${properties.length})</strong></span></div></td>
                         <td class="numeric"><strong>${formatCurrency(totals.total_invoiced)}</strong></td>
                         <td class="numeric"><strong>${formatCurrency(totals.total_collected)}</strong></td>
                         <td class="numeric${parseFloat(totals.total_outstanding) > 0 ? ' text-danger' : ''}"><strong>${formatCurrency(totals.total_outstanding)}</strong></td>
@@ -3972,11 +4009,11 @@ async function renderDashboard(container) {
 Object.assign(AdminApp, {
     renderDashboard,
     renderOwnerTable,
-    renderActivoFinancialTable: renderPropertyFinancialTable,
     renderPropertyFinancialTable,
 });
 
 })(window.AdminApp);
+
 (function(AdminApp) {
 
 const {
@@ -4017,7 +4054,7 @@ function renderFinancialKPIs(dashboard) {
         </div>`;
 }
 
-function renderRentabilidadTable(rentabilidad) {
+function renderProfitabilityTable(rentabilidad) {
     if (rentabilidad.length === 0) return '';
 
     rentabilidad.sort((a, b) => parseFloat(b.neto || 0) - parseFloat(a.neto || 0));
@@ -4033,7 +4070,7 @@ function renderRentabilidadTable(rentabilidad) {
                 </thead>
                 <tbody>
                     ${rentabilidad.map(r => {
-                        const neto = parseFloat(r.neto || 0);
+                        const net = parseFloat(r.neto || 0);
                         const margin = r.margin_pct != null ? r.margin_pct : 0;
                         const marginColor = margin > 50 ? 'green' : margin > 20 ? 'amber' : 'red';
                         return `
@@ -4041,7 +4078,7 @@ function renderRentabilidadTable(rentabilidad) {
                             <td><div class="property-cell"><div class="property-avatar" style="background:${stringToColor(r.property_name)}">${(r.property_name || '?').charAt(0).toUpperCase()}</div><span class="property-name">${escapeHtml(r.property_name)}</span></div></td>
                             <td class="numeric">${formatCurrency(r.total_income)}</td>
                             <td class="numeric">${formatCurrency(r.total_expenses)}</td>
-                            <td class="numeric${neto < 0 ? ' numeric-danger' : neto > 0 ? ' text-success text-semibold' : ''}">${formatCurrency(neto)}</td>
+                            <td class="numeric${net < 0 ? ' numeric-danger' : net > 0 ? ' text-success text-semibold' : ''}">${formatCurrency(net)}</td>
                             <td class="rate-col">${progressBar(Math.max(0, margin), marginColor)} <small>${margin.toFixed(1)}%</small></td>
                         </tr>`;
                     }).join('')}
@@ -4105,9 +4142,9 @@ async function renderFinancial(container) {
 
         let html = '';
         html += renderFinancialKPIs(dashboard);
-        html += renderRentabilidadTable(profitability);
+        html += renderProfitabilityTable(profitability);
         if (dashboard.financial_by_owner?.length > 0) html += AdminApp.renderOwnerTable(dashboard.financial_by_owner);
-        if (dashboard.financial_by_property.length > 0) html += AdminApp.renderActivoFinancialTable(dashboard.financial_by_property, dashboard);
+        if (dashboard.financial_by_property.length > 0) html += AdminApp.renderPropertyFinancialTable(dashboard.financial_by_property, dashboard);
         html += await renderExpenseBreakdown();
         el.innerHTML = html;
     } catch (e) {
@@ -4119,6 +4156,7 @@ async function renderFinancial(container) {
 AdminApp.renderFinancial = renderFinancial;
 
 })(window.AdminApp);
+
 (function(AdminApp) {
 
 const {
@@ -4289,6 +4327,7 @@ async function renderAudit(container) {
 AdminApp.renderAudit = renderAudit;
 
 })(window.AdminApp);
+
 (function(AdminApp) {
 
 const {
@@ -4506,6 +4545,7 @@ window.PropertyPresentation = PropertyPresentation;
 Object.assign(AdminApp, { PropertyPresentation });
 
 })(window.AdminApp);
+
 (function(AdminApp) {
 
 const { api, Toast, FormPanel, escapeHtml, formatCurrency, statusBadge } = AdminApp;
@@ -4641,7 +4681,7 @@ async function renderPropertyDetail(container) {
         </div>`;
 
         html += '<div class="tab-content">';
-        html += `<div class="tab-panel active" data-panel="resumen">${AdminApp.renderResumenTab(a, f, images, invoices, contract)}</div>`;
+        html += `<div class="tab-panel active" data-panel="resumen">${AdminApp.renderSummaryTab(a, f, images, invoices, contract)}</div>`;
         html += '<div class="tab-panel" data-panel="contratos"><div class="tab-table-root"></div></div>';
         html += '<div class="tab-panel" data-panel="alquileres"><div class="tab-table-root"></div></div>';
         html += '<div class="tab-panel" data-panel="gastos"><div class="tab-table-root"></div></div>';
@@ -4664,11 +4704,11 @@ async function renderPropertyDetail(container) {
                 if (!tabsLoaded[name]) {
                     tabsLoaded[name] = true;
                     if (name === 'fotos') {
-                        AdminApp.initFotosTab(el.querySelector('[data-panel="fotos"] .tab-fotos-root'), id, images);
+                        AdminApp.initPhotosTab(el.querySelector('[data-panel="fotos"] .tab-fotos-root'), id, images);
                     } else if (name === 'web') {
                         AdminApp.initWebTab(el.querySelector('[data-panel="web"] .tab-web-root'), id);
                     } else {
-                        AdminApp.initActivoTabTable(name, el.querySelector(`[data-panel="${name}"] .tab-table-root`), a);
+                        AdminApp.initPropertyTabTable(name, el.querySelector(`[data-panel="${name}"] .tab-table-root`), a);
                     }
                 }
             });
@@ -4706,9 +4746,10 @@ async function renderPropertyDetail(container) {
     }
 }
 
-Object.assign(AdminApp, { renderActivoDetail: renderPropertyDetail, renderPropertyDetail, renderCostesEvolution: renderCostEvolution, renderCostEvolution });
+Object.assign(AdminApp, { renderPropertyDetail, renderCostEvolution });
 
 })(window.AdminApp);
+
 (function(AdminApp) {
 
 const {
@@ -4719,16 +4760,16 @@ const {
 
 const INSURANCE_WARNING_DAYS = 60;
 
-const _resumenState = { insuranceStatusCache: null };
+const _summaryState = { insuranceStatusCache: null };
 
 async function loadInsuranceStatus() {
-    if (_resumenState.insuranceStatusCache) return _resumenState.insuranceStatusCache;
+    if (_summaryState.insuranceStatusCache) return _summaryState.insuranceStatusCache;
     try {
-        _resumenState.insuranceStatusCache = await api.get('/reports/insurance_status');
+        _summaryState.insuranceStatusCache = await api.get('/reports/insurance_status');
     } catch {
-        _resumenState.insuranceStatusCache = [];
+        _summaryState.insuranceStatusCache = [];
     }
-    return _resumenState.insuranceStatusCache;
+    return _summaryState.insuranceStatusCache;
 }
 
 async function applyInsuranceBadges(data, tableInstance) {
@@ -4758,7 +4799,7 @@ async function applyInsuranceBadges(data, tableInstance) {
     });
 }
 
-function renderResumenTab(a, f, images, invoices, contract) {
+function renderSummaryTab(a, f, images, invoices, contract) {
     let html = '';
 
     if (images.length > 0) {
@@ -4856,9 +4897,10 @@ function renderResumenTab(a, f, images, invoices, contract) {
     return html;
 }
 
-Object.assign(AdminApp, { applyInsuranceBadges, renderResumenTab });
+Object.assign(AdminApp, { applyInsuranceBadges, renderSummaryTab });
 
 })(window.AdminApp);
+
 (function(AdminApp) {
 
 const { api, Toast, DataTable, FormPanel } = AdminApp;
@@ -5132,27 +5174,28 @@ function initIssuesTab(container, property) {
     });
 }
 
-function initActivoTabTable(tabName, container, property) {
+function initPropertyTabTable(tabName, container, property) {
     const handlers = { contratos: initContractsTab, alquileres: initRentalsTab, gastos: initExpensesTab, incidencias: initIssuesTab };
     const handler = handlers[tabName];
     if (handler) return handler(container, property);
 }
 
-Object.assign(AdminApp, { initActivoTabTable });
+Object.assign(AdminApp, { initPropertyTabTable });
 
 })(window.AdminApp);
+
 (function(AdminApp) {
 
 const { api, Toast, confirmAction, escapeHtml } = AdminApp;
 
 const MAX_FILE_SIZE_BYTES = 10 * 1024 * 1024;
 
-const _fotosState = { webImages: [], activoWebId: null };
+const _photosState = { webImages: [], propertyWebId: null };
 
 function renderImageCard(img) {
     const isPrimary = img.is_primary ? ' active' : '';
-    const isWeb = _fotosState.webImages.includes(img.filename);
-    const webIdx = isWeb ? _fotosState.webImages.indexOf(img.filename) + 1 : 0;
+    const isWeb = _photosState.webImages.includes(img.filename);
+    const webIdx = isWeb ? _photosState.webImages.indexOf(img.filename) + 1 : 0;
     return `<div class="image-manage-card${isWeb ? ' web-selected' : ''}" data-filename="${escapeHtml(img.filename)}" draggable="true">
         <div class="image-manage-handle" title="Drag to reorder">&#9776;</div>
         ${isWeb ? `<div class="image-web-badge">${webIdx}</div>` : ''}
@@ -5166,43 +5209,43 @@ function renderImageCard(img) {
     </div>`;
 }
 
-async function loadWebImages(activoId) {
+async function loadWebImages(propertyId) {
     try {
-        const data = await api.get(`/property_web/by-activo/${activoId}`);
-        _fotosState.activoWebId = data.id;
-        _fotosState.webImages = data.imagenes_web || [];
+        const data = await api.get(`/property_web/by-activo/${propertyId}`);
+        _photosState.propertyWebId = data.id;
+        _photosState.webImages = data.imagenes_web || [];
     } catch (e) {
-        _fotosState.activoWebId = null;
-        _fotosState.webImages = [];
+        _photosState.propertyWebId = null;
+        _photosState.webImages = [];
     }
 }
 
 async function saveWebImages() {
-    if (!_fotosState.activoWebId) return;
+    if (!_photosState.propertyWebId) return;
     try {
-        await api.put(`/property_web/${_fotosState.activoWebId}`, { imagees_web: _fotosState.webImages });
+        await api.put(`/property_web/${_photosState.propertyWebId}`, { imagees_web: _photosState.webImages });
     } catch (err) {
         Toast.show('Error saving web selection: ' + err.message, 'error');
     }
 }
 
-async function toggleWebImage(filename, grid, activoId) {
-    const idx = _fotosState.webImages.indexOf(filename);
+async function toggleWebImage(filename, grid, propertyId) {
+    const idx = _photosState.webImages.indexOf(filename);
     if (idx >= 0) {
-        _fotosState.webImages.splice(idx, 1);
+        _photosState.webImages.splice(idx, 1);
         Toast.show('Image removed from web');
     } else {
-        if (!_fotosState.activoWebId) {
+        if (!_photosState.propertyWebId) {
             try {
-                const created = await api.post('/property_web', { activo_id: activoId, publicado: 'false' });
-                _fotosState.activoWebId = created.id;
+                const created = await api.post('/property_web', { activo_id: propertyId, publicado: 'false' });
+                _photosState.propertyWebId = created.id;
             } catch (err) {
                 Toast.show('Error creating web listing: ' + err.message, 'error');
                 return;
             }
         }
-        _fotosState.webImages.push(filename);
-        Toast.show('Image added to web (#' + _fotosState.webImages.length + ')');
+        _photosState.webImages.push(filename);
+        Toast.show('Image added to web (#' + _photosState.webImages.length + ')');
     }
     await saveWebImages();
     refreshWebBadges(grid);
@@ -5211,8 +5254,8 @@ async function toggleWebImage(filename, grid, activoId) {
 function refreshWebBadges(grid) {
     grid.querySelectorAll('.image-manage-card').forEach(card => {
         const fn = card.dataset.filename;
-        const isWeb = _fotosState.webImages.includes(fn);
-        const webIdx = isWeb ? _fotosState.webImages.indexOf(fn) + 1 : 0;
+        const isWeb = _photosState.webImages.includes(fn);
+        const webIdx = isWeb ? _photosState.webImages.indexOf(fn) + 1 : 0;
         card.classList.toggle('web-selected', isWeb);
 
         let badge = card.querySelector('.image-web-badge');
@@ -5235,22 +5278,22 @@ function refreshWebBadges(grid) {
     });
 }
 
-async function loadImageGrid(grid, activoId) {
+async function loadImageGrid(grid, propertyId) {
     try {
-        const data = await api.get(`/properties/${activoId}/images`);
+        const data = await api.get(`/properties/${propertyId}/images`);
         const images = Array.isArray(data) ? data : (data.images || []);
         if (images.length === 0) {
             grid.innerHTML = '<p class="image-manage-empty">No images. Upload the first one.</p>';
         } else {
             grid.innerHTML = images.map(img => renderImageCard(img)).join('');
-            initDragReorder(grid, activoId);
+            initDragReorder(grid, propertyId);
         }
     } catch (e) {
         grid.innerHTML = `<p class="text-danger">Error loading imagees: ${escapeHtml(e.message)}</p>`;
     }
 }
 
-function initDragReorder(grid, activoId) {
+function initDragReorder(grid, propertyId) {
     let dragEl = null;
 
     grid.querySelectorAll('.image-manage-card').forEach(card => {
@@ -5294,7 +5337,7 @@ function initDragReorder(grid, activoId) {
 
             const order = [...grid.querySelectorAll('.image-manage-card')].map(c => c.dataset.filename);
             try {
-                await api.put(`/properties/${activoId}/images/order`, { order });
+                await api.put(`/properties/${propertyId}/images/order`, { order });
                 Toast.show('Order updated');
             } catch (err) {
                 Toast.show('Error reordering: ' + err.message, 'error');
@@ -5303,7 +5346,7 @@ function initDragReorder(grid, activoId) {
     });
 }
 
-function initFotosTab(container, activoId, initialImages) {
+function initPhotosTab(container, propertyId, initialImages) {
     container.innerHTML = `
         <div class="image-fotos-legend">
             <span><span class="legend-icon">&#127760;</span> = publish to web</span>
@@ -5329,7 +5372,7 @@ function initFotosTab(container, activoId, initialImages) {
 
     fileInput.addEventListener('change', () => {
         if (fileInput.files.length > 0) {
-            handleFiles(fileInput.files, activoId, grid);
+            handleFiles(fileInput.files, propertyId, grid);
             fileInput.value = '';
         }
     });
@@ -5350,7 +5393,7 @@ function initFotosTab(container, activoId, initialImages) {
         e.preventDefault();
         dropZone.classList.remove('drag-over');
         if (e.dataTransfer.files.length > 0) {
-            handleFiles(e.dataTransfer.files, activoId, grid);
+            handleFiles(e.dataTransfer.files, propertyId, grid);
         }
     });
 
@@ -5360,13 +5403,13 @@ function initFotosTab(container, activoId, initialImages) {
         const filename = card.dataset.filename;
 
         if (e.target.closest('.image-manage-web')) {
-            await toggleWebImage(filename, grid, activoId);
+            await toggleWebImage(filename, grid, propertyId);
             return;
         }
 
         if (e.target.closest('.image-manage-primary')) {
             try {
-                await api.put(`/properties/${activoId}/images/primary`, { filename });
+                await api.put(`/properties/${propertyId}/images/primary`, { filename });
                 grid.querySelectorAll('.image-manage-primary').forEach(b => b.classList.remove('active'));
                 e.target.closest('.image-manage-primary').classList.add('active');
                 Toast.show('Primary image updated');
@@ -5380,10 +5423,10 @@ function initFotosTab(container, activoId, initialImages) {
             const ok = await confirmAction('Delete image', 'Delete "' + filename + '"?');
             if (!ok) return;
             try {
-                await api.del(`/properties/${activoId}/images/${encodeURIComponent(filename)}`);
-                const webIdx = _fotosState.webImages.indexOf(filename);
+                await api.del(`/properties/${propertyId}/images/${encodeURIComponent(filename)}`);
+                const webIdx = _photosState.webImages.indexOf(filename);
                 if (webIdx >= 0) {
-                    _fotosState.webImages.splice(webIdx, 1);
+                    _photosState.webImages.splice(webIdx, 1);
                     await saveWebImages();
                 }
                 card.remove();
@@ -5399,12 +5442,12 @@ function initFotosTab(container, activoId, initialImages) {
     });
 
     (async () => {
-        await loadWebImages(activoId);
-        await loadImageGrid(grid, activoId);
+        await loadWebImages(propertyId);
+        await loadImageGrid(grid, propertyId);
     })();
 }
 
-async function handleFiles(files, activoId, grid) {
+async function handleFiles(files, propertyId, grid) {
     let uploaded = 0;
     let failed = 0;
 
@@ -5415,7 +5458,7 @@ async function handleFiles(files, activoId, grid) {
             continue;
         }
         try {
-            await api.uploadFile(`/properties/${activoId}/images/upload`, file);
+            await api.uploadFile(`/properties/${propertyId}/images/upload`, file);
             uploaded++;
         } catch (e) {
             Toast.show(`Error uploading "${file.name}": ${e.message}`, 'error');
@@ -5425,13 +5468,14 @@ async function handleFiles(files, activoId, grid) {
 
     if (uploaded > 0) {
         Toast.show(`${uploaded} image${uploaded !== 1 ? 's' : ''} uploaded`);
-        await loadImageGrid(grid, activoId);
+        await loadImageGrid(grid, propertyId);
     }
 }
 
-Object.assign(AdminApp, { initFotosTab });
+Object.assign(AdminApp, { initPhotosTab });
 
 })(window.AdminApp);
+
 (function(AdminApp) {
 
 const { api, Toast, FormPanel, formatCurrency, escapeHtml } = AdminApp;
@@ -5517,12 +5561,12 @@ function webFormFields() {
     ];
 }
 
-async function initWebTab(container, activoId) {
+async function initWebTab(container, propertyId) {
     container.innerHTML = '<p class="loading-text">Loading web data...</p>';
 
     let webData = null;
     try {
-        webData = await api.get(`/property_web/by-activo/${activoId}`);
+        webData = await api.get(`/property_web/by-activo/${propertyId}`);
     } catch (e) {
     }
 
@@ -5560,7 +5604,7 @@ async function initWebTab(container, activoId) {
                 }
                 await api.put(`/property_web/${webData.id}`, formData);
                 Toast.show('Web data updated');
-                initWebTab(container, activoId);
+                initWebTab(container, propertyId);
             }
         });
         fp.open(data);
@@ -5571,13 +5615,13 @@ async function initWebTab(container, activoId) {
             title: 'Create web listing',
             fields: webFormFields(),
             onSubmit: async (formData) => {
-                formData.activo_id = activoId;
+                formData.activo_id = propertyId;
                 if (formData.features && typeof formData.features === 'string') {
                     formData.features = formData.features.split(',').map(s => s.trim()).filter(Boolean);
                 }
                 await api.post('/property_web', formData);
                 Toast.show('Web listing created');
-                initWebTab(container, activoId);
+                initWebTab(container, propertyId);
             }
         });
         fp.open({});
@@ -5587,11 +5631,12 @@ async function initWebTab(container, activoId) {
 Object.assign(AdminApp, { initWebTab });
 
 })(window.AdminApp);
+
 (function(AdminApp) {
 
 const { api, Toast, FormPanel, escapeHtml, statusBadge } = AdminApp;
 
-async function renderContratoDetail(container) {
+async function renderContractDetail(container) {
     const el = typeof container === 'string' ? document.querySelector(container) : container;
     const urlParams = new URLSearchParams(window.location.search);
     const id = urlParams.get('id');
@@ -5609,16 +5654,16 @@ async function renderContratoDetail(container) {
         ]);
 
         const c = detail.contract;
-        const activoId = detail.property_id || null;
+        const propertyId = detail.property_id || null;
         const invoices = detail.invoices || [];
         const documents = detail.documents || [];
         const extractedData = detail.extracted_data || [];
 
-        const depositos = (depData.data || []).filter(d =>
+        const deposits = (depData.data || []).filter(d =>
             d.contract_ref === c.contract_ref || d.property_name === c.property_name
         );
 
-        const propietario = (propData.data || []).find(p => p.property_name === c.property_name) || null;
+        const owner = (propData.data || []).find(p => p.property_name === c.property_name) || null;
 
         let html = '';
 
@@ -5630,8 +5675,8 @@ async function renderContratoDetail(container) {
                 ${statusBadge(c.status, 'contract')}
             </div>
             <div class="header-actions">
-                <button class="btn btn-primary" id="btn-gen-contrato">Generate Contract</button>
-                <button class="btn btn-secondary" id="btn-edit-contrato">Edit</button>
+                <button class="btn btn-primary" id="btn-gen-contract">Generate Contract</button>
+                <button class="btn btn-secondary" id="btn-edit-contract">Edit</button>
             </div>
         </div>`;
 
@@ -5640,17 +5685,17 @@ async function renderContratoDetail(container) {
             <button class="tab" data-tab="revision_renta">Rent Review</button>
             <button class="tab" data-tab="descuentos">Discounts</button>
             <button class="tab" data-tab="alquileres">Rentals</button>
-            <button class="tab" data-tab="depositos">Deposits</button>
+            <button class="tab" data-tab="deposits">Deposits</button>
             <button class="tab" data-tab="incidencias">Issues</button>
             <button class="tab" data-tab="documentos">Documents</button>
         </div>`;
 
         html += '<div class="tab-content">';
-        html += `<div class="tab-panel active" data-panel="resumen">${AdminApp.renderContratoResumen(c, invoices, depositos, propietario, activoId, detail)}</div>`;
+        html += `<div class="tab-panel active" data-panel="resumen">${AdminApp.renderContractSummary(c, invoices, deposits, owner, propertyId, detail)}</div>`;
         html += '<div class="tab-panel" data-panel="revision_renta"><div class="tab-table-root"></div></div>';
         html += '<div class="tab-panel" data-panel="descuentos"><div class="tab-table-root"></div></div>';
         html += '<div class="tab-panel" data-panel="alquileres"><div class="tab-table-root"></div></div>';
-        html += '<div class="tab-panel" data-panel="depositos"><div class="tab-table-root"></div></div>';
+        html += '<div class="tab-panel" data-panel="deposits"><div class="tab-table-root"></div></div>';
         html += '<div class="tab-panel" data-panel="incidencias"><div class="tab-table-root"></div></div>';
         html += '<div class="tab-panel" data-panel="documentos"><div class="tab-table-root"></div></div>';
         html += '</div>';
@@ -5668,16 +5713,16 @@ async function renderContratoDetail(container) {
 
                 if (!tabsLoaded[name]) {
                     tabsLoaded[name] = true;
-                    AdminApp.initContratoTabTable(name, el.querySelector(`[data-panel="${name}"] .tab-table-root`), c, () => renderContratoDetail(container));
+                    AdminApp.initContractTabTable(name, el.querySelector(`[data-panel="${name}"] .tab-table-root`), c, () => renderContractDetail(container));
                 }
             });
         });
 
-        el.querySelector('#btn-gen-contrato')?.addEventListener('click', () => {
+        el.querySelector('#btn-gen-contract')?.addEventListener('click', () => {
             window.open(`/admin/api/contracts/${id}/document`, '_blank');
         });
 
-        el.querySelector('#btn-edit-contrato')?.addEventListener('click', () => {
+        el.querySelector('#btn-edit-contract')?.addEventListener('click', () => {
             const formPanel = new FormPanel({
                 title: 'Contract',
                 fields: [
@@ -5695,7 +5740,7 @@ async function renderContratoDetail(container) {
                 onSubmit: async (formData) => {
                     await api.put(`/contracts/${id}`, formData);
                     Toast.show('Contract updated');
-                    renderContratoDetail(container);
+                    renderContractDetail(container);
                 }
             });
             formPanel.open(c);
@@ -5706,9 +5751,10 @@ async function renderContratoDetail(container) {
     }
 }
 
-Object.assign(AdminApp, { renderContratoDetail });
+Object.assign(AdminApp, { renderContractDetail });
 
 })(window.AdminApp);
+
 (function(AdminApp) {
 
 const {
@@ -5716,7 +5762,7 @@ const {
     statusBadge, progressBar, rateColor
 } = AdminApp;
 
-function renderContratoResumen(c, invoices, depositos, propietario, activoId, detail) {
+function renderContractSummary(c, invoices, deposits, owner, propertyId, detail) {
     let html = '';
 
     html += `<div class="detail-info-grid">
@@ -5724,9 +5770,9 @@ function renderContratoResumen(c, invoices, depositos, propietario, activoId, de
             <h3>Contract details</h3>
             <div class="detail-grid">
                 <div class="detail-field"><span class="detail-label">Name</span><span class="detail-value">${escapeHtml(c.contract_ref)}</span></div>
-                ${propietario ? `<div class="detail-field"><span class="detail-label">Owner</span><span class="detail-value">${escapeHtml(propietario.name)}</span></div>` : ''}
+                ${owner ? `<div class="detail-field"><span class="detail-label">Owner</span><span class="detail-value">${escapeHtml(owner.name)}</span></div>` : ''}
                 <div class="detail-field"><span class="detail-label">Tenant</span><span class="detail-value">${escapeHtml(c.tenant_name)}</span></div>
-                <div class="detail-field"><span class="detail-label">Property</span><span class="detail-value"><a href="${activoId ? AdminApp.detailUrl('property', activoId) : AdminApp.listUrl('properties', {search: c.property_name})}" class="link-accent">${escapeHtml(c.property_name)}</a><br><span class="text-sm text-tertiary">${escapeHtml(c.address)}</span></span></div>
+                <div class="detail-field"><span class="detail-label">Property</span><span class="detail-value"><a href="${propertyId ? AdminApp.detailUrl('property', propertyId) : AdminApp.listUrl('properties', {search: c.property_name})}" class="link-accent">${escapeHtml(c.property_name)}</a><br><span class="text-sm text-tertiary">${escapeHtml(c.address)}</span></span></div>
                 ${c.type ? `<div class="detail-field"><span class="detail-label">Type</span><span class="detail-value">${escapeHtml(c.type)}</span></div>` : ''}
             </div>
         </div>
@@ -5740,7 +5786,7 @@ function renderContratoResumen(c, invoices, depositos, propietario, activoId, de
         </div>
     </div>`;
 
-    const fianza = depositos.length > 0 ? depositos[0] : null;
+    const fianza = deposits.length > 0 ? deposits[0] : null;
     html += `<div class="detail-info-grid">
         <div class="detail-info-section">
             <h3>Rent</h3>
@@ -5817,17 +5863,18 @@ function renderContratoResumen(c, invoices, depositos, propietario, activoId, de
     return html;
 }
 
-Object.assign(AdminApp, { renderContratoResumen });
+Object.assign(AdminApp, { renderContractSummary });
 
 })(window.AdminApp);
+
 (function(AdminApp) {
 
 const { api, Toast, confirmAction, formatCurrency, formatDate, escapeHtml } = AdminApp;
 
-async function renderRevisionRentaTab(container, contrato) {
+async function renderRentRevisionTab(container, contract) {
     container.innerHTML = '<div class="loading-spinner"></div>';
     try {
-        const data = await api.get(`/contracts/${contrato.id}/revision_renta`);
+        const data = await api.get(`/contracts/${contract.id}/revision_renta`);
         let html = '';
 
         html += '<div class="detail-info-grid">';
@@ -5892,12 +5939,12 @@ async function renderRevisionRentaTab(container, contrato) {
             const ok = await confirmAction('Apply review', `Apply review de ${variacion}%? This will update the contract rent.`);
             if (!ok) return;
             try {
-                const result = await api.post(`/contracts/${contrato.id}/revision_renta`, {
+                const result = await api.post(`/contracts/${contract.id}/revision_renta`, {
                     variacion: variacion,
                     notas: fd.get('notas') || null,
                 });
                 Toast.show(`Review applied: ${formatCurrency(result.alquiler_anterior)} -> ${formatCurrency(result.alquiler_nuevo)}`);
-                renderRevisionRentaTab(container, contrato);
+                renderRentRevisionTab(container, contract);
             } catch (err) {
                 Toast.show('Error: ' + err.message, 'error');
             }
@@ -5907,9 +5954,10 @@ async function renderRevisionRentaTab(container, contrato) {
     }
 }
 
-Object.assign(AdminApp, { renderRevisionRentaTab });
+Object.assign(AdminApp, { renderRentRevisionTab });
 
 })(window.AdminApp);
+
 (function(AdminApp) {
 
 const { api, Toast, formatCurrency, formatDate, escapeHtml } = AdminApp;
@@ -5926,10 +5974,10 @@ function renderDiscountCard(d, historical) {
     </div>`;
 }
 
-async function renderDescuentosTab(container, contrato) {
+async function renderDiscountsTab(container, contract) {
     container.innerHTML = '<div class="loading-spinner"></div>';
     try {
-        const data = await api.get(`/contracts/${contrato.id}/descuentos`);
+        const data = await api.get(`/contracts/${contract.id}/descuentos`);
         let html = '';
 
         html += '<div class="detail-info-grid">';
@@ -5950,7 +5998,7 @@ async function renderDescuentosTab(container, contrato) {
             <form id="form-crear-descuento" class="flex-col gap-3">
                 <div class="grid-2col">
                     <div><label class="field-label">Amount</label><input type="number" step="0.01" name="valor_numerico" class="field-input" required></div>
-                    <div><label class="field-label">Tipo</label><select name="es_porcentaje" class="field-input"><option value="false">GBP (fixed amount)</option><option value="true">% (percentage)</option></select></div>
+                    <div><label class="field-label">Tipo</label><select name="es_porcentaje" class="field-input"><option value="false">EUR (fixed amount)</option><option value="true">% (percentage)</option></select></div>
                     <div><label class="field-label">Start date</label><input type="date" name="fecha_inicio" class="field-input" required></div>
                     <div><label class="field-label">End date</label><input type="date" name="fecha_fin" class="field-input" required></div>
                 </div>
@@ -5987,7 +6035,7 @@ async function renderDescuentosTab(container, contrato) {
             e.preventDefault();
             const fd = new FormData(e.target);
             try {
-                await api.post(`/contracts/${contrato.id}/descuentos`, {
+                await api.post(`/contracts/${contract.id}/descuentos`, {
                     valor_numerico: parseFloat(fd.get('valor_numerico')),
                     es_porcentaje: fd.get('es_porcentaje') === 'true',
                     fecha_inicio: fd.get('fecha_inicio'),
@@ -5996,7 +6044,7 @@ async function renderDescuentosTab(container, contrato) {
                     notas: fd.get('notas') || null,
                 });
                 Toast.show('Discount created');
-                renderDescuentosTab(container, contrato);
+                renderDiscountsTab(container, contract);
             } catch (err) {
                 Toast.show('Error: ' + err.message, 'error');
             }
@@ -6006,9 +6054,10 @@ async function renderDescuentosTab(container, contrato) {
     }
 }
 
-Object.assign(AdminApp, { renderDescuentosTab });
+Object.assign(AdminApp, { renderDiscountsTab });
 
 })(window.AdminApp);
+
 (function(AdminApp) {
 
 const {
@@ -6016,7 +6065,7 @@ const {
     formatFileSize, formatDate, escapeHtml, confirmAction, API_BASE
 } = AdminApp;
 
-function renderDocumentoCard(doc) {
+function renderDocumentCard(doc) {
     const isImage = doc.file_type && doc.file_type.startsWith('image/');
     const hasFile = doc.original_file;
     const downloadUrl = hasFile ? `${API_BASE}/contract_documents/${doc.id}/download` : null;
@@ -6055,12 +6104,12 @@ function renderDocumentoCard(doc) {
     </div>`;
 }
 
-async function renderDocumentsTab(container, contrato, renderContratoDetail) {
+async function renderDocumentsTab(container, contract, renderContractDetail) {
     const el = typeof container === 'string' ? document.querySelector(container) : container;
-    const contratoId = contrato.id;
+    const contractId = contract.id;
 
     try {
-        const resp = await api.get(`/contract_documents?contract_id=${contratoId}&per_page=100`);
+        const resp = await api.get(`/contract_documents?contract_id=${contractId}&per_page=100`);
         const docs = resp.items || resp.data || [];
 
         let html = `<div class="flex justify-between items-center mb-4">
@@ -6077,7 +6126,7 @@ async function renderDocumentsTab(container, contrato, renderContratoDetail) {
         </div>
         <div id="doc-list" class="cert-list">
             ${docs.length === 0 ? '<p class="text-tertiary text-sm">No attached documents</p>' : ''}
-            ${docs.map(d => renderDocumentoCard(d)).join('')}
+            ${docs.map(d => renderDocumentCard(d)).join('')}
         </div>`;
 
         el.innerHTML = html;
@@ -6086,13 +6135,13 @@ async function renderDocumentsTab(container, contrato, renderContratoDetail) {
         el.querySelector('#doc-file-input')?.addEventListener('change', async (e) => {
             for (const file of e.target.files) {
                 try {
-                    await api.uploadFile(`/contracts/${contratoId}/documents`, file);
+                    await api.uploadFile(`/contracts/${contractId}/documents`, file);
                     Toast.show(`${file.name} uploaded successfully`);
                 } catch (err) {
                     Toast.show(`Error: ${err.message}`, 'error');
                 }
             }
-            renderDocumentsTab(container, contrato, renderContratoDetail);
+            renderDocumentsTab(container, contract, renderContractDetail);
         });
 
         // Drag-drop upload
@@ -6105,13 +6154,13 @@ async function renderDocumentsTab(container, contrato, renderContratoDetail) {
                 dropZone.classList.remove('drag-over');
                 for (const file of e.dataTransfer.files) {
                     try {
-                        await api.uploadFile(`/contracts/${contratoId}/documents`, file);
+                        await api.uploadFile(`/contracts/${contractId}/documents`, file);
                         Toast.show(`${file.name} uploaded successfully`);
                     } catch (err) {
                         Toast.show(`Error: ${err.message}`, 'error');
                     }
                 }
-                renderDocumentsTab(container, contrato, renderContratoDetail);
+                renderDocumentsTab(container, contract, renderContractDetail);
             });
         }
 
@@ -6124,7 +6173,7 @@ async function renderDocumentsTab(container, contrato, renderContratoDetail) {
                 if (ok) {
                     await api.del(`/contract_documents/${docId}`);
                     Toast.show('Document deleted');
-                    renderDocumentsTab(container, contrato, renderContratoDetail);
+                    renderDocumentsTab(container, contract, renderContractDetail);
                 }
             });
         });
@@ -6133,23 +6182,23 @@ async function renderDocumentsTab(container, contrato, renderContratoDetail) {
     }
 }
 
-function initContratoTabTable(tabName, container, contrato, renderContratoDetail) {
-    const contratoName = contrato.contract_ref;
-    const activoName = contrato.property_name;
+function initContractTabTable(tabName, container, contract, renderContractDetail) {
+    const contractName = contract.contract_ref;
+    const activoName = contract.property_name;
 
     switch (tabName) {
         case 'revision_renta':
-            AdminApp.renderRevisionRentaTab(container, contrato);
+            AdminApp.renderRentRevisionTab(container, contract);
             return null;
         case 'descuentos':
-            AdminApp.renderDescuentosTab(container, contrato);
+            AdminApp.renderDiscountsTab(container, contract);
             return null;
         case 'alquileres':
             return new DataTable(container, {
                 entity: 'billing',
                 apiPath: '/invoices',
                 showPeriodFilter: true,
-                defaultFilters: { type: 'income', contract_ref: contratoName },
+                defaultFilters: { type: 'income', contract_ref: contractName },
                 columns: [
                     { key: 'reference', label: 'Ref' },
                     { key: 'description', label: 'Description' },
@@ -6285,19 +6334,20 @@ function initContratoTabTable(tabName, container, contrato, renderContratoDetail
                 }
             });
         case 'documentos':
-            renderDocumentsTab(container, contrato, renderContratoDetail);
+            renderDocumentsTab(container, contract, renderContractDetail);
             return null;
     }
 }
 
-Object.assign(AdminApp, { initContratoTabTable });
+Object.assign(AdminApp, { initContractTabTable });
 
 })(window.AdminApp);
+
 (function(AdminApp) {
 
 const { api, Toast, escapeHtml, formatCurrency } = AdminApp;
 
-class RemesaBuilder {
+class SepaBatchBuilder {
     constructor(container) {
         this.container = typeof container === 'string' ? document.querySelector(container) : container;
         this.selectedRows = [];
@@ -6315,12 +6365,12 @@ class RemesaBuilder {
 
         if (this.selectedRows.length === 0) {
             this.container.innerHTML = `
-                <div class="remesa-header">
+                <div class="sepa-batch-header">
                     <h3>Remesa SEPA</h3>
-                    <div class="remesa-subtitle">Batch builder</div>
+                    <div class="sepa-batch-subtitle">Batch builder</div>
                 </div>
-                <div class="remesa-items">
-                    <div class="remesa-empty">
+                <div class="sepa-batch-items">
+                    <div class="sepa-batch-empty">
                         Select invoices from the table to create a SEPA batch
                     </div>
                 </div>`;
@@ -6328,114 +6378,114 @@ class RemesaBuilder {
         }
 
         let totalAmount = 0;
-        let totalNeto = 0;
+        let totalNet = 0;
         let totalVat = 0;
         this.selectedRows.forEach(r => {
             totalAmount += parseFloat(r.total) || 0;
-            totalNeto += parseFloat(r.neto) || 0;
+            totalNet += parseFloat(r.neto) || 0;
             totalVat += parseFloat(r.vat) || 0;
         });
 
         const today = new Date().toISOString().split('T')[0];
 
         this.container.innerHTML = `
-            <div class="remesa-header">
+            <div class="sepa-batch-header">
                 <h3>Remesa SEPA</h3>
-                <div class="remesa-subtitle">${this.selectedRows.length} invoice${this.selectedRows.length !== 1 ? 's' : ''} selected</div>
+                <div class="sepa-batch-subtitle">${this.selectedRows.length} invoice${this.selectedRows.length !== 1 ? 's' : ''} selected</div>
             </div>
-            <div class="remesa-items">
+            <div class="sepa-batch-items">
                 ${this.selectedRows.map(r => `
-                    <div class="remesa-item">
+                    <div class="sepa-batch-item">
                         <div>
-                            <div class="remesa-item-ref">${escapeHtml(r.referencia)}</div>
-                            <div class="remesa-item-activo">${escapeHtml(r.activo)} - ${escapeHtml(r.pagador)}</div>
+                            <div class="sepa-batch-item-ref">${escapeHtml(r.referencia)}</div>
+                            <div class="sepa-batch-item-property">${escapeHtml(r.activo)} - ${escapeHtml(r.pagador)}</div>
                         </div>
-                        <div class="remesa-item-amount">${formatCurrency(r.total)}</div>
+                        <div class="sepa-batch-item-amount">${formatCurrency(r.total)}</div>
                     </div>
                 `).join('')}
             </div>
-            <div class="remesa-totals">
-                <div class="remesa-totals-row">
+            <div class="sepa-batch-totals">
+                <div class="sepa-batch-totals-row">
                     <span>Neto</span>
-                    <span>${formatCurrency(totalNeto)}</span>
+                    <span>${formatCurrency(totalNet)}</span>
                 </div>
-                <div class="remesa-totals-row">
+                <div class="sepa-batch-totals-row">
                     <span>IVA</span>
                     <span>${formatCurrency(totalVat)}</span>
                 </div>
-                <div class="remesa-totals-row total">
+                <div class="sepa-batch-totals-row total">
                     <span>Total</span>
                     <span>${formatCurrency(totalAmount)}</span>
                 </div>
             </div>
-            <div class="remesa-actions">
-                <div class="remesa-form-group">
+            <div class="sepa-batch-actions">
+                <div class="sepa-batch-form-group">
                     <label>Collection date</label>
-                    <input type="date" class="remesa-fecha" value="${today}">
+                    <input type="date" class="sepa-batch-date" value="${today}">
                 </div>
-                <div class="remesa-form-group">
+                <div class="sepa-batch-form-group">
                     <label>Presenter (Creditor)</label>
-                    <input type="text" class="remesa-presentador-nombre" placeholder="Creditor name" value="PROPLIA LTD">
+                    <input type="text" class="sepa-batch-presenter-name" placeholder="Creditor name" value="PROPLIA LTD">
                 </div>
-                <div class="remesa-form-group">
+                <div class="sepa-batch-form-group">
                     <label>Creditor ID</label>
-                    <input type="text" class="remesa-presentador-creditor-id" placeholder="B46454591" value="">
+                    <input type="text" class="sepa-batch-presenter-creditor-id" placeholder="B46454591" value="">
                 </div>
-                <div class="remesa-form-group">
+                <div class="sepa-batch-form-group">
                     <label>Suffix</label>
-                    <input type="text" class="remesa-presentador-sufijo" placeholder="000" value="">
+                    <input type="text" class="sepa-batch-presenter-suffix" placeholder="000" value="">
                 </div>
-                <div class="remesa-form-group">
+                <div class="sepa-batch-form-group">
                     <label>Receiver IBAN</label>
-                    <input type="text" class="remesa-receptor-iban" placeholder="GB00 0000 0000 0000 0000 00" value="">
+                    <input type="text" class="sepa-batch-receiver-iban" placeholder="GB00 0000 0000 0000 0000 00" value="">
                 </div>
-                <div class="remesa-form-group">
+                <div class="sepa-batch-form-group">
                     <label>SWIFT/BIC</label>
-                    <input type="text" class="remesa-receptor-swift-bic" placeholder="LOYDGB2L" value="">
+                    <input type="text" class="sepa-batch-receiver-swift-bic" placeholder="LOYDGB2L" value="">
                 </div>
-                <button class="btn btn-primary remesa-create-btn">Create SEPA Batch</button>
+                <button class="btn btn-primary sepa-batch-create-btn">Create SEPA Batch</button>
             </div>`;
 
-        this.container.querySelector('.remesa-create-btn').addEventListener('click', () => this.createRemesa());
+        this.container.querySelector('.sepa-batch-create-btn').addEventListener('click', () => this.createSepaBatch());
     }
 
-    async createRemesa() {
+    async createSepaBatch() {
         const val = (sel) => {
             const el = this.container.querySelector(sel);
             return el ? el.value.trim() : '';
         };
 
-        const fecha = val('.remesa-fecha');
-        const presentadorNombre = val('.remesa-presentador-nombre');
-        const presentadorCreditorId = val('.remesa-presentador-creditor-id');
-        const presentadorSufijo = val('.remesa-presentador-sufijo');
-        const receptorIban = val('.remesa-receptor-iban');
-        const receptorSwiftBic = val('.remesa-receptor-swift-bic');
+        const date = val('.sepa-batch-date');
+        const presenterName = val('.sepa-batch-presenter-name');
+        const presenterCreditorId = val('.sepa-batch-presenter-creditor-id');
+        const presenterSuffix = val('.sepa-batch-presenter-suffix');
+        const receiverIban = val('.sepa-batch-receiver-iban');
+        const receiverSwiftBic = val('.sepa-batch-receiver-swift-bic');
 
-        if (!fecha) {
+        if (!date) {
             Toast.show('Enter a collection date', 'error');
             return;
         }
-        if (!presentadorNombre) {
+        if (!presenterName) {
             Toast.show('Enter the presenter/creditor name', 'error');
             return;
         }
 
         const ids = this.selectedRows.map(r => r.id);
-        const fechaCobro = new Date(fecha + 'T00:00:00Z').toISOString();
+        const collectionDate = new Date(date + 'T00:00:00Z').toISOString();
 
         try {
             const result = await api.post('/sepa-batches/batch', {
                 contabilidad_ids: ids,
-                fecha_cobro: fechaCobro,
-                presentador_nombre: presentadorNombre,
-                presentador_creditor_id: presentadorCreditorId || null,
-                presentador_sufijo: presentadorSufijo || null,
-                receptor_nombre: presentadorNombre,
-                receptor_iban: receptorIban || null,
-                receptor_swift_bic: receptorSwiftBic || null,
-                receptor_sufijo: presentadorSufijo || null,
-                receptor_creditor_id: presentadorCreditorId || null,
+                fecha_cobro: collectionDate,
+                presentador_nombre: presenterName,
+                presentador_creditor_id: presenterCreditorId || null,
+                presentador_sufijo: presenterSuffix || null,
+                receptor_nombre: presenterName,
+                receptor_iban: receiverIban || null,
+                receptor_swift_bic: receiverSwiftBic || null,
+                receptor_sufijo: presenterSuffix || null,
+                receptor_creditor_id: presenterCreditorId || null,
             });
 
             Toast.show(`Batch created: ${result.remesa_id} (${result.created} records, ${formatCurrency(result.total)})`);
@@ -6450,6 +6500,7 @@ class RemesaBuilder {
     }
 }
 
-Object.assign(AdminApp, { RemesaBuilder });
+Object.assign(AdminApp, { SepaBatchBuilder });
 
 })(window.AdminApp);
+

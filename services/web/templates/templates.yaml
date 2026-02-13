@@ -19,6 +19,12 @@ templates:
   blog-list:
     content_types:
       - blog-list
+  docs-list:
+    content_types:
+      - documentation-list
+  legal-list:
+    content_types:
+      - legal-list
   feature:
     content_types:
       - feature

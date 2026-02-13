@@ -117,6 +117,26 @@ pub async fn invoices_list_handler(
     }
 }
 
+pub async fn invoices_owners_handler(State(state): State<AdminState>) -> Response {
+    match sqlx::query_scalar::<_, serde_json::Value>(
+        "SELECT COALESCE(json_agg(row_to_json(t)), '[]') FROM (\
+            SELECT id, name FROM admin_owners ORDER BY name\
+         ) t",
+    )
+    .fetch_one(&*state.pool)
+    .await
+    {
+        Ok(data) => Json(data).into_response(),
+        Err(e) => {
+            tracing::error!(error = %e, "Invoice owners query failed");
+            error_response(
+                axum::http::StatusCode::INTERNAL_SERVER_ERROR,
+                &e.to_string(),
+            )
+        }
+    }
+}
+
 pub async fn invoices_payees_handler(State(state): State<AdminState>) -> Response {
     match sqlx::query_scalar::<_, serde_json::Value>(
         "SELECT COALESCE(json_agg(t.payee), '[]') FROM (\

@@ -1,5 +1,6 @@
 use std::io::BufWriter;
 use std::path::PathBuf;
+use std::sync::OnceLock;
 
 use chrono::{Datelike, NaiveDate};
 use printpdf::*;
@@ -20,6 +21,11 @@ const DARK: (f32, f32, f32) = (0.133, 0.133, 0.133); // #222222
 const MID: (f32, f32, f32) = (0.333, 0.333, 0.333); // #555555
 const LIGHT: (f32, f32, f32) = (0.533, 0.533, 0.533); // #888888
 const BORDER: (f32, f32, f32) = (0.800, 0.800, 0.800); // #CCCCCC
+const GREEN: (f32, f32, f32) = (0.239, 0.545, 0.369); // #3D8B5E
+const RED: (f32, f32, f32) = (0.769, 0.271, 0.227); // #C4453A
+
+// ── Cached logo bytes ───────────────────────────────────────────────────────
+static LOGO_BYTES: OnceLock<Option<Vec<u8>>> = OnceLock::new();
 
 /// Invoice data from the database.
 #[derive(Debug)]
@@ -33,11 +39,15 @@ pub struct InvoiceData {
     pub amount: f64,
     pub paid: f64,
     pub vat: f64,
+    pub retention: f64,
+    pub discount: f64,
+    pub discount_pct: f64,
     pub currency: String,
     pub invoice_date: Option<NaiveDate>,
     pub payment_date: Option<NaiveDate>,
     pub invoice_type: String,
     pub notes: String,
+    pub iban: Option<String>,
 }
 
 /// Additional data from owner/tenant lookups for enriching the invoice.
@@ -83,7 +93,7 @@ impl PdfService {
         let current_layer = doc.get_page(page).get_layer(layer);
         let mut y = PAGE_H - MT;
 
-        y = draw_header(&current_layer, &fonts, y);
+        y = draw_header(&current_layer, &fonts, &cwd, y);
         y = draw_invoice_details(&current_layer, &fonts, entry, y);
         y = draw_parties(&current_layer, &fonts, entry, enrichment, y);
         y = draw_line_items_header(&current_layer, &fonts, y);
@@ -199,7 +209,7 @@ fn currency_sym(entry: &InvoiceData) -> &'static str {
     match entry.currency.as_str() {
         "USD" | "usd" => "$",
         "EUR" | "eur" => "\u{20ac}",
-        _ => "\u{00a3}", // GBP pound sign
+        _ => "\u{20ac}", // EUR euro sign (default)
     }
 }
 
@@ -251,17 +261,102 @@ fn txt_amount_right(
     txt_right(layer, number, num_right, y, size, font, color);
 }
 
+/// Composite RGBA image onto white background to avoid black transparency in PDF.
+fn composite_on_white(img: &image_crate::DynamicImage) -> image_crate::RgbImage {
+    let rgba = img.to_rgba8();
+    let mut out = image_crate::RgbImage::new(rgba.width(), rgba.height());
+    for (x, y, pixel) in rgba.enumerate_pixels() {
+        let a = f32::from(pixel[3]) / 255.0;
+        #[allow(clippy::cast_possible_truncation, clippy::cast_sign_loss)]
+        let r = (f32::from(pixel[0]).mul_add(a, 255.0 * (1.0 - a))) as u8;
+        #[allow(clippy::cast_possible_truncation, clippy::cast_sign_loss)]
+        let g = (f32::from(pixel[1]).mul_add(a, 255.0 * (1.0 - a))) as u8;
+        #[allow(clippy::cast_possible_truncation, clippy::cast_sign_loss)]
+        let b = (f32::from(pixel[2]).mul_add(a, 255.0 * (1.0 - a))) as u8;
+        out.put_pixel(x, y, image_crate::Rgb([r, g, b]));
+    }
+    out
+}
+
+/// Auto-crop white borders from an RGB image.
+fn auto_crop_white(img: &image_crate::RgbImage) -> image_crate::RgbImage {
+    let (w, h) = (img.width(), img.height());
+    let (mut min_x, mut min_y, mut max_x, mut max_y) = (w, h, 0u32, 0u32);
+    for (x, y, px) in img.enumerate_pixels() {
+        if px[0] < 250 || px[1] < 250 || px[2] < 250 {
+            min_x = min_x.min(x);
+            min_y = min_y.min(y);
+            max_x = max_x.max(x);
+            max_y = max_y.max(y);
+        }
+    }
+    if max_x <= min_x || max_y <= min_y {
+        return img.clone();
+    }
+    image_crate::imageops::crop_imm(img, min_x, min_y, max_x - min_x + 1, max_y - min_y + 1)
+        .to_image()
+}
+
 // ── Section renderers ───────────────────────────────────────────────────────
 
 fn draw_header(
     layer: &PdfLayerReference,
     fonts: &Fonts<'_>,
+    cwd: &std::path::Path,
     top: f32,
 ) -> f32 {
+    let logo_bytes = LOGO_BYTES.get_or_init(|| {
+        let logo_path = cwd.join("storage/files/images/logo.png");
+        std::fs::read(&logo_path).ok()
+    });
+
     let mut y = top;
 
-    txt(layer, "PROPERTY MANAGEMENT", ML, y - 6.0, 16.0, fonts.extrabold, ACCENT);
-    y -= 14.0;
+    // Logo (left-aligned, auto-cropped, sized via DPI to target width)
+    if let Some(bytes) = logo_bytes {
+        if let Ok(img) = image_crate::load_from_memory(bytes) {
+            let rgb_img = composite_on_white(&img);
+            let cropped = auto_crop_white(&rgb_img);
+            let cropped_dyn = image_crate::DynamicImage::ImageRgb8(cropped);
+
+            // Resize to target render width to avoid embedding megapixel raw data
+            let target_px_w = 532u32; // 45mm at 300 DPI
+            let final_img = if cropped_dyn.width() > target_px_w {
+                cropped_dyn.resize(
+                    target_px_w,
+                    u32::MAX,
+                    image_crate::imageops::FilterType::Lanczos3,
+                )
+            } else {
+                cropped_dyn
+            };
+
+            let pdf_image = Image::from_dynamic_image(&final_img);
+
+            // Calculate DPI so image renders at exactly target_w_mm
+            let target_w_mm = 45.0;
+            let target_w_inches = target_w_mm / 25.4;
+            #[allow(clippy::cast_precision_loss)]
+            let dpi = final_img.width() as f32 / target_w_inches;
+            #[allow(clippy::cast_precision_loss)]
+            let logo_h_mm = final_img.height() as f32 / dpi * 25.4;
+            let logo_x = ML;
+
+            pdf_image.add_to_layer(
+                layer.clone(),
+                ImageTransform {
+                    translate_x: Some(Mm(logo_x)),
+                    translate_y: Some(Mm(y - logo_h_mm)),
+                    dpi: Some(dpi),
+                    ..Default::default()
+                },
+            );
+            y -= logo_h_mm + 4.0;
+        }
+    } else {
+        txt(layer, "PROPERTY MANAGEMENT", ML, y - 6.0, 16.0, fonts.extrabold, ACCENT);
+        y -= 14.0;
+    }
 
     // Accent line above title
     stroke_line(layer, ML, PAGE_W - MR, y, 0.5, ACCENT);
@@ -447,6 +542,7 @@ fn draw_totals(
 ) -> f32 {
     let sym = currency_sym(entry);
     let base = entry.amount - entry.vat;
+    let total_due = entry.amount - entry.discount - entry.retention;
 
     let label_x = ML;
     let right_x = PAGE_W - MR;
@@ -466,13 +562,28 @@ fn draw_totals(
     stroke_line(layer, label_x, right_x, y, 0.15, BORDER);
     y -= 5.0;
 
+    // Retention (if applicable)
+    if entry.retention > 0.0 {
+        txt(layer, "Retention", label_x, y, 10.0, fonts.medium, RED);
+        txt_amount_right(layer, &format!("-{}", fmt_amount(entry.retention)), sym, right_x, y, 10.0, fonts.medium, RED);
+        y -= 6.5;
+    }
+
+    // Discount (if applicable)
+    if entry.discount > 0.0 {
+        let label = format!("Discount ({:.2}%)", entry.discount_pct);
+        txt(layer, &label, label_x, y, 10.0, fonts.medium, GREEN);
+        txt_amount_right(layer, &format!("-{}", fmt_amount(entry.discount)), sym, right_x, y, 10.0, fonts.medium, GREEN);
+        y -= 6.5;
+    }
+
     // Thin separator above total
     stroke_line(layer, label_x, right_x, y, 0.3, ACCENT);
     y -= 8.0;
 
     // Total due
     txt(layer, "Total due", label_x, y, 13.0, fonts.extrabold, DARK);
-    txt_amount_right(layer, &fmt_amount(entry.amount), sym, right_x, y, 13.0, fonts.extrabold, DARK);
+    txt_amount_right(layer, &fmt_amount(total_due), sym, right_x, y, 13.0, fonts.extrabold, DARK);
 
     y - 14.0
 }
@@ -480,10 +591,18 @@ fn draw_totals(
 fn draw_footer(
     layer: &PdfLayerReference,
     fonts: &Fonts<'_>,
-    _entry: &InvoiceData,
+    entry: &InvoiceData,
     _top: f32,
 ) {
-    let y = 25.0;
+    let mut y = 25.0;
+
+    // IBAN line
+    if let Some(ref iban) = entry.iban {
+        if !iban.is_empty() {
+            txt(layer, &format!("IBAN: {iban}"), ML, y, 9.0, fonts.regular, MID);
+            y -= 5.0;
+        }
+    }
 
     txt(
         layer,

@@ -21,29 +21,29 @@
     background: var(--bg-surface);
 }
 
-.remesa-header {
+.sepa-batch-header {
     padding: var(--space-4);
     border-bottom: 1px solid var(--border-subtle);
 }
 
-.remesa-header h3 {
+.sepa-batch-header h3 {
     margin: 0 0 var(--space-1);
     font-size: var(--text-base);
     font-weight: 600;
 }
 
-.remesa-header .remesa-subtitle {
+.sepa-batch-header .sepa-batch-subtitle {
     font-size: var(--text-sm);
     color: var(--text-tertiary);
 }
 
-.remesa-items {
+.sepa-batch-items {
     flex: 1;
     overflow-y: auto;
     padding: var(--space-3);
 }
 
-.remesa-item {
+.sepa-batch-item {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -52,32 +52,32 @@
     font-size: var(--text-sm);
 }
 
-.remesa-item:last-child {
+.sepa-batch-item:last-child {
     border-bottom: none;
 }
 
-.remesa-item-ref {
+.sepa-batch-item-ref {
     font-weight: 500;
     color: var(--text-primary);
 }
 
-.remesa-item-activo {
+.sepa-batch-item-property {
     font-size: var(--text-xs);
     color: var(--text-tertiary);
 }
 
-.remesa-item-amount {
+.sepa-batch-item-amount {
     font-variant-numeric: tabular-nums;
     font-weight: 600;
     color: var(--text-primary);
 }
 
-.remesa-totals {
+.sepa-batch-totals {
     padding: var(--space-4);
     border-top: 1px solid var(--border-subtle);
 }
 
-.remesa-totals-row {
+.sepa-batch-totals-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -85,7 +85,7 @@
     font-size: var(--text-sm);
 }
 
-.remesa-totals-row.total {
+.sepa-batch-totals-row.total {
     font-weight: 700;
     font-size: var(--text-base);
     border-top: 1px solid var(--border-default);
@@ -93,7 +93,7 @@
     margin-top: var(--space-1);
 }
 
-.remesa-actions {
+.sepa-batch-actions {
     padding: var(--space-4);
     border-top: 1px solid var(--border-subtle);
     display: flex;
@@ -101,24 +101,24 @@
     gap: var(--space-3);
 }
 
-.remesa-actions .btn {
+.sepa-batch-actions .btn {
     width: 100%;
     justify-content: center;
 }
 
-.remesa-form-group {
+.sepa-batch-form-group {
     display: flex;
     flex-direction: column;
     gap: var(--space-1);
 }
 
-.remesa-form-group label {
+.sepa-batch-form-group label {
     font-size: var(--text-xs);
     font-weight: 500;
     color: var(--text-secondary);
 }
 
-.remesa-form-group input {
+.sepa-batch-form-group input {
     padding: var(--space-2) var(--space-3);
     border: 1px solid var(--border-default);
     border-radius: var(--radius-sm);
@@ -128,12 +128,12 @@
     color: var(--text-primary);
 }
 
-.remesa-form-group input:focus {
+.sepa-batch-form-group input:focus {
     outline: none;
     border-color: var(--accent);
 }
 
-.remesa-empty {
+.sepa-batch-empty {
     color: var(--text-tertiary);
     text-align: center;
     padding: var(--space-12) var(--space-4);

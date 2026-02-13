@@ -66,7 +66,7 @@ function renderPropertyFinancialTable(properties, totals) {
                 </tbody>
                 <tfoot>
                     <tr class="summary-row clickable-row" data-href="${AdminApp.listUrl('billing')}">
-                        <td><strong>All properties (${properties.length})</strong></td>
+                        <td><div class="property-cell"><div class="property-avatar" style="background:var(--bg-surface-raised);color:var(--text-primary);font-size:12px">&Sigma;</div><span class="property-name"><strong>All properties (${properties.length})</strong></span></div></td>
                         <td class="numeric"><strong>${formatCurrency(totals.total_invoiced)}</strong></td>
                         <td class="numeric"><strong>${formatCurrency(totals.total_collected)}</strong></td>
                         <td class="numeric${parseFloat(totals.total_outstanding) > 0 ? ' text-danger' : ''}"><strong>${formatCurrency(totals.total_outstanding)}</strong></td>
@@ -261,7 +261,6 @@ async function renderDashboard(container) {
 Object.assign(AdminApp, {
     renderDashboard,
     renderOwnerTable,
-    renderActivoFinancialTable: renderPropertyFinancialTable,
     renderPropertyFinancialTable,
 });
 

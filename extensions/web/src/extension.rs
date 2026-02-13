@@ -17,17 +17,18 @@ use crate::docs::{DocsContentDataProvider, DocsPageDataProvider};
 use crate::extenders::OrgUrlExtender;
 use crate::features::{FeaturePagePrerenderer, FeaturesConfig};
 use crate::homepage::{HomepageConfig, HomepagePageDataProvider, HomepagePrerenderer};
+use crate::legal::LegalPageDataProvider;
 use crate::navigation::{NavigationConfig, NavigationPageDataProvider};
 use crate::partials::{
     AgenticMeshAnimationPartialRenderer, CliRemoteAnimationPartialRenderer,
-    DemoContentActivosPartialRenderer, DemoContentAuditPartialRenderer,
-    DemoContentContabilidadPartialRenderer, DemoContentContactsPartialRenderer,
-    DemoContentContratosPartialRenderer, DemoContentDepositosPartialRenderer,
-    DemoContentFinancialPartialRenderer, DemoContentIncidenciasPartialRenderer,
-    DemoContentInquilinosPartialRenderer, DemoContentInsurancePartialRenderer,
+    DemoContentAuditPartialRenderer, DemoContentBillingPartialRenderer,
+    DemoContentContactsPartialRenderer, DemoContentContractsPartialRenderer,
+    DemoContentDepositsPartialRenderer, DemoContentFinancialPartialRenderer,
+    DemoContentInsurancePartialRenderer, DemoContentIssuesPartialRenderer,
     DemoContentLeadsPartialRenderer, DemoContentOverduePartialRenderer,
-    DemoContentPanelPartialRenderer, DemoContentPropietariosPartialRenderer,
-    DemoContentRemesasSepaPartialRenderer, DemoSidebarPartialRenderer,
+    DemoContentOwnersPartialRenderer, DemoContentPanelPartialRenderer,
+    DemoContentPropertiesPartialRenderer, DemoContentSepaBatchesPartialRenderer,
+    DemoContentTenantsPartialRenderer, DemoSidebarPartialRenderer,
     FooterPartialRenderer, HeadAssetsPartialRenderer,
     HeaderPartialRenderer, MemoryLoopAnimationPartialRenderer, RustMeshAnimationPartialRenderer,
     ScriptsPartialRenderer,
@@ -176,6 +177,7 @@ impl Extension for WebExtension {
         providers.push(Arc::new(BlogPostPageDataProvider::new()));
         providers.push(Arc::new(PlaybooksListPageDataProvider::new()));
         providers.push(Arc::new(PlaybookPageDataProvider::new()));
+        providers.push(Arc::new(LegalPageDataProvider::new()));
 
         providers
     }
@@ -222,14 +224,14 @@ impl Extension for WebExtension {
             // Demo partials
             Arc::new(DemoSidebarPartialRenderer),
             Arc::new(DemoContentPanelPartialRenderer),
-            Arc::new(DemoContentActivosPartialRenderer),
-            Arc::new(DemoContentContratosPartialRenderer),
-            Arc::new(DemoContentContabilidadPartialRenderer),
-            Arc::new(DemoContentInquilinosPartialRenderer),
-            Arc::new(DemoContentPropietariosPartialRenderer),
-            Arc::new(DemoContentDepositosPartialRenderer),
-            Arc::new(DemoContentRemesasSepaPartialRenderer),
-            Arc::new(DemoContentIncidenciasPartialRenderer),
+            Arc::new(DemoContentPropertiesPartialRenderer),
+            Arc::new(DemoContentContractsPartialRenderer),
+            Arc::new(DemoContentBillingPartialRenderer),
+            Arc::new(DemoContentTenantsPartialRenderer),
+            Arc::new(DemoContentOwnersPartialRenderer),
+            Arc::new(DemoContentDepositsPartialRenderer),
+            Arc::new(DemoContentSepaBatchesPartialRenderer),
+            Arc::new(DemoContentIssuesPartialRenderer),
             Arc::new(DemoContentOverduePartialRenderer),
             Arc::new(DemoContentFinancialPartialRenderer),
             Arc::new(DemoContentAuditPartialRenderer),

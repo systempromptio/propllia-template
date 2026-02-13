@@ -55,6 +55,22 @@ content_sources:
         priority: 0.9
         changefreq: "daily"
 
+  legal:
+    path: "content/legal"
+    source_id: "legal"
+    category_id: "pages"
+    enabled: true
+    description: "Legal pages"
+    allowed_content_types: ["legal"]
+    indexing:
+      clear_before: false
+      recursive: true
+    sitemap:
+      enabled: true
+      url_pattern: "/legal/{slug}"
+      priority: 0.3
+      changefreq: "monthly"
+
 categories:
   blog:
     name: "Blog"
@@ -62,6 +78,9 @@ categories:
   documentation:
     name: "Documentación"
     slug: "documentation"
+  pages:
+    name: "Pages"
+    slug: "pages"
 
 metadata:
   default_author: "Proplia"

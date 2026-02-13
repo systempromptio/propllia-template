@@ -24,10 +24,10 @@ function initEntityPage(configKey, container, overrides) {
                     }
                     if (isEdit) {
                         await AdminApp.api.put(`${config.apiPath}/${original.id}`, data);
-                        AdminApp.Toast.show(`${config.title} actualizado`);
+                        AdminApp.Toast.show(`${config.title} updated`);
                     } else {
                         await AdminApp.api.post(config.apiPath, data);
-                        AdminApp.Toast.show(`${config.title} creado`);
+                        AdminApp.Toast.show(`${config.title} created`);
                     }
                     table.load();
                 } catch (e) {
@@ -57,7 +57,25 @@ function initEntityPage(configKey, container, overrides) {
                 AdminApp.PropertyPresentation.open(row.id);
             }
             if (action === 'pdf') {
-                window.open(`${AdminApp.API_BASE}/contabilidad/${row.id}/pdf`, '_blank');
+                fetch(`${AdminApp.API_BASE}/invoices/${row.id}/pdf`)
+                    .then(res => {
+                        if (!res.ok) throw new Error('PDF download failed');
+                        const ct = res.headers.get('content-type') || '';
+                        if (ct.includes('application/pdf')) return res.blob();
+                        return null;
+                    })
+                    .then(blob => {
+                        if (!blob) return;
+                        const url = URL.createObjectURL(blob);
+                        const a = document.createElement('a');
+                        a.href = url;
+                        a.download = `invoice-${row.reference || row.id}.pdf`;
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
+                        URL.revokeObjectURL(url);
+                    })
+                    .catch(e => AdminApp.Toast.show(e.message, 'error'));
             }
             if (action === 'delete') {
                 const msg = config.deleteConfirm
@@ -67,7 +85,7 @@ function initEntityPage(configKey, container, overrides) {
                 if (ok) {
                     try {
                         await AdminApp.api.del(`${config.apiPath}/${row.id}`);
-                        AdminApp.Toast.show(`${config.title} eliminado`);
+                        AdminApp.Toast.show(`${config.title} deleted`);
                         table.load();
                     } catch (e) { AdminApp.Toast.show(e.message, 'error'); }
                 }

@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  {{{HEAD_ASSETS}}}
+  <title>{{BLOG_NAME}} | {{ORG_NAME}}</title>
+  <meta name="description" content="{{BLOG_DESCRIPTION}}" />
+  <link rel="canonical" href="{{BLOG_URL}}" />
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="stylesheet" href="/css/blog.css" />
+  <link rel="stylesheet" href="/css/content-cards.css" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="{{BLOG_NAME}} | {{ORG_NAME}}" />
+  <meta property="og:description" content="{{BLOG_DESCRIPTION}}" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="{{BLOG_URL}}" />
+  <meta property="og:site_name" content="{{ORG_NAME}}" />
+</head>
+<body>
+  <div class="blog-background"></div>
+  <div class="blog-shape-left"></div>
+
+  {{{HEADER}}}
+
+  <main class="blog-list">
+    <header class="content-list-header">
+      <h1>{{BLOG_NAME}}</h1>
+      <p class="subtitle">{{BLOG_DESCRIPTION}}</p>
+    </header>
+
+    <div class="blog-grid posts" id="blog-grid">
+      {{{POSTS}}}
+    </div>
+  </main>
+
+  {{{FOOTER}}}
+
+  {{{SCRIPTS}}}
+</body>
+</html>

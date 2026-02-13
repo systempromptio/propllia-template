@@ -1,5 +1,6 @@
 pub mod audit;
 pub mod auth;
+pub mod contacts;
 pub mod contracts;
 pub mod dashboard;
 pub mod export;
@@ -7,3 +8,5 @@ pub mod invoices;
 pub mod pdf;
 pub mod properties;
 pub mod reports;
+pub mod sepa_batches;
+pub mod tenants;

@@ -50,7 +50,7 @@ body { margin: 0; }
 [data-section="contracts"]   { --section-color: var(--section-contracts); }
 [data-section="invoices"]    { --section-color: var(--section-invoices); }
 [data-section="tenants"]     { --section-color: var(--section-tenants); }
-[data-section="facturacion"] { --section-color: var(--section-facturacion); }
+[data-section="billing"]     { --section-color: var(--section-billing); }
 [data-section="costes"]      { --section-color: var(--section-costes); }
 [data-section="incidents"]   { --section-color: var(--section-incidents); }
 [data-section="tools"]       { --section-color: var(--section-tools); }

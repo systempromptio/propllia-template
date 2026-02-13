@@ -68,8 +68,8 @@ pub async fn property_detail_handler(
 
 pub async fn properties_names_handler(State(state): State<AdminState>) -> Response {
     match sqlx::query_scalar::<_, serde_json::Value>(
-        "SELECT COALESCE(json_agg(row_to_json(t)), '[]') FROM (\
-            SELECT id, property_name as name FROM admin_properties ORDER BY property_name\
+        "SELECT COALESCE(json_agg(t.property_name), '[]') FROM (\
+            SELECT DISTINCT property_name FROM admin_properties ORDER BY property_name\
          ) t",
     )
     .fetch_one(&*state.pool)

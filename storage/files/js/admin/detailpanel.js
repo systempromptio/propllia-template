@@ -4,7 +4,7 @@ const {
     openPanel, closePanel,
     api, escapeHtml,
     formatCurrency, formatDate,
-    statusBadge, computeEstado,
+    statusBadge, computeStatus,
     progressBar, daysUntil,
 } = AdminApp;
 
@@ -32,17 +32,17 @@ async function openDocumentModal(docId) {
     }
 }
 
-function renderActivoFinancialDetail(f) {
+function renderPropertyFinancialDetail(f) {
     if (!f) return '';
-    const facturado = parseFloat(f.total_invoiced || 0);
+    const invoiced = parseFloat(f.total_invoiced || 0);
     const collected = parseFloat(f.total_collected || 0);
     const outstanding = parseFloat(f.total_outstanding || 0);
-    const rate = facturado > 0 ? (collected / facturado * 100) : 0;
+    const rate = invoiced > 0 ? (collected / invoiced * 100) : 0;
     return `
         <div class="detail-section">
             <h4>Financial summary</h4>
             <div class="financial-cards">
-                <div class="mini-card"><span class="mini-label">Invoiced</span><span class="mini-value">${formatCurrency(facturado)}</span></div>
+                <div class="mini-card"><span class="mini-label">Invoiced</span><span class="mini-value">${formatCurrency(invoiced)}</span></div>
                 <div class="mini-card success"><span class="mini-label">Collected</span><span class="mini-value">${formatCurrency(collected)}</span></div>
                 <div class="mini-card ${outstanding > 0 ? 'error' : ''}"><span class="mini-label">Outstanding</span><span class="mini-value">${formatCurrency(outstanding)}</span></div>
             </div>
@@ -53,7 +53,7 @@ function renderActivoFinancialDetail(f) {
         </div>`;
 }
 
-function renderActivoInvoices(invoices) {
+function renderPropertyInvoices(invoices) {
     if (invoices.length === 0) return '';
     return `
         <div class="detail-section">
@@ -78,7 +78,7 @@ function renderActivoInvoices(invoices) {
         </div>`;
 }
 
-function renderContratoBasicInfo(row) {
+function renderContractBasicInfo(row) {
     const fields = [['Contract ref', row.contract_ref], ['Property', row.property_name], ['Address', row.address], ['Tenant', row.tenant_name]];
     const financial = [['Monthly rent', formatCurrency(row.rent)], ['Contract value', formatCurrency(row.total)]];
     const dates = [['Start date', formatDate(row.start_date)], ['End date', formatDate(row.end_date)]];
@@ -100,7 +100,7 @@ function renderContratoBasicInfo(row) {
         ${row.tags && row.tags.length ? `<div class="detail-section"><h4>Tags</h4><div>${row.tags.map(t => `<span class="badge badge-blue">${escapeHtml(t)}</span>`).join(' ')}</div></div>` : ''}`;
 }
 
-function renderContratoDocuments(detail) {
+function renderContractDocuments(detail) {
     if (!detail.documents || detail.documents.length === 0) return '';
     let html = `<div class="detail-section"><h4>Documents (${detail.documents.length})</h4>`;
     detail.documents.forEach(doc => {
@@ -120,7 +120,7 @@ function renderContratoDocuments(detail) {
     return html;
 }
 
-function renderContratoDetalles(detail) {
+function renderContractDetails(detail) {
     if (!detail.extracted_data || detail.extracted_data.length === 0) return '';
     const catLabels = {
         price: 'Price', ipc: 'CPI', garantia: 'Guarantee',
@@ -150,7 +150,7 @@ class DetailPanel {
         this._closing = false;
     }
 
-    async openActivo(id) {
+    async openProperty(id) {
         openPanel(this, 'Property details');
         try {
             const data = await api.get(`/properties/${id}/detail`);
@@ -175,8 +175,8 @@ class DetailPanel {
                         ${a.tags && a.tags.length ? `<div class="detail-field"><span class="detail-label">Tags</span><span class="detail-value">${a.tags.map(t => `<span class="badge badge-blue">${escapeHtml(t)}</span>`).join(' ')}</span></div>` : ''}
                     </div>
                 </div>`;
-            html += renderActivoFinancialDetail(data.financial);
-            html += renderActivoInvoices(data.invoices || []);
+            html += renderPropertyFinancialDetail(data.financial);
+            html += renderPropertyInvoices(data.invoices || []);
             this.panel.querySelector('.panel-body').innerHTML = html;
         } catch (e) {
             if (this.panel) {
@@ -186,14 +186,14 @@ class DetailPanel {
         }
     }
 
-    async openContrato(row) {
+    async openContract(row) {
         openPanel(this, 'Contract details');
         if (!this.panel) return;
-        let html = renderContratoBasicInfo(row);
+        let html = renderContractBasicInfo(row);
         try {
             const detail = await api.get(`/contracts/${row.id}/detail`);
-            html += renderContratoDocuments(detail);
-            html += renderContratoDetalles(detail);
+            html += renderContractDocuments(detail);
+            html += renderContractDetails(detail);
         } catch (_) {
         }
         this.panel.querySelector('.panel-body').innerHTML = html;
@@ -205,7 +205,7 @@ class DetailPanel {
         });
     }
 
-    async openContabilidad(row) {
+    async openBilling(row) {
         openPanel(this, 'Invoice details');
         if (!this.panel) return;
         const fields = [['Reference', row.reference], ['Description', row.description], ['Contract', row.contract_ref], ['Property', row.property_name], ['Payer', row.payer], ['Payee', row.payee]];
@@ -216,7 +216,7 @@ class DetailPanel {
             <div class="detail-section">
                 <div class="flex items-center gap-3 mb-4">
                     <h3 class="m-0">${escapeHtml(row.reference)}</h3>
-                    ${statusBadge(computeEstado(row), 'invoice')}
+                    ${statusBadge(computeStatus(row), 'invoice')}
                 </div>
             </div>
             ${AdminApp.detailSection('Identification', fields)}

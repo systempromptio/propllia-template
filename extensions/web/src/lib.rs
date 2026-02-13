@@ -12,6 +12,7 @@ pub mod extension;
 pub mod features;
 pub mod homepage;
 pub mod jobs;
+pub mod legal;
 pub mod models;
 pub mod navigation;
 pub mod partials;
@@ -58,6 +59,7 @@ pub use models::{
 };
 
 pub use extenders::OrgUrlExtender;
+pub use legal::LegalPageDataProvider;
 pub use jobs::ContentIngestionJob;
 pub use repository::{
     ContentRepository, LinkAnalyticsRepository, LinkRepository, SearchRepository,

@@ -82,9 +82,9 @@
     color: var(--section-contracts);
 }
 [data-section="invoices"] .admin-sidebar nav a.active,
-[data-section="facturacion"] .admin-sidebar nav a.active {
-    background: var(--section-facturacion-dim);
-    color: var(--section-facturacion);
+[data-section="billing"] .admin-sidebar nav a.active {
+    background: var(--section-billing-dim);
+    color: var(--section-billing);
 }
 [data-section="costes"] .admin-sidebar nav a.active {
     background: var(--section-costes-dim);

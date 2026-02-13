@@ -38,7 +38,7 @@ function renderFinancialKPIs(dashboard) {
         </div>`;
 }
 
-function renderRentabilidadTable(rentabilidad) {
+function renderProfitabilityTable(rentabilidad) {
     if (rentabilidad.length === 0) return '';
 
     rentabilidad.sort((a, b) => parseFloat(b.neto || 0) - parseFloat(a.neto || 0));
@@ -54,7 +54,7 @@ function renderRentabilidadTable(rentabilidad) {
                 </thead>
                 <tbody>
                     ${rentabilidad.map(r => {
-                        const neto = parseFloat(r.neto || 0);
+                        const net = parseFloat(r.neto || 0);
                         const margin = r.margin_pct != null ? r.margin_pct : 0;
                         const marginColor = margin > 50 ? 'green' : margin > 20 ? 'amber' : 'red';
                         return `
@@ -62,7 +62,7 @@ function renderRentabilidadTable(rentabilidad) {
                             <td><div class="property-cell"><div class="property-avatar" style="background:${stringToColor(r.property_name)}">${(r.property_name || '?').charAt(0).toUpperCase()}</div><span class="property-name">${escapeHtml(r.property_name)}</span></div></td>
                             <td class="numeric">${formatCurrency(r.total_income)}</td>
                             <td class="numeric">${formatCurrency(r.total_expenses)}</td>
-                            <td class="numeric${neto < 0 ? ' numeric-danger' : neto > 0 ? ' text-success text-semibold' : ''}">${formatCurrency(neto)}</td>
+                            <td class="numeric${net < 0 ? ' numeric-danger' : net > 0 ? ' text-success text-semibold' : ''}">${formatCurrency(net)}</td>
                             <td class="rate-col">${progressBar(Math.max(0, margin), marginColor)} <small>${margin.toFixed(1)}%</small></td>
                         </tr>`;
                     }).join('')}
@@ -126,9 +126,9 @@ async function renderFinancial(container) {
 
         let html = '';
         html += renderFinancialKPIs(dashboard);
-        html += renderRentabilidadTable(profitability);
+        html += renderProfitabilityTable(profitability);
         if (dashboard.financial_by_owner?.length > 0) html += AdminApp.renderOwnerTable(dashboard.financial_by_owner);
-        if (dashboard.financial_by_property.length > 0) html += AdminApp.renderActivoFinancialTable(dashboard.financial_by_property, dashboard);
+        if (dashboard.financial_by_property.length > 0) html += AdminApp.renderPropertyFinancialTable(dashboard.financial_by_property, dashboard);
         html += await renderExpenseBreakdown();
         el.innerHTML = html;
     } catch (e) {

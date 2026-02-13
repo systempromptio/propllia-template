@@ -1,0 +1,152 @@
+# Feature: Agente IA (AI Agent)
+
+slug: "ai-agent"
+title: "Agente IA - Gestión por lenguaje natural"
+icon: "bot"
+headline: "Gestiona tu cartera"
+headline_highlight: "con lenguaje natural"
+subtitle: "3 herramientas MCP para buscar, editar y generar informes. Compatible con Claude, ChatGPT y Gemini."
+
+highlights:
+  - id: "mcp"
+    text: "3 herramientas MCP"
+  - id: "entidades"
+    text: "11 entidades consultables"
+  - id: "informes"
+    text: "6 tipos de informe"
+  - id: "compatibilidad"
+    text: "Claude, ChatGPT, Gemini"
+
+sections:
+  - id: "mcp"
+    title: "3 herramientas MCP"
+    visual_position: "right"
+    visual_svg: |
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <!-- Chat bubble -->
+        <path d="M120 80 h100 a20 20 0 0 1 20 20 v60 a20 20 0 0 1 -20 20 h-60 l-30 25 v-25 h-10 a20 20 0 0 1 -20 -20 v-60 a20 20 0 0 1 20 -20z"/>
+        <!-- Dots inside bubble -->
+        <circle cx="155" cy="130" r="4" fill="currentColor"/>
+        <circle cx="185" cy="130" r="4" fill="currentColor"/>
+        <circle cx="215" cy="130" r="4" fill="currentColor"/>
+        <!-- Connected nodes -->
+        <circle cx="310" cy="90" r="12"/>
+        <circle cx="340" cy="160" r="12"/>
+        <circle cx="290" cy="210" r="12"/>
+        <!-- Connecting lines from bubble to nodes -->
+        <line x1="240" y1="110" x2="298" y2="90"/>
+        <line x1="240" y1="140" x2="328" y2="160"/>
+        <line x1="220" y1="180" x2="290" y2="198"/>
+        <!-- Lines between nodes -->
+        <line x1="310" y1="102" x2="340" y2="148"/>
+        <line x1="328" y1="166" x2="302" y2="204"/>
+      </svg>
+    content: |
+      <p>El agente IA de Proplia expone tres herramientas a través del protocolo Model Context Protocol (MCP), permitiendo a cualquier cliente IA compatible gestionar tu cartera inmobiliaria.</p>
+      <p>El flujo es sencillo: tú escribes en lenguaje natural, el agente interpreta tu intención, elige la herramienta adecuada, ejecuta la operación contra PostgreSQL y te devuelve el resultado.</p>
+      <table>
+        <thead><tr><th>Herramienta</th><th>Función</th><th>Alcance</th></tr></thead>
+        <tbody>
+          <tr><td><strong>search</strong></td><td>Buscar registros</td><td>11 entidades, 4 modos de búsqueda</td></tr>
+          <tr><td><strong>edit</strong></td><td>Crear, actualizar, eliminar</td><td>10 entidades con audit trail automático</td></tr>
+          <tr><td><strong>informe</strong></td><td>Generar informes de negocio</td><td>6 tipos de informe bajo demanda</td></tr>
+        </tbody>
+      </table>
+    items:
+      - title: "search"
+        description: "Busca por ID exacto, texto libre (ILIKE), filtros por campo o con paginación (limit/offset)"
+      - title: "edit"
+        description: "Crea, actualiza y elimina registros. Cada operación genera una entrada en audit_log con valores anteriores y nuevos"
+      - title: "informe"
+        description: "Genera 6 tipos de informe: portfolio, financiero, contratos por vencer, morosidad, rentabilidad y flujo de caja"
+
+  - id: "entidades"
+    title: "11 entidades consultables"
+    visual_position: "left"
+    visual_svg: |
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <!-- 3x3 grid of dots -->
+        <circle cx="140" cy="90" r="10" fill="currentColor" opacity="0.3"/>
+        <circle cx="200" cy="90" r="10" fill="currentColor" opacity="0.3"/>
+        <circle cx="260" cy="90" r="10" fill="currentColor" opacity="0.3"/>
+        <circle cx="140" cy="150" r="10" fill="currentColor" opacity="0.3"/>
+        <circle cx="200" cy="150" r="10" fill="currentColor" opacity="0.3"/>
+        <circle cx="260" cy="150" r="10" fill="currentColor" opacity="0.3"/>
+        <circle cx="140" cy="210" r="10" fill="currentColor" opacity="0.3"/>
+        <circle cx="200" cy="210" r="10" fill="currentColor" opacity="0.3"/>
+        <circle cx="260" cy="210" r="10" fill="currentColor" opacity="0.3"/>
+        <!-- Horizontal lines -->
+        <line x1="150" y1="90" x2="190" y2="90"/>
+        <line x1="210" y1="90" x2="250" y2="90"/>
+        <line x1="150" y1="150" x2="190" y2="150"/>
+        <line x1="210" y1="150" x2="250" y2="150"/>
+        <line x1="150" y1="210" x2="190" y2="210"/>
+        <line x1="210" y1="210" x2="250" y2="210"/>
+        <!-- Vertical lines -->
+        <line x1="140" y1="100" x2="140" y2="140"/>
+        <line x1="200" y1="100" x2="200" y2="140"/>
+        <line x1="260" y1="100" x2="260" y2="140"/>
+        <line x1="140" y1="160" x2="140" y2="200"/>
+        <line x1="200" y1="160" x2="200" y2="200"/>
+        <line x1="260" y1="160" x2="260" y2="200"/>
+      </svg>
+    content: |
+      <p>El agente puede buscar y operar sobre todas las entidades del sistema. Cada entidad tiene campos buscables específicos que permiten consultas precisas.</p>
+      <table>
+        <thead><tr><th>Entidad</th><th>Campos buscables</th></tr></thead>
+        <tbody>
+          <tr><td><strong>activos</strong></td><td>activo, direccion, estado, etiquetas</td></tr>
+          <tr><td><strong>contratos</strong></td><td>contrato, activo, inquilino, estado, tipo</td></tr>
+          <tr><td><strong>inquilinos</strong></td><td>nombre, identificacion, email, telefono</td></tr>
+          <tr><td><strong>contabilidad</strong></td><td>referencia, concepto, pagador, receptor, estado</td></tr>
+          <tr><td><strong>propietarios</strong></td><td>nombre, identificacion, email</td></tr>
+          <tr><td><strong>remesas_sepa</strong></td><td>remesa_id, acreedor, deudor, referencia</td></tr>
+          <tr><td><strong>depositos</strong></td><td>propiedad, contrato, pagador, estado</td></tr>
+          <tr><td><strong>incidencias</strong></td><td>activo, titulo, estado, prioridad</td></tr>
+          <tr><td><strong>seguros</strong></td><td>activo, compania, numero_poliza, estado</td></tr>
+          <tr><td><strong>alertas</strong></td><td>tipo, titulo, estado, prioridad</td></tr>
+          <tr><td><strong>audit_log</strong></td><td>entity_type, entity_id, action</td></tr>
+        </tbody>
+      </table>
+
+  - id: "informes"
+    title: "6 tipos de informe"
+    content: |
+      <p>Pide informes en lenguaje natural y recibe datos estructurados al instante. Cada informe se puede filtrar por inmueble y configurar con parámetros adicionales.</p>
+    items:
+      - title: "Portfolio"
+        description: "Total de inmuebles, distribución por estado, tasa de ocupación y alquiler medio"
+      - title: "Financiero"
+        description: "Balance de ingresos vs gastos con desglose mensual y anual"
+      - title: "Contratos por vencer"
+        description: "Contratos próximos a su fin, configurable con days_ahead (30, 60, 90 días)"
+      - title: "Morosidad"
+        description: "Inquilinos con pagos pendientes, importes adeudados y días de retraso"
+      - title: "Rentabilidad"
+        description: "Rentabilidad neta por inmueble descontando gastos e impuestos"
+      - title: "Flujo de caja"
+        description: "Entradas y salidas de dinero por periodo mensual o anual"
+
+  - id: "compatibilidad"
+    title: "Compatible con cualquier cliente MCP"
+    content: |
+      <p>Al usar el protocolo estándar MCP, Proplia funciona con cualquier IA compatible. Elige tu agente favorito y conéctalo al servidor MCP en el puerto 5010.</p>
+      <ul>
+        <li><strong>Claude</strong> (Anthropic) — Soporte nativo de MCP</li>
+        <li><strong>ChatGPT</strong> (OpenAI) — Vía cliente MCP</li>
+        <li><strong>Gemini</strong> (Google) — Vía cliente MCP</li>
+        <li>Cualquier aplicación que soporte el protocolo MCP</li>
+      </ul>
+      <p>Configuración de conexión:</p>
+      <pre><code>{ "mcpServers": { "proplia": { "url": "http://localhost:5010/sse" } } }</code></pre>
+
+related:
+  - title: "Inmuebles"
+    description: "Consulta y gestiona propiedades por lenguaje natural."
+    url: "/features/properties"
+  - title: "Inquilinos"
+    description: "Busca y gestiona fichas de inquilinos hablando con el agente."
+    url: "/features/tenants"
+  - title: "Informes"
+    description: "Pide informes financieros y de rentabilidad al instante."
+    url: "/features/reports"

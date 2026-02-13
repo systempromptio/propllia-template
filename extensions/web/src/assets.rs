@@ -112,7 +112,6 @@ pub fn web_assets(paths: &dyn systemprompt::extension::AssetPaths) -> Vec<AssetD
         ),
         // Admin JS (for demo section)
         AssetDefinition::js(storage_js.join("admin-bundle.js"), "js/admin.js"),
-        AssetDefinition::js(storage_js.join("demo-mock.js"), "js/demo-mock.js"),
         // Demo HTML pages are now rendered via DemoPagePrerenderer (not static assets)
     ]
 }

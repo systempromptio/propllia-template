@@ -2,31 +2,31 @@
 
 header:
   items:
-    - id: funcionalidades
+    - id: features
       label: "Funcionalidades"
-      href: "/features/agente-ia"
+      href: "/features/ai-agent"
       dropdown: true
       sections:
         - title: "Plataforma"
           links:
             - label: "Agente IA"
-              href: "/features/agente-ia"
+              href: "/features/ai-agent"
             - label: "Inmuebles"
-              href: "/features/inmuebles"
+              href: "/features/properties"
             - label: "Inquilinos"
-              href: "/features/inquilinos"
+              href: "/features/tenants"
             - label: "Contratos LAU"
-              href: "/features/contratos-lau"
+              href: "/features/contracts-lau"
             - label: "Facturación"
-              href: "/features/facturacion"
+              href: "/features/billing"
         - title: "Operaciones"
           links:
             - label: "Banca y SEPA"
-              href: "/features/banca-sepa"
+              href: "/features/banking-sepa"
             - label: "Informes"
-              href: "/features/informes"
+              href: "/features/reports"
             - label: "Herramientas MCP"
-              href: "/documentation/herramientas"
+              href: "/documentation/tools"
             - label: "API REST"
               href: "/documentation/api-endpoints"
 
@@ -44,7 +44,7 @@ header:
         - title: "Referencia"
           links:
             - label: "Herramientas MCP"
-              href: "/documentation/herramientas"
+              href: "/documentation/tools"
             - label: "Autenticación API"
               href: "/documentation/api-auth"
             - label: "Endpoints REST"
@@ -104,7 +104,7 @@ docs_sidebar:
   - title: "Referencia técnica"
     links:
       - label: "Herramientas MCP"
-        href: "/documentation/herramientas"
+        href: "/documentation/tools"
       - label: "Autenticación"
         href: "/documentation/api-auth"
       - label: "Endpoints REST"

@@ -53,8 +53,9 @@ pub async fn invoice_pdf_handler(
     };
 
     // Look up payee (owner) details
-    let payee_details = sqlx::query_as::<_, (String, String, String, String)>(
-        "SELECT COALESCE(tax_id, ''), COALESCE(address, ''), COALESCE(email, ''), COALESCE(phone, '') \
+    let payee_details = sqlx::query_as::<_, (String, String, String, String, String)>(
+        "SELECT COALESCE(tax_id, ''), COALESCE(address, ''), COALESCE(email, ''), \
+         COALESCE(phone, ''), COALESCE(bank_account, '') \
          FROM admin_owners WHERE name = $1 LIMIT 1",
     )
     .bind(&invoice.4)
@@ -84,6 +85,12 @@ pub async fn invoice_pdf_handler(
     .ok()
     .flatten();
 
+    // Extract IBAN from owner's bank account
+    let iban = payee_details
+        .as_ref()
+        .map(|d| d.4.clone())
+        .filter(|s| !s.is_empty());
+
     let enrichment = crate::services::pdf::InvoiceEnrichment {
         payee_tax_id: payee_details.as_ref().map(|d| d.0.clone()),
         payee_address: payee_details.as_ref().map(|d| d.1.clone()),
@@ -106,16 +113,28 @@ pub async fn invoice_pdf_handler(
         amount: invoice.6,
         paid: invoice.7,
         vat: invoice.8,
+        retention: 0.0,
+        discount: 0.0,
+        discount_pct: 0.0,
         currency: invoice.9,
         invoice_date: invoice.10,
         payment_date: invoice.11,
         invoice_type: invoice.12,
         notes: invoice.13,
+        iban,
     };
 
-    match PdfService::generate_invoice_pdf(&invoice_data, &enrichment) {
-        Ok(pdf_bytes) => {
-            let filename = format!("invoice-{}.pdf", invoice_data.reference);
+    let reference = invoice_data.reference.clone();
+
+    // Run PDF generation on blocking thread pool to avoid stalling async runtime
+    let pdf_result = tokio::task::spawn_blocking(move || {
+        PdfService::generate_invoice_pdf(&invoice_data, &enrichment)
+    })
+    .await;
+
+    match pdf_result {
+        Ok(Ok(pdf_bytes)) => {
+            let filename = format!("invoice-{reference}.pdf");
             (
                 [
                     (header::CONTENT_TYPE, "application/pdf".to_string()),
@@ -128,11 +147,18 @@ pub async fn invoice_pdf_handler(
             )
                 .into_response()
         }
-        Err(e) => {
+        Ok(Err(e)) => {
             tracing::error!(error = %e, "PDF generation failed");
             error_response(
                 axum::http::StatusCode::INTERNAL_SERVER_ERROR,
                 &format!("PDF generation failed: {e}"),
+            )
+        }
+        Err(e) => {
+            tracing::error!(error = %e, "PDF task failed");
+            error_response(
+                axum::http::StatusCode::INTERNAL_SERVER_ERROR,
+                &format!("PDF task failed: {e}"),
             )
         }
     }

@@ -38,29 +38,29 @@ features:
         - title: "Inmuebles"
           description: "Gestión completa con 17 campos, 5 estados, fotos y CSV"
           icon: "house"
-          url: "/features/inmuebles"
+          url: "/features/properties"
         - title: "Contratos LAU"
           description: "3 tipos de contrato con versionado automático de la LAU"
           icon: "file-contract"
-          url: "/features/contratos-lau"
+          url: "/features/contracts-lau"
         - title: "Facturación"
           description: "Generación automática mensual con PDF y 6 estados"
           icon: "receipt"
-          url: "/features/facturacion"
+          url: "/features/billing"
     - name: "Operaciones"
       features:
         - title: "Banca y SEPA"
           description: "Validación IBAN, BIC automático, exportación SEPA XML"
           icon: "bank"
-          url: "/features/banca-sepa"
+          url: "/features/banking-sepa"
         - title: "Agente IA"
           description: "Tu asistente que te avisa de lo que necesita atención cada semana"
           icon: "bot"
-          url: "/features/agente-ia"
+          url: "/features/ai-agent"
         - title: "Informes"
           description: "6 tipos de informe: portfolio, financiero, morosidad, rentabilidad"
           icon: "chart"
-          url: "/features/informes"
+          url: "/features/reports"
   cards:
     - id: "inmuebles"
       icon: "house"
@@ -71,7 +71,7 @@ features:
         - "5 estados de propiedad"
         - "Importación masiva CSV"
         - "Galería de fotos"
-      href: "/features/inmuebles"
+      href: "/features/properties"
 
     - id: "contratos"
       icon: "file-contract"
@@ -82,7 +82,7 @@ features:
         - "Versionado LAU automático"
         - "Ingesta de documentos PDF"
         - "Alertas de vencimiento"
-      href: "/features/contratos-lau"
+      href: "/features/contracts-lau"
 
     - id: "facturacion"
       icon: "receipt"
@@ -93,7 +93,7 @@ features:
         - "Facturas en PDF"
         - "6 estados de seguimiento"
         - "Descuentos fijos y porcentuales"
-      href: "/features/facturacion"
+      href: "/features/billing"
 
     - id: "banca"
       icon: "bank"
@@ -104,7 +104,7 @@ features:
         - "BIC/SWIFT automático"
         - "Exportación SEPA XML"
         - "10+ bancos españoles"
-      href: "/features/banca-sepa"
+      href: "/features/banking-sepa"
 
     - id: "agente-ia"
       icon: "bot"
@@ -116,7 +116,7 @@ features:
         - "Detecta facturas impagadas"
         - "Sugiere acciones cada semana"
         - "Funciona desde ChatGPT, Claude o Gemini"
-      href: "/features/agente-ia"
+      href: "/features/ai-agent"
 
     - id: "informes"
       icon: "chart"
@@ -127,7 +127,7 @@ features:
         - "Balance financiero"
         - "Control de morosidad"
         - "Rentabilidad por inmueble"
-      href: "/features/informes"
+      href: "/features/reports"
 
 whats_next:
   title: "¿Cómo funciona?"
@@ -137,7 +137,7 @@ whats_next:
       title_highlight: "TUS INMUEBLES"
       subtitle: "Importa desde CSV o crea manualmente. Datos catastrales, fotos, estados."
       icon_svg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>'
-      url: "/features/inmuebles"
+      url: "/features/properties"
       features:
         - "Import masivo CSV"
         - "5 estados de inmueble"
@@ -149,7 +149,7 @@ whats_next:
       title_highlight: "TU AGENTE"
       subtitle: "Pregunta, crea, modifica y consulta en español. Desde ChatGPT o tu cliente favorito."
       icon_svg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>'
-      url: "/features/agente-ia"
+      url: "/features/ai-agent"
       features:
         - "Lenguaje natural en español"
         - "Te avisa de lo pendiente"
@@ -161,7 +161,7 @@ whats_next:
       title_highlight: "TU GESTIÓN"
       subtitle: "Facturación mensual, alertas de vencimiento, informes de rentabilidad."
       icon_svg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>'
-      url: "/features/facturacion"
+      url: "/features/billing"
       features:
         - "Facturas automáticas"
         - "Alertas 30/60/90 días"

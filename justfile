@@ -1,20 +1,16 @@
 set dotenv-load
 
-# CLI binary selection (newest binary preferred)
 CLI := `R="target/release/systemprompt"; D="target/debug/systemprompt"; if [ -f "$R" ] && [ -f "$D" ]; then if [ "$R" -nt "$D" ]; then echo "$R"; else echo "$D"; fi; elif [ -f "$R" ]; then echo "$R"; elif [ -f "$D" ]; then echo "$D"; else echo "echo 'ERROR: No CLI binary found. Run: just build'"; fi`
 
 CLI_RELEASE := "target/release/systemprompt"
 
-# Default: pass args to CLI
 default *ARGS:
     {{CLI}} {{ARGS}}
 
-# Build (Windows) - always uses offline mode
 [windows]
 build *FLAGS:
     $env:SQLX_OFFLINE="true"; cargo build --workspace {{FLAGS}}
 
-# Build (Unix) - tries database, falls back to offline
 [unix]
 build *FLAGS:
     #!/usr/bin/env bash
@@ -47,12 +43,10 @@ build *FLAGS:
         cargo build --workspace {{FLAGS}}
     fi
 
-# Clippy (Windows) - always uses offline mode
 [windows]
 clippy *FLAGS:
     $env:SQLX_OFFLINE="true"; cargo clippy --workspace {{FLAGS}} -- -D warnings
 
-# Clippy (Unix) - tries database, falls back to offline
 [unix]
 clippy *FLAGS:
     #!/usr/bin/env bash
@@ -79,14 +73,12 @@ clippy *FLAGS:
         cargo clippy --workspace {{FLAGS}} -- -D warnings
     fi
 
-# Service commands
 start:
     {{CLI}} infra services start --profile local
 
 migrate:
     {{CLI}} infra db migrate
 
-# Auth commands
 login ENV="production":
     {{CLI}} cloud auth login {{ENV}}
 
@@ -106,23 +98,19 @@ profile:
 profiles:
     {{CLI}} cloud profile list
 
-# Deploy
 deploy *FLAGS:
     just build --release
     {{CLI_RELEASE}} cloud deploy {{FLAGS}}
 
-# Docker commands
 docker-build TAG="local":
     docker build -f .systemprompt/Dockerfile -t systemprompt-template:{{TAG}} .
 
 docker-run TAG="local":
     docker run -p 8080:8080 --env-file .env systemprompt-template:{{TAG}}
 
-# Static assets: copy CSS/JS and pre-render HTML pages
 publish:
     {{CLI}} infra jobs run copy_extension_assets
     {{CLI}} infra jobs run publish_pipeline
 
-# Admin commands
 webauthn-admin EMAIL:
     {{CLI}} admin users webauthn generate-setup-token --email "{{EMAIL}}"

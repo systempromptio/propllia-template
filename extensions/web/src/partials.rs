@@ -354,67 +354,67 @@ demo_partial!(
 );
 
 demo_partial!(
-    DemoContentActivosPartialRenderer,
-    "web:demo-content-activos",
-    "DEMO_CONTENT_ACTIVOS",
-    "demo-content-activos",
-    "../../../services/web/templates/partials/demo-content-activos.html"
+    DemoContentPropertiesPartialRenderer,
+    "web:demo-content-properties",
+    "DEMO_CONTENT_PROPERTIES",
+    "demo-content-properties",
+    "../../../services/web/templates/partials/demo-content-properties.html"
 );
 
 demo_partial!(
-    DemoContentContratosPartialRenderer,
-    "web:demo-content-contratos",
-    "DEMO_CONTENT_CONTRATOS",
-    "demo-content-contratos",
-    "../../../services/web/templates/partials/demo-content-contratos.html"
+    DemoContentContractsPartialRenderer,
+    "web:demo-content-contracts",
+    "DEMO_CONTENT_CONTRACTS",
+    "demo-content-contracts",
+    "../../../services/web/templates/partials/demo-content-contracts.html"
 );
 
 demo_partial!(
-    DemoContentContabilidadPartialRenderer,
-    "web:demo-content-contabilidad",
-    "DEMO_CONTENT_CONTABILIDAD",
-    "demo-content-contabilidad",
-    "../../../services/web/templates/partials/demo-content-contabilidad.html"
+    DemoContentBillingPartialRenderer,
+    "web:demo-content-billing",
+    "DEMO_CONTENT_BILLING",
+    "demo-content-billing",
+    "../../../services/web/templates/partials/demo-content-billing.html"
 );
 
 demo_partial!(
-    DemoContentInquilinosPartialRenderer,
-    "web:demo-content-inquilinos",
-    "DEMO_CONTENT_INQUILINOS",
-    "demo-content-inquilinos",
-    "../../../services/web/templates/partials/demo-content-inquilinos.html"
+    DemoContentTenantsPartialRenderer,
+    "web:demo-content-tenants",
+    "DEMO_CONTENT_TENANTS",
+    "demo-content-tenants",
+    "../../../services/web/templates/partials/demo-content-tenants.html"
 );
 
 demo_partial!(
-    DemoContentPropietariosPartialRenderer,
-    "web:demo-content-propietarios",
-    "DEMO_CONTENT_PROPIETARIOS",
-    "demo-content-propietarios",
-    "../../../services/web/templates/partials/demo-content-propietarios.html"
+    DemoContentOwnersPartialRenderer,
+    "web:demo-content-owners",
+    "DEMO_CONTENT_OWNERS",
+    "demo-content-owners",
+    "../../../services/web/templates/partials/demo-content-owners.html"
 );
 
 demo_partial!(
-    DemoContentDepositosPartialRenderer,
-    "web:demo-content-depositos",
-    "DEMO_CONTENT_DEPOSITOS",
-    "demo-content-depositos",
-    "../../../services/web/templates/partials/demo-content-depositos.html"
+    DemoContentDepositsPartialRenderer,
+    "web:demo-content-deposits",
+    "DEMO_CONTENT_DEPOSITS",
+    "demo-content-deposits",
+    "../../../services/web/templates/partials/demo-content-deposits.html"
 );
 
 demo_partial!(
-    DemoContentRemesasSepaPartialRenderer,
-    "web:demo-content-remesas-sepa",
-    "DEMO_CONTENT_REMESAS_SEPA",
-    "demo-content-remesas-sepa",
-    "../../../services/web/templates/partials/demo-content-remesas-sepa.html"
+    DemoContentSepaBatchesPartialRenderer,
+    "web:demo-content-sepa-batches",
+    "DEMO_CONTENT_SEPA_BATCHES",
+    "demo-content-sepa-batches",
+    "../../../services/web/templates/partials/demo-content-sepa-batches.html"
 );
 
 demo_partial!(
-    DemoContentIncidenciasPartialRenderer,
-    "web:demo-content-incidencias",
-    "DEMO_CONTENT_INCIDENCIAS",
-    "demo-content-incidencias",
-    "../../../services/web/templates/partials/demo-content-incidencias.html"
+    DemoContentIssuesPartialRenderer,
+    "web:demo-content-issues",
+    "DEMO_CONTENT_ISSUES",
+    "demo-content-issues",
+    "../../../services/web/templates/partials/demo-content-issues.html"
 );
 
 demo_partial!(

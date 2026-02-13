@@ -1,0 +1,123 @@
+# Feature: Informes (Reports & Analytics)
+
+slug: "reports"
+title: "Informes - Análisis de rentabilidad"
+icon: "chart"
+headline: "Informes y"
+headline_highlight: "análisis de rentabilidad"
+subtitle: "6 tipos de informe para controlar tu portfolio: resumen general, balance financiero, morosidad, rentabilidad por inmueble y flujo de caja."
+
+highlights:
+  - id: "portfolio"
+    text: "Resumen de portfolio"
+  - id: "financiero"
+    text: "Balance financiero"
+  - id: "morosidad"
+    text: "Control de morosidad"
+  - id: "rentabilidad"
+    text: "Rentabilidad por inmueble"
+
+sections:
+  - id: "portfolio"
+    title: "Resumen de portfolio"
+    visual_position: "right"
+    visual_svg: |
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <!-- Dashboard frame -->
+        <rect x="60" y="50" width="280" height="200" rx="10"/>
+        <!-- Divider -->
+        <line x1="210" y1="50" x2="210" y2="250"/>
+        <!-- Bar chart on left -->
+        <rect x="85" y="180" width="25" height="50" rx="2" fill="currentColor" opacity="0.15"/>
+        <rect x="120" y="140" width="25" height="90" rx="2" fill="currentColor" opacity="0.25"/>
+        <rect x="155" y="110" width="25" height="120" rx="2" fill="currentColor" opacity="0.35"/>
+        <!-- Bar chart axis -->
+        <line x1="80" y1="230" x2="190" y2="230"/>
+        <line x1="80" y1="100" x2="80" y2="230"/>
+        <!-- Pie chart on right -->
+        <circle cx="280" cy="140" r="45"/>
+        <line x1="280" y1="95" x2="280" y2="140"/>
+        <line x1="280" y1="140" x2="316" y2="163"/>
+        <path d="M280 95 A45 45 0 0 1 316 163"/>
+      </svg>
+    content: |
+      <p>Visión global de toda tu cartera inmobiliaria con las métricas clave que necesitas para tomar decisiones.</p>
+      <ul>
+        <li><strong>Total de inmuebles</strong> — Número total de propiedades registradas</li>
+        <li><strong>Distribución por estado</strong> — Cuántos están libres, alquilados, reservados, en reforma</li>
+        <li><strong>Tasa de ocupación</strong> — Porcentaje de inmuebles con contrato activo</li>
+        <li><strong>Alquiler medio</strong> — Media de las rentas mensuales de tu cartera</li>
+      </ul>
+      <p>Pide este informe al agente IA con solo decir <em>"Dame un resumen de mi portfolio"</em>.</p>
+
+  - id: "financiero"
+    title: "Balance financiero"
+    visual_position: "left"
+    visual_svg: |
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <!-- Grid lines -->
+        <line x1="80" y1="80" x2="80" y2="240" stroke-opacity="0.3"/>
+        <line x1="80" y1="240" x2="340" y2="240" stroke-opacity="0.3"/>
+        <line x1="80" y1="200" x2="340" y2="200" stroke-dasharray="4,4" stroke-opacity="0.2"/>
+        <line x1="80" y1="160" x2="340" y2="160" stroke-dasharray="4,4" stroke-opacity="0.2"/>
+        <line x1="80" y1="120" x2="340" y2="120" stroke-dasharray="4,4" stroke-opacity="0.2"/>
+        <!-- Y-axis ticks -->
+        <line x1="75" y1="200" x2="80" y2="200"/>
+        <line x1="75" y1="160" x2="80" y2="160"/>
+        <line x1="75" y1="120" x2="80" y2="120"/>
+        <!-- Upward trending line graph -->
+        <polyline points="100,210 145,190 190,195 235,160 280,130 320,100" stroke-width="2"/>
+        <!-- Data points on line -->
+        <circle cx="100" cy="210" r="4" fill="currentColor"/>
+        <circle cx="145" cy="190" r="4" fill="currentColor"/>
+        <circle cx="190" cy="195" r="4" fill="currentColor"/>
+        <circle cx="235" cy="160" r="4" fill="currentColor"/>
+        <circle cx="280" cy="130" r="4" fill="currentColor"/>
+        <circle cx="320" cy="100" r="4" fill="currentColor"/>
+      </svg>
+    content: |
+      <p>Balance completo de ingresos vs gastos con desglose temporal para controlar la salud financiera de tu cartera.</p>
+      <ul>
+        <li><strong>Ingresos</strong> — Cobros de alquiler, fianzas recibidas y otros ingresos</li>
+        <li><strong>Gastos</strong> — IBI, comunidad, seguros, mantenimiento y suministros</li>
+        <li><strong>Neto</strong> — Diferencia entre ingresos y gastos</li>
+        <li><strong>Desglose</strong> — Vista mensual y anual con cálculo automático del margen</li>
+      </ul>
+      <p>Los datos se extraen de la tabla <code>contabilidad</code> clasificando cada registro por su campo <code>tipo</code> (Ingreso/Gasto) y <code>tipo_gasto</code> para categorización detallada.</p>
+
+  - id: "morosidad"
+    title: "Control de morosidad"
+    content: |
+      <p>Identifica rápidamente inquilinos con pagos pendientes y toma acción antes de que la deuda crezca.</p>
+      <ul>
+        <li><strong>Inquilinos morosos</strong> — Nombre, inmueble y contrato asociado</li>
+        <li><strong>Importe adeudado</strong> — Total pendiente por inquilino</li>
+        <li><strong>Días de retraso</strong> — Tiempo desde el vencimiento de cada factura</li>
+        <li><strong>Evolución</strong> — Historial de pagos para detectar patrones</li>
+      </ul>
+      <p>La vista SQL <code>v_contabilidad_pendiente</code> filtra automáticamente las facturas con estado "Sin pagar" o "Parcial". Pregunta al agente IA <em>"¿Quién me debe dinero?"</em> para un resumen inmediato.</p>
+
+  - id: "rentabilidad"
+    title: "Rentabilidad por inmueble"
+    content: |
+      <p>Calcula la rentabilidad de cada propiedad considerando todos los factores económicos para optimizar tu cartera.</p>
+    items:
+      - title: "Rentabilidad bruta"
+        description: "Ingresos anuales por alquiler divididos por el valor estimado del inmueble"
+      - title: "Rentabilidad neta"
+        description: "Descontando todos los gastos: IBI, comunidad, seguros, mantenimiento e impuestos"
+      - title: "Impacto de vacancia"
+        description: "Ajuste por los meses sin inquilino para reflejar la rentabilidad real"
+      - title: "Flujo de caja"
+        description: "Entradas y salidas mensuales por inmueble para detectar meses negativos"
+
+related:
+  - title: "Agente IA"
+    description: "Genera informes por lenguaje natural con el agente."
+    url: "/features/ai-agent"
+  - title: "Facturación"
+    description: "Los informes financieros se calculan a partir de las facturas."
+    url: "/features/billing"
+  - title: "Inmuebles"
+    description: "Analiza la rentabilidad de cada propiedad individual."
+    url: "/features/properties"

@@ -153,7 +153,7 @@
             address: '14 King Street, Flat 3B, Manchester M2 4WQ',
             contract_ref: 'KING ST 14 - JOHNSON',
             status: 'Rented',
-            rent: 1250,
+            rent: 875,
             start_date: monthsAgo(14),
             end_date: monthsFromNow(10),
             tags: ['Residential', 'City Centre'],
@@ -167,7 +167,7 @@
             address: '42 Royal Crescent, Bath BA1 2LR',
             contract_ref: 'ROYAL CRESCENT 42 - WILLIAMS',
             status: 'Rented',
-            rent: 1800,
+            rent: 1650,
             start_date: monthsAgo(10),
             end_date: monthsFromNow(14),
             tags: ['Residential', 'Premium'],
@@ -181,10 +181,10 @@
             address: '8 Commercial Road, Unit B, Birmingham B1 1RS',
             contract_ref: '',
             status: 'Vacant',
-            rent: 1400,
+            rent: 2200,
             start_date: null,
             end_date: null,
-            tags: ['Commercial'],
+            tags: ['Commercial', 'Office'],
             image_folder: 'commercial-road-8',
             created_at: monthsAgo(24),
             updated_at: daysAgo(15)
@@ -195,7 +195,7 @@
             address: '7 Palm Grove, Kensington, London W8 5PT',
             contract_ref: 'PALM GROVE 7 - THOMPSON',
             status: 'Rented',
-            rent: 3200,
+            rent: 4500,
             start_date: monthsAgo(18),
             end_date: monthsFromNow(6),
             tags: ['Residential', 'Premium', 'Prime'],
@@ -209,7 +209,7 @@
             address: '22 Serpentine Walk, Flat 1C, Bristol BS1 4DJ',
             contract_ref: '',
             status: 'Under Renovation',
-            rent: 850,
+            rent: 725,
             start_date: null,
             end_date: null,
             tags: ['Residential', 'Renovation'],
@@ -223,7 +223,7 @@
             address: '156 Diagonal Avenue, Flat 4B, Edinburgh EH1 2NG',
             contract_ref: 'DIAGONAL AVE 156 - BROWN',
             status: 'Rented',
-            rent: 2100,
+            rent: 1150,
             start_date: monthsAgo(8),
             end_date: monthsFromNow(16),
             tags: ['Residential'],
@@ -237,7 +237,7 @@
             address: '30 Meadow Lane, Penthouse, London SW1A 1AA',
             contract_ref: 'MEADOW LN 30 - TAYLOR',
             status: 'Rented',
-            rent: 2800,
+            rent: 3800,
             start_date: monthsAgo(12),
             end_date: monthsFromNow(12),
             tags: ['Residential', 'Premium', 'City Centre'],
@@ -251,10 +251,10 @@
             address: '3 Northern Industrial Park, Leeds LS9 8AG',
             contract_ref: '',
             status: 'Vacant',
-            rent: 2400,
+            rent: 5200,
             start_date: null,
             end_date: null,
-            tags: ['Industrial'],
+            tags: ['Commercial', 'Industrial'],
             image_folder: 'northern-industrial-3',
             created_at: monthsAgo(22),
             updated_at: daysAgo(20)
@@ -276,6 +276,11 @@
             property_name: '14 King Street, Flat 3B',
             property_address: '14 King Street, Flat 3B, Manchester M2 4WQ',
             is_legacy: false,
+            guarantor_name: '',
+            guarantor_id: '',
+            guarantor_tax_id: '',
+            guarantor_phone: '',
+            guarantor_email: '',
             created_at: monthsAgo(14),
             updated_at: daysAgo(5)
         },
@@ -290,6 +295,11 @@
             property_name: '42 Royal Crescent',
             property_address: '42 Royal Crescent, Bath BA1 2LR',
             is_legacy: false,
+            guarantor_name: '',
+            guarantor_id: '',
+            guarantor_tax_id: '',
+            guarantor_phone: '',
+            guarantor_email: '',
             created_at: monthsAgo(10),
             updated_at: daysAgo(3)
         },
@@ -304,6 +314,11 @@
             property_name: '7 Palm Grove, Kensington',
             property_address: '7 Palm Grove, Kensington, London W8 5PT',
             is_legacy: false,
+            guarantor_name: '',
+            guarantor_id: '',
+            guarantor_tax_id: '',
+            guarantor_phone: '',
+            guarantor_email: '',
             created_at: monthsAgo(18),
             updated_at: daysAgo(7)
         },
@@ -318,6 +333,11 @@
             property_name: '156 Diagonal Avenue, Flat 4B',
             property_address: '156 Diagonal Avenue, Flat 4B, Edinburgh EH1 2NG',
             is_legacy: false,
+            guarantor_name: '',
+            guarantor_id: '',
+            guarantor_tax_id: '',
+            guarantor_phone: '',
+            guarantor_email: '',
             created_at: monthsAgo(8),
             updated_at: daysAgo(4)
         },
@@ -332,6 +352,11 @@
             property_name: '30 Meadow Lane, Penthouse',
             property_address: '30 Meadow Lane, Penthouse, London SW1A 1AA',
             is_legacy: false,
+            guarantor_name: '',
+            guarantor_id: '',
+            guarantor_tax_id: '',
+            guarantor_phone: '',
+            guarantor_email: '',
             created_at: monthsAgo(12),
             updated_at: daysAgo(1)
         },
@@ -346,6 +371,11 @@
             property_name: '',
             property_address: '',
             is_legacy: true,
+            guarantor_name: '',
+            guarantor_id: '',
+            guarantor_tax_id: '',
+            guarantor_phone: '',
+            guarantor_email: '',
             created_at: monthsAgo(24),
             updated_at: monthsAgo(6)
         }
@@ -446,8 +476,8 @@
             address: '14 King Street, Flat 3B, Manchester M2 4WQ',
             tenant: 'Sarah Johnson',
             status: 'Active',
-            rent: 1250,
-            total: 1250 * 12,
+            rent: 875,
+            total: 875 * 12,
             start_date: monthsAgo(14),
             end_date: monthsFromNow(10),
             tags: ['Residential', 'Annual'],
@@ -462,11 +492,11 @@
             address: '42 Royal Crescent, Bath BA1 2LR',
             tenant: 'James Williams',
             status: 'Active',
-            rent: 1800,
-            total: 1800 * 12,
+            rent: 1650,
+            total: 1650 * 24,
             start_date: monthsAgo(10),
             end_date: monthsFromNow(14),
-            tags: ['Residential', 'Annual'],
+            tags: ['Residential', 'Biennial'],
             doc_count: 1,
             created_at: monthsAgo(10),
             updated_at: daysAgo(3)
@@ -478,11 +508,11 @@
             address: '7 Palm Grove, Kensington, London W8 5PT',
             tenant: 'Emma Thompson',
             status: 'Active',
-            rent: 3200,
-            total: 3200 * 12,
+            rent: 4500,
+            total: 4500 * 36,
             start_date: monthsAgo(18),
-            end_date: monthsFromNow(6),
-            tags: ['Residential', 'Annual', 'Premium'],
+            end_date: monthsFromNow(18),
+            tags: ['Residential', '3-Year', 'Premium'],
             doc_count: 3,
             created_at: monthsAgo(18),
             updated_at: daysAgo(7)
@@ -494,13 +524,13 @@
             address: '156 Diagonal Avenue, Flat 4B, Edinburgh EH1 2NG',
             tenant: 'David Brown',
             status: 'Active',
-            rent: 2100,
-            total: 2100 * 12,
-            start_date: monthsAgo(8),
-            end_date: monthsFromNow(16),
-            tags: ['Residential', 'Annual'],
+            rent: 1150,
+            total: 1150 * 6,
+            start_date: monthsAgo(3),
+            end_date: monthsFromNow(3),
+            tags: ['Residential', '6-Month'],
             doc_count: 1,
-            created_at: monthsAgo(8),
+            created_at: monthsAgo(3),
             updated_at: daysAgo(4)
         },
         {
@@ -510,11 +540,11 @@
             address: '30 Meadow Lane, Penthouse, London SW1A 1AA',
             tenant: 'Lucy Taylor',
             status: 'Active',
-            rent: 2800,
-            total: 2800 * 12,
+            rent: 3800,
+            total: 3800 * 24,
             start_date: monthsAgo(12),
             end_date: monthsFromNow(12),
-            tags: ['Residential', 'Annual', 'Premium'],
+            tags: ['Residential', 'Biennial', 'Premium'],
             doc_count: 2,
             created_at: monthsAgo(12),
             updated_at: daysAgo(1)
@@ -526,11 +556,11 @@
             address: '8 Commercial Road, Unit B, Birmingham B1 1RS',
             tenant: 'Paul Mitchell',
             status: 'Active',
-            rent: 2400,
-            total: 2400 * 12,
+            rent: 2200,
+            total: 2200 * 60,
             start_date: monthsAgo(6),
-            end_date: monthsFromNow(18),
-            tags: ['Commercial', 'Annual'],
+            end_date: monthsFromNow(54),
+            tags: ['Commercial', '5-Year'],
             doc_count: 1,
             created_at: monthsAgo(6),
             updated_at: daysAgo(10)
@@ -542,13 +572,13 @@
             address: '22 Serpentine Walk, Flat 1C, Bristol BS1 4DJ',
             tenant: 'Sophie Harris',
             status: 'Pending',
-            rent: 850,
-            total: 850 * 12,
-            start_date: monthsAgo(2),
-            end_date: monthsFromNow(10),
+            rent: 725,
+            total: 725 * 12,
+            start_date: monthsFromNow(1),
+            end_date: monthsFromNow(13),
             tags: ['Residential', 'Annual'],
             doc_count: 1,
-            created_at: monthsAgo(2),
+            created_at: daysAgo(10),
             updated_at: daysAgo(2)
         }
     ];
@@ -567,10 +597,10 @@
             payer: 'Sarah Johnson',
             payee: 'Horizon Properties Ltd',
             status: 'Paid',
-            total: 1250,
-            paid: 1250,
+            total: 875,
+            paid: 875,
             vat: 0,
-            currency: 'GBP',
+            currency: 'EUR',
             invoice_date: monthsAgo(1),
             payment_date: daysAgo(25),
             type: 'income',
@@ -588,10 +618,10 @@
             payer: 'James Williams',
             payee: 'Margaret Chen',
             status: 'Paid',
-            total: 1800,
-            paid: 1800,
+            total: 1650,
+            paid: 1650,
             vat: 0,
-            currency: 'GBP',
+            currency: 'EUR',
             invoice_date: monthsAgo(1),
             payment_date: daysAgo(28),
             type: 'income',
@@ -609,10 +639,10 @@
             payer: 'Emma Thompson',
             payee: 'Mediterranean Investments Ltd',
             status: 'Paid',
-            total: 3200,
-            paid: 3200,
+            total: 4500,
+            paid: 4500,
             vat: 0,
-            currency: 'GBP',
+            currency: 'EUR',
             invoice_date: monthsAgo(1),
             payment_date: daysAgo(26),
             type: 'income',
@@ -630,10 +660,10 @@
             payer: 'David Brown',
             payee: 'Margaret Chen',
             status: 'Paid',
-            total: 2100,
-            paid: 2100,
+            total: 1150,
+            paid: 1150,
             vat: 0,
-            currency: 'GBP',
+            currency: 'EUR',
             invoice_date: monthsAgo(1),
             payment_date: daysAgo(24),
             type: 'income',
@@ -651,10 +681,10 @@
             payer: 'Lucy Taylor',
             payee: 'Horizon Properties Ltd',
             status: 'Paid',
-            total: 2800,
-            paid: 2800,
+            total: 3800,
+            paid: 3800,
             vat: 0,
-            currency: 'GBP',
+            currency: 'EUR',
             invoice_date: monthsAgo(1),
             payment_date: daysAgo(27),
             type: 'income',
@@ -673,10 +703,10 @@
             payer: 'Sarah Johnson',
             payee: 'Horizon Properties Ltd',
             status: 'Paid',
-            total: 1250,
-            paid: 1250,
+            total: 875,
+            paid: 875,
             vat: 0,
-            currency: 'GBP',
+            currency: 'EUR',
             invoice_date: daysAgo(5),
             payment_date: daysAgo(3),
             type: 'income',
@@ -694,10 +724,10 @@
             payer: 'James Williams',
             payee: 'Margaret Chen',
             status: 'Partial',
-            total: 1800,
-            paid: 900,
+            total: 1650,
+            paid: 825,
             vat: 0,
-            currency: 'GBP',
+            currency: 'EUR',
             invoice_date: daysAgo(5),
             payment_date: null,
             type: 'income',
@@ -715,10 +745,10 @@
             payer: 'Emma Thompson',
             payee: 'Mediterranean Investments Ltd',
             status: 'Paid',
-            total: 3200,
-            paid: 3200,
+            total: 4500,
+            paid: 4500,
             vat: 0,
-            currency: 'GBP',
+            currency: 'EUR',
             invoice_date: daysAgo(5),
             payment_date: daysAgo(4),
             type: 'income',
@@ -736,10 +766,10 @@
             payer: 'David Brown',
             payee: 'Margaret Chen',
             status: 'Unpaid',
-            total: 2100,
+            total: 1150,
             paid: 0,
             vat: 0,
-            currency: 'GBP',
+            currency: 'EUR',
             invoice_date: daysAgo(5),
             payment_date: null,
             type: 'income',
@@ -757,10 +787,10 @@
             payer: 'Lucy Taylor',
             payee: 'Horizon Properties Ltd',
             status: 'Paid',
-            total: 2800,
-            paid: 2800,
+            total: 3800,
+            paid: 3800,
             vat: 0,
-            currency: 'GBP',
+            currency: 'EUR',
             invoice_date: daysAgo(5),
             payment_date: daysAgo(4),
             type: 'income',
@@ -779,10 +809,10 @@
             payer: 'David Brown',
             payee: 'Margaret Chen',
             status: 'Partial',
-            total: 2100,
-            paid: 1050,
+            total: 1150,
+            paid: 575,
             vat: 0,
-            currency: 'GBP',
+            currency: 'EUR',
             invoice_date: monthsAgo(2),
             payment_date: null,
             type: 'income',
@@ -800,10 +830,10 @@
             payer: 'Lucy Taylor',
             payee: 'Horizon Properties Ltd',
             status: 'Paid',
-            total: 2800,
-            paid: 2800,
+            total: 3800,
+            paid: 3800,
             vat: 0,
-            currency: 'GBP',
+            currency: 'EUR',
             invoice_date: monthsAgo(2),
             payment_date: monthsAgo(2),
             type: 'income',
@@ -825,7 +855,7 @@
             total: 680,
             paid: 680,
             vat: 0,
-            currency: 'GBP',
+            currency: 'EUR',
             invoice_date: monthsAgo(2),
             payment_date: monthsAgo(2),
             type: 'expense',
@@ -846,7 +876,7 @@
             total: 320,
             paid: 320,
             vat: 0,
-            currency: 'GBP',
+            currency: 'EUR',
             invoice_date: monthsAgo(1),
             payment_date: monthsAgo(1),
             type: 'expense',
@@ -867,7 +897,7 @@
             total: 540,
             paid: 0,
             vat: 108,
-            currency: 'GBP',
+            currency: 'EUR',
             invoice_date: daysAgo(10),
             payment_date: null,
             type: 'expense',
@@ -893,8 +923,8 @@
             payee: 'Horizon Properties Ltd',
             type: 'Deposit',
             status: 'Deposited',
-            total: 2500,
-            paid: 2500,
+            total: 1750,
+            paid: 1750,
             refunded: 0,
             created_at: monthsAgo(14),
             updated_at: monthsAgo(14)
@@ -910,8 +940,8 @@
             payee: 'Margaret Chen',
             type: 'Deposit',
             status: 'Deposited',
-            total: 3600,
-            paid: 3600,
+            total: 3300,
+            paid: 3300,
             refunded: 0,
             created_at: monthsAgo(10),
             updated_at: monthsAgo(10)
@@ -927,8 +957,8 @@
             payee: 'Mediterranean Investments Ltd',
             type: 'Deposit',
             status: 'Deposited',
-            total: 6400,
-            paid: 6400,
+            total: 9000,
+            paid: 9000,
             refunded: 0,
             created_at: monthsAgo(18),
             updated_at: monthsAgo(18)
@@ -944,8 +974,8 @@
             payee: 'Margaret Chen',
             type: 'Deposit',
             status: 'Deposited',
-            total: 4200,
-            paid: 4200,
+            total: 2300,
+            paid: 2300,
             refunded: 0,
             created_at: monthsAgo(8),
             updated_at: monthsAgo(8)
@@ -961,8 +991,8 @@
             payee: 'Horizon Properties Ltd',
             type: 'Deposit',
             status: 'Deposited',
-            total: 5600,
-            paid: 5600,
+            total: 7600,
+            paid: 7600,
             refunded: 0,
             created_at: monthsAgo(12),
             updated_at: monthsAgo(12)
@@ -978,8 +1008,8 @@
             payee: 'Isabel Clarke',
             type: 'Deposit',
             status: 'Deposited',
-            total: 4800,
-            paid: 4800,
+            total: 6600,
+            paid: 6600,
             refunded: 0,
             created_at: monthsAgo(6),
             updated_at: monthsAgo(6)
@@ -996,8 +1026,8 @@
             collection_date: daysAgo(3),
             creditor: 'Horizon Properties Ltd',
             creditor_iban: 'GB29 NWBK 6016 1331 9268 19',
-            amount: 4050,
-            currency: 'GBP',
+            amount: 4675,
+            currency: 'EUR',
             debtor: 'Sarah Johnson',
             debtor_iban: 'GB09 HABU 6216 1140 0486 42',
             mandate_id: 'MAND-2024-001',
@@ -1011,8 +1041,8 @@
             collection_date: daysAgo(2),
             creditor: 'Margaret Chen',
             creditor_iban: 'GB82 WEST 1234 5698 7654 32',
-            amount: 3900,
-            currency: 'GBP',
+            amount: 2800,
+            currency: 'EUR',
             debtor: 'James Williams',
             debtor_iban: 'GB82 WEST 1234 5698 7654 32',
             mandate_id: 'MAND-2024-002',
@@ -1026,8 +1056,8 @@
             collection_date: daysAgo(1),
             creditor: 'Mediterranean Investments Ltd',
             creditor_iban: 'GB76 BARC 2026 0508 1234 56',
-            amount: 3200,
-            currency: 'GBP',
+            amount: 4500,
+            currency: 'EUR',
             debtor: 'Emma Thompson',
             debtor_iban: 'GB45 LOYD 3096 1731 2345 67',
             mandate_id: 'MAND-2024-003',
@@ -1041,8 +1071,8 @@
             collection_date: daysAgo(30),
             creditor: 'Horizon Properties Ltd',
             creditor_iban: 'GB29 NWBK 6016 1331 9268 19',
-            amount: 4050,
-            currency: 'GBP',
+            amount: 4675,
+            currency: 'EUR',
             debtor: 'Sarah Johnson',
             debtor_iban: 'GB09 HABU 6216 1140 0486 42',
             mandate_id: 'MAND-2024-001',
@@ -1056,8 +1086,8 @@
             collection_date: daysAgo(30),
             creditor: 'Margaret Chen',
             creditor_iban: 'GB82 WEST 1234 5698 7654 32',
-            amount: 3900,
-            currency: 'GBP',
+            amount: 2800,
+            currency: 'EUR',
             debtor: 'David Brown',
             debtor_iban: 'GB34 MIDL 4025 1639 8750 90',
             mandate_id: 'MAND-2024-004',
@@ -1071,8 +1101,8 @@
             collection_date: daysAgo(1),
             creditor: 'Isabel Clarke',
             creditor_iban: 'GB56 HBUK 1093 4010 2345 67',
-            amount: 2400,
-            currency: 'GBP',
+            amount: 2200,
+            currency: 'EUR',
             debtor: 'Paul Mitchell',
             debtor_iban: 'GB67 NWBK 6016 1331 1234 56',
             mandate_id: 'MAND-2024-005',
@@ -1332,6 +1362,11 @@
     ];
 
     // ========================================================================
+    // Lead Notes
+    // ========================================================================
+    const lead_notes = [];
+
+    // ========================================================================
     // Audit Entries
     // ========================================================================
     const auditEntries = [
@@ -1381,7 +1416,7 @@
             entity_id: IDS.contracts[4],
             action: 'create',
             old_values: null,
-            new_values: { contract_ref: 'MEADOW LN 30 - TAYLOR', rent: 2800 },
+            new_values: { contract_ref: 'MEADOW LN 30 - TAYLOR', rent: 3800 },
             changed_fields: ['contract_ref', 'property_name', 'tenant', 'rent'],
             created_at: hoursAgo(24)
         },
@@ -1401,7 +1436,7 @@
             entity_id: IDS.invoices[7],
             action: 'create',
             old_values: null,
-            new_values: { reference: 'INV-2024-008', total: 3200 },
+            new_values: { reference: 'INV-2024-008', total: 4500 },
             changed_fields: ['reference', 'description', 'total', 'status'],
             created_at: hoursAgo(30)
         },
@@ -1421,7 +1456,7 @@
             entity_id: IDS.deposits[2],
             action: 'create',
             old_values: null,
-            new_values: { property_name: '7 Palm Grove, Kensington', total: 6400 },
+            new_values: { property_name: '7 Palm Grove, Kensington', total: 9000 },
             changed_fields: ['property_name', 'contract_ref', 'total', 'paid'],
             created_at: hoursAgo(72)
         },
@@ -1430,8 +1465,8 @@
             entity_type: 'properties',
             entity_id: IDS.properties[7],
             action: 'update',
-            old_values: { rent: 2200 },
-            new_values: { rent: 2400 },
+            old_values: { rent: 4800 },
+            new_values: { rent: 5200 },
             changed_fields: ['rent'],
             created_at: hoursAgo(96)
         },
@@ -1617,6 +1652,36 @@
         });
         const financialByProperty = Object.values(byProperty);
 
+        // Active contracts and monthly rent
+        const activeContracts = contracts.filter(function (c) { return c.status === 'Active'; });
+        const numActiveContracts = activeContracts.length;
+        const totalMonthlyRent = activeContracts.reduce(function (s, c) { return s + (c.rent || 0); }, 0);
+
+        // Month summary: income invoices for current month
+        var now = new Date(_now);
+        var monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
+        var monthInvoices = incomeInvoices.filter(function (c) {
+            return new Date(c.invoice_date) >= monthStart;
+        });
+        var monthSummary = {
+            total_invoiced: monthInvoices.reduce(function (s, c) { return s + c.total; }, 0),
+            total_collected: monthInvoices.reduce(function (s, c) { return s + c.paid; }, 0),
+            total_outstanding: monthInvoices.reduce(function (s, c) { return s + (c.total - c.paid); }, 0),
+            num_invoices: monthInvoices.length
+        };
+
+        // Year summary: income invoices for current year
+        var yearStart = new Date(now.getFullYear(), 0, 1);
+        var yearInvoices = incomeInvoices.filter(function (c) {
+            return new Date(c.invoice_date) >= yearStart;
+        });
+        var yearSummary = {
+            total_invoiced: yearInvoices.reduce(function (s, c) { return s + c.total; }, 0),
+            total_collected: yearInvoices.reduce(function (s, c) { return s + c.paid; }, 0),
+            total_outstanding: yearInvoices.reduce(function (s, c) { return s + (c.total - c.paid); }, 0),
+            num_invoices: yearInvoices.length
+        };
+
         return {
             total_properties: totalProperties,
             total_invoiced: totalInvoiced,
@@ -1626,10 +1691,15 @@
             collection_rate: collectionRate,
             properties_by_status: propertiesByStatus,
             overdue_invoices: overdueInvoices,
+            overdue_count: overdueInvoices.length,
             expiring_leases: expiringLeases,
             recent_activity: recentActivity,
             financial_by_payee: financialByPayee,
-            financial_by_property: financialByProperty
+            financial_by_property: financialByProperty,
+            num_active_contracts: numActiveContracts,
+            total_monthly_rent: totalMonthlyRent,
+            month_summary: monthSummary,
+            year_summary: yearSummary
         };
     }
 
@@ -1706,11 +1776,58 @@
                 total_outstanding: totalOutstanding
             },
             invoices: propInvoices,
-            images: [
-                { url: '/files/images/property-placeholder-1.jpg', filename: 'exterior.jpg' },
-                { url: '/files/images/property-placeholder-2.jpg', filename: 'lounge.jpg' }
-            ]
+            images: getPropertyImages(property.id)
         };
+    }
+
+    // Property-specific image sets
+    function getPropertyImages(propertyId) {
+        var imageMap = {};
+        // King Street - residential flat, city centre
+        imageMap[IDS.properties[0]] = [
+            { url: '/files/images/property-placeholder-7.jpg', filename: 'exterior.jpg' },
+            { url: '/files/images/property-placeholder-2.jpg', filename: 'lounge.jpg' }
+        ];
+        // Royal Crescent - premium residential
+        imageMap[IDS.properties[1]] = [
+            { url: '/files/images/property-placeholder-5.jpg', filename: 'exterior.jpg' },
+            { url: '/files/images/property-placeholder-6.jpg', filename: 'living-room.jpg' }
+        ];
+        // Commercial Road - commercial office
+        imageMap[IDS.properties[2]] = [
+            { url: '/files/images/property-placeholder-3.jpg', filename: 'exterior.jpg' },
+            { url: '/files/images/property-placeholder-4.jpg', filename: 'interior.jpg' }
+        ];
+        // Palm Grove - premium Kensington house
+        imageMap[IDS.properties[3]] = [
+            { url: '/files/images/property-placeholder-8.jpg', filename: 'exterior.jpg' },
+            { url: '/files/images/property-placeholder-9.jpg', filename: 'living-room.jpg' },
+            { url: '/files/images/property-placeholder-6.jpg', filename: 'kitchen.jpg' }
+        ];
+        // Serpentine Walk - under renovation
+        imageMap[IDS.properties[4]] = [
+            { url: '/files/images/property-placeholder-7.jpg', filename: 'exterior.jpg' }
+        ];
+        // Diagonal Avenue - standard residential flat
+        imageMap[IDS.properties[5]] = [
+            { url: '/files/images/property-placeholder-7.jpg', filename: 'exterior.jpg' },
+            { url: '/files/images/property-placeholder-2.jpg', filename: 'lounge.jpg' }
+        ];
+        // Meadow Lane - premium penthouse
+        imageMap[IDS.properties[6]] = [
+            { url: '/files/images/property-placeholder-1.jpg', filename: 'exterior.jpg' },
+            { url: '/files/images/property-placeholder-9.jpg', filename: 'living-room.jpg' },
+            { url: '/files/images/property-placeholder-6.jpg', filename: 'open-plan.jpg' }
+        ];
+        // Northern Industrial Park - commercial/industrial
+        imageMap[IDS.properties[7]] = [
+            { url: '/files/images/property-placeholder-10.jpg', filename: 'exterior.jpg' },
+            { url: '/files/images/property-placeholder-3.jpg', filename: 'commercial-area.jpg' }
+        ];
+        return imageMap[propertyId] || [
+            { url: '/files/images/property-placeholder-1.jpg', filename: 'exterior.jpg' },
+            { url: '/files/images/property-placeholder-2.jpg', filename: 'interior.jpg' }
+        ];
     }
 
     // ========================================================================
@@ -1719,6 +1836,23 @@
     function buildContractDetail(id) {
         const contract = contracts.find(function (c) { return c.id === id; });
         if (!contract) return null;
+
+        // Determine rent review clause based on contract tags
+        var reviewClause = 'Annual per CPI';
+        var depositMonths = 2;
+        if (contract.tags.indexOf('Commercial') >= 0 || contract.tags.indexOf('5-Year') >= 0) {
+            reviewClause = 'Triennial open-market review';
+            depositMonths = 3;
+        } else if (contract.tags.indexOf('3-Year') >= 0) {
+            reviewClause = 'Annual per CPI + 1%';
+            depositMonths = 2;
+        } else if (contract.tags.indexOf('Biennial') >= 0) {
+            reviewClause = 'Biennial per CPI';
+            depositMonths = 2;
+        } else if (contract.tags.indexOf('6-Month') >= 0) {
+            reviewClause = 'Fixed for term';
+            depositMonths = 1;
+        }
 
         return {
             contract: contract,
@@ -1736,7 +1870,7 @@
                 {
                     category: 'price',
                     label: 'Monthly rent',
-                    value: contract.rent + ' GBP/month',
+                    value: contract.rent + ' EUR/month',
                     numeric_value: contract.rent,
                     start_date: contract.start_date,
                     end_date: contract.end_date
@@ -1744,7 +1878,7 @@
                 {
                     category: 'review',
                     label: 'Rent review',
-                    value: 'Annual per CPI',
+                    value: reviewClause,
                     numeric_value: null,
                     start_date: contract.start_date,
                     end_date: contract.end_date
@@ -1752,8 +1886,8 @@
                 {
                     category: 'deposit',
                     label: 'Deposit',
-                    value: '2 months rent',
-                    numeric_value: contract.rent * 2,
+                    value: depositMonths + ' months rent',
+                    numeric_value: contract.rent * depositMonths,
                     start_date: contract.start_date,
                     end_date: contract.end_date
                 }
@@ -1795,15 +1929,15 @@
             '<div class="party right"><div class="party-label">To (Recipient)</div><div class="party-name">' + invoiceData.payer + '</div></div>' +
             '</div>' +
             '<table><thead><tr><th>Description</th><th class="amount">Subtotal</th><th class="amount">VAT</th><th class="amount">Amount</th></tr></thead>' +
-            '<tbody><tr><td>' + invoiceData.description + '</td><td class="amount">' + invoiceData.total.toFixed(2) + ' GBP</td><td class="amount">' + invoiceData.vat.toFixed(2) + ' GBP</td><td class="amount">' + invoiceData.total.toFixed(2) + ' GBP</td></tr></tbody></table>' +
+            '<tbody><tr><td>' + invoiceData.description + '</td><td class="amount">' + invoiceData.total.toFixed(2) + ' EUR</td><td class="amount">' + invoiceData.vat.toFixed(2) + ' EUR</td><td class="amount">' + invoiceData.total.toFixed(2) + ' EUR</td></tr></tbody></table>' +
             '<div style="overflow:hidden"><table class="totals">' +
-            '<tr><td>Subtotal</td><td class="amount">' + invoiceData.total.toFixed(2) + ' GBP</td></tr>' +
-            '<tr><td>VAT</td><td class="amount">' + invoiceData.vat.toFixed(2) + ' GBP</td></tr>' +
-            '<tr class="total-row"><td>Total</td><td class="amount">' + invoiceData.total.toFixed(2) + ' GBP</td></tr>' +
+            '<tr><td>Subtotal</td><td class="amount">' + invoiceData.total.toFixed(2) + ' EUR</td></tr>' +
+            '<tr><td>VAT</td><td class="amount">' + invoiceData.vat.toFixed(2) + ' EUR</td></tr>' +
+            '<tr class="total-row"><td>Total</td><td class="amount">' + invoiceData.total.toFixed(2) + ' EUR</td></tr>' +
             '</table></div>' +
             '<div style="margin-top:20px"><strong>Status:</strong> <span class="status status-' + statusClass + '">' + invoiceData.status + '</span>' +
-            ' &nbsp; <strong>Paid:</strong> ' + invoiceData.paid.toFixed(2) + ' GBP' +
-            (outstanding > 0 ? ' &nbsp; <strong style="color:#C62828">Outstanding: ' + outstanding.toFixed(2) + ' GBP</strong>' : '') +
+            ' &nbsp; <strong>Paid:</strong> ' + invoiceData.paid.toFixed(2) + ' EUR' +
+            (outstanding > 0 ? ' &nbsp; <strong style="color:#C62828">Outstanding: ' + outstanding.toFixed(2) + ' EUR</strong>' : '') +
             '</div>' +
             '<div class="footer"><strong>Proplia</strong> &mdash; Property Management<br>Document generated automatically</div>' +
             '</body></html>';
@@ -1817,6 +1951,53 @@
             status: status || 200,
             headers: { 'Content-Type': 'application/json' }
         });
+    }
+
+    function parseBody(init) {
+        if (!init || !init.body) return {};
+        try { return JSON.parse(init.body); } catch (e) { return {}; }
+    }
+
+    function addAuditEntry(action, entityType, entityId, oldValues, newValues, changedFields) {
+        auditEntries.unshift({
+            id: uuid(),
+            entity_type: entityType,
+            entity_id: entityId,
+            action: action,
+            old_values: oldValues || null,
+            new_values: newValues || null,
+            changed_fields: changedFields || [],
+            created_at: new Date().toISOString()
+        });
+    }
+
+    // ========================================================================
+    // Collection map for CRUD routing
+    // ========================================================================
+    var collectionMap = {
+        '/properties': properties,
+        '/tenants': tenants,
+        '/owners': owners,
+        '/contracts': contracts,
+        '/invoices': invoices,
+        '/deposits': deposits,
+        '/sepa-batches': sepa_batches,
+        '/issues': issues,
+        '/insurance': insurance,
+        '/contacts': contacts,
+        '/leads': leads,
+        '/lead-notes': lead_notes
+    };
+
+    function resolveCollection(route) {
+        if (collectionMap[route]) {
+            return { collection: collectionMap[route], entityType: route.slice(1).replace(/-/g, '_') };
+        }
+        var match = route.match(/^(\/[^/]+)\/([^/]+)$/);
+        if (match && collectionMap[match[1]]) {
+            return { collection: collectionMap[match[1]], entityType: match[1].slice(1).replace(/-/g, '_'), id: match[2] };
+        }
+        return null;
     }
 
     // ========================================================================
@@ -1850,23 +2031,113 @@
         // Small artificial delay to feel realistic
         return new Promise(function (resolve) {
             setTimeout(function () {
-                resolve(routeRequest(route, params, method, url));
+                resolve(routeRequest(route, params, method, url, init));
             }, 80 + Math.random() * 120);
         });
     };
 
-    function routeRequest(route, params, method, originalUrl) {
+    function routeRequest(route, params, method, originalUrl, init) {
 
         // ====================================================================
-        // POST / PUT / DELETE  (write operations - return success, read-only)
+        // POST (create) — add new item to in-memory collection
         // ====================================================================
         if (method === 'POST') {
-            return jsonResponse({ success: true, id: uuid() });
+            var body = parseBody(init);
+            var resolved = resolveCollection(route);
+
+            if (!resolved) {
+                return jsonResponse({ success: true, id: uuid() });
+            }
+
+            var newId = uuid();
+            var now = new Date().toISOString();
+            var newItem = Object.assign({}, body, {
+                id: newId,
+                created_at: now,
+                updated_at: now
+            });
+            resolved.collection.push(newItem);
+
+            var summaryFields = {};
+            var keys = Object.keys(body);
+            keys.slice(0, 4).forEach(function (k) { summaryFields[k] = body[k]; });
+            addAuditEntry('create', resolved.entityType, newId, null, summaryFields, keys);
+
+            return jsonResponse(newItem);
         }
+
+        // ====================================================================
+        // PUT (update) — merge fields into existing item
+        // ====================================================================
         if (method === 'PUT') {
-            return jsonResponse({ success: true });
+            var body = parseBody(init);
+            var resolved = resolveCollection(route);
+
+            if (!resolved || !resolved.id) {
+                return jsonResponse({ success: true });
+            }
+
+            var idx = -1;
+            for (var i = 0; i < resolved.collection.length; i++) {
+                if (resolved.collection[i].id === resolved.id) { idx = i; break; }
+            }
+
+            if (idx === -1) {
+                return jsonResponse({ error: 'Not found' }, 404);
+            }
+
+            var existing = resolved.collection[idx];
+            var oldValues = {};
+            var newValues = {};
+            var changedFields = [];
+
+            Object.keys(body).forEach(function (key) {
+                if (key === 'id' || key === 'created_at') return;
+                if (String(existing[key]) !== String(body[key])) {
+                    oldValues[key] = existing[key];
+                    newValues[key] = body[key];
+                    changedFields.push(key);
+                }
+            });
+
+            Object.keys(body).forEach(function (key) {
+                if (key === 'id' || key === 'created_at') return;
+                existing[key] = body[key];
+            });
+            existing.updated_at = new Date().toISOString();
+
+            if (changedFields.length > 0) {
+                addAuditEntry('update', resolved.entityType, resolved.id, oldValues, newValues, changedFields);
+            }
+
+            return jsonResponse(existing);
         }
+
+        // ====================================================================
+        // DELETE — remove item from in-memory collection
+        // ====================================================================
         if (method === 'DELETE') {
+            var resolved = resolveCollection(route);
+
+            if (!resolved || !resolved.id) {
+                return jsonResponse({ success: true });
+            }
+
+            var idx = -1;
+            for (var i = 0; i < resolved.collection.length; i++) {
+                if (resolved.collection[i].id === resolved.id) { idx = i; break; }
+            }
+
+            if (idx === -1) {
+                return jsonResponse({ error: 'Not found' }, 404);
+            }
+
+            var removed = resolved.collection.splice(idx, 1)[0];
+            var summaryFields = {};
+            var keys = Object.keys(removed);
+            keys.slice(0, 4).forEach(function (k) { summaryFields[k] = removed[k]; });
+            addAuditEntry('delete', resolved.entityType, resolved.id, summaryFields, null, keys);
+
             return jsonResponse({ success: true });
         }
 
@@ -1884,13 +2155,20 @@
             return jsonResponse(properties.map(function (a) { return a.property_name; }));
         }
 
+        // --- Tenants names ---
+        if (route === '/tenants/names') {
+            return jsonResponse(tenants.map(function (t) { return t.name; }));
+        }
+
+        // --- Contacts names ---
+        if (route === '/contacts/names') {
+            return jsonResponse(contacts.map(function (c) { return { id: c.id, name: c.name }; }));
+        }
+
         // Property images
         const imagesMatch = route.match(/^\/properties\/images\/(.+)$/);
         if (imagesMatch) {
-            return jsonResponse([
-                { url: '/files/images/property-placeholder-1.jpg', filename: 'exterior.jpg' },
-                { url: '/files/images/property-placeholder-2.jpg', filename: 'lounge.jpg' }
-            ]);
+            return jsonResponse(getPropertyImages(imagesMatch[1]));
         }
 
         // Property detail
@@ -2009,9 +2287,14 @@
             return jsonResponse(filterAndPaginate(leads, params));
         }
 
-        // --- Lead Notes (mock) ---
-        if (route.match(/^\/lead-notes/)) {
-            return jsonResponse({ data: [], total: 0 });
+        // --- Lead Notes ---
+        if (route.match(/^\/lead[-_]not(as|es)/)) {
+            var leadIdParam = params.get('lead_id');
+            var filtered = lead_notes;
+            if (leadIdParam) {
+                filtered = lead_notes.filter(function (n) { return n.lead_id === leadIdParam; });
+            }
+            return jsonResponse({ data: filtered, total: filtered.length });
         }
 
         // --- Alerts (mock) ---
